@@ -13,15 +13,16 @@ function escHtml(str) {
     .replace(/\n/g, '<br>');
 }
 
-/* SVG verified badge — renderiza igual en browser y html2canvas */
+/* SVG verified badge — span inline-flex evita clipping en html2canvas */
 function verifiedSVG(bgColor, checkColor, size = 16) {
-  return `<svg viewBox="0 0 20 20" width="${size}" height="${size}"
-    style="flex-shrink:0;display:inline-block;vertical-align:middle;margin-left:3px;">
-    <circle cx="10" cy="10" r="10" fill="${bgColor}"/>
-    <polyline points="5.5,10.5 8.5,13.5 14.5,6.5"
-      stroke="${checkColor}" stroke-width="2.2"
-      stroke-linecap="round" stroke-linejoin="round" fill="none"/>
-  </svg>`;
+  return `<span style="display:inline-flex;align-items:center;flex-shrink:0;margin-left:3px;">
+    <svg viewBox="0 0 20 20" width="${size}" height="${size}" style="display:block;">
+      <circle cx="10" cy="10" r="10" fill="${bgColor}"/>
+      <polyline points="5.5,10.5 8.5,13.5 14.5,6.5"
+        stroke="${checkColor}" stroke-width="2.2"
+        stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+    </svg>
+  </span>`;
 }
 
 /* Avatar: foto o círculo coloreado con inicial */

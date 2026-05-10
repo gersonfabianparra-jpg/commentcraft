@@ -1378,3 +1378,111 @@ input, textarea, select { font-family: var(--font); }
   letter-spacing: -0.02em;
   word-break: break-word;
 }
+
+/* ============================================================
+   EMOJI PICKER
+   ============================================================ */
+.form-label-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 6px;
+}
+.form-label-row .form-label { margin-bottom: 0; }
+
+.emoji-trigger { font-size: 0.8rem; }
+
+.emoji-container { position: relative; }
+
+.emoji-panel {
+  display: none;
+  position: absolute;
+  bottom: calc(100% + 6px);
+  left: 0;
+  z-index: 500;
+  width: 280px;
+  max-height: 270px;
+  overflow: hidden;
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow-lg);
+  padding: 10px;
+}
+.emoji-panel.open { display: block; }
+
+.emoji-tabs {
+  display: flex;
+  gap: 3px;
+  margin-bottom: 8px;
+  padding-bottom: 8px;
+  border-bottom: 1px solid var(--border);
+  overflow-x: auto;
+  scrollbar-width: none;
+}
+.emoji-tabs::-webkit-scrollbar { display: none; }
+
+.emoji-tab {
+  padding: 3px 8px;
+  border-radius: 6px;
+  font-size: 0.68rem;
+  font-weight: 600;
+  color: var(--text-2);
+  white-space: nowrap;
+  cursor: pointer;
+  transition: all var(--transition);
+  border: none;
+  background: none;
+}
+.emoji-tab:hover, .emoji-tab.active {
+  background: rgba(124,58,237,0.2);
+  color: var(--text-1);
+}
+
+.emoji-grid {
+  display: grid;
+  grid-template-columns: repeat(8, 1fr);
+  gap: 1px;
+  overflow-y: auto;
+  max-height: 180px;
+  scrollbar-width: thin;
+  scrollbar-color: var(--border) transparent;
+}
+.emoji-grid::-webkit-scrollbar { width: 4px; }
+.emoji-grid::-webkit-scrollbar-thumb { background: var(--border); border-radius: 2px; }
+
+.emoji-btn {
+  padding: 5px 3px;
+  border-radius: 5px;
+  font-size: 1.15rem;
+  line-height: 1;
+  text-align: center;
+  cursor: pointer;
+  background: none;
+  border: none;
+  transition: background var(--transition), transform 0.1s ease;
+}
+.emoji-btn:hover {
+  background: rgba(255,255,255,0.1);
+  transform: scale(1.25);
+}
+
+/* ============================================================
+   DOWNLOAD CAPTURE ANIMATION
+   ============================================================ */
+@keyframes captureFlash {
+  0%   { box-shadow: 0 8px 48px rgba(0,0,0,0.45); }
+  20%  { box-shadow: 0 0 0 3px rgba(124,58,237,0.9), 0 8px 48px rgba(0,0,0,0.45); }
+  55%  { box-shadow: 0 0 0 7px rgba(255,255,255,0.22), 0 0 40px rgba(124,58,237,0.45); }
+  100% { box-shadow: 0 8px 48px rgba(0,0,0,0.45); }
+}
+.preview-card-outer.capturing {
+  animation: captureFlash 0.72s ease forwards;
+}
+
+/* ============================================================
+   VERIFIED BADGE — overflow fix para html2canvas
+   ============================================================ */
+.tt-header   { overflow: visible; }
+.fb-username { overflow: visible; }
+.ig-comment-text { overflow: visible; }

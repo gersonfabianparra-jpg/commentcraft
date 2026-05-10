@@ -338,6 +338,72 @@ function showToast(msg, type = '') {
 }
 
 /* ============================================================
+   EMOJI PICKER
+   ============================================================ */
+const EMOJIS = {
+  '🔥 Top':    ['😂','🤣','❤️','😍','🔥','💯','👍','😭','🥹','💀','🫡','✨','🎉','👀','😎','🤯','💪','🙏','😅','💅','🫶','🤌','💃','🕺','🤝','😤','🥴','👑','🫠','😈'],
+  '😀 Caras':  ['😀','😃','😄','😁','😆','😅','🤣','😂','🙂','😇','😍','🥰','😘','😋','😛','😜','🤪','🤓','😎','🤩','🥳','😏','😒','😔','😟','😣','😩','🥺','😢','😭','😤','😠','😡','🤬','🤯','😳','🥵','🥶','😱','😨','😬','🙄','😴','🤤','🥴','😈','💩','🤡','👻'],
+  '👋 Gestos': ['👍','👎','👊','✊','🤛','🤜','🤞','✌️','🤟','🤘','🤙','👈','👉','👆','👇','☝️','✋','🖐️','👋','🤏','💪','🙏','🤝','👐','🫶','🤲','💅','🫰','🫵','🦾','🤦','🤷'],
+  '❤️ Amor':   ['❤️','🧡','💛','💚','💙','💜','🖤','🤍','🤎','💔','❣️','💕','💞','💓','💗','💖','💘','💝','🩷','🩵','🩶','😍','🥰','😘','💏','💑','🫦'],
+  '🎉 Más':    ['🎉','🎊','🎈','🏆','🥇','🎯','🌟','⭐','💫','✨','🎁','🎀','🚀','🌈','🦋','🌸','🍀','🍕','🎵','🎶','📸','💡','⚡','🌙','☀️','🌊','💎','👻','🤡','🫣','💰','🔑'],
+};
+
+let currentEmojiCategory = '🔥 Top';
+let emojiPickerOpen      = false;
+
+function buildEmojiPicker() {
+  const panel = $('emojiPanel');
+  if (!panel) return;
+
+  const tabs = Object.keys(EMOJIS).map(cat =>
+    `<button class="emoji-tab${cat === currentEmojiCategory ? ' active' : ''}" data-cat="${escHtml(cat)}">${cat}</button>`
+  ).join('');
+
+  const grid = EMOJIS[currentEmojiCategory].map(e =>
+    `<button class="emoji-btn" data-emoji="${e}">${e}</button>`
+  ).join('');
+
+  panel.innerHTML = `<div class="emoji-tabs">${tabs}</div><div class="emoji-grid">${grid}</div>`;
+
+  panel.querySelectorAll('.emoji-tab').forEach(tab => {
+    tab.addEventListener('click', e => {
+      e.stopPropagation();
+      currentEmojiCategory = tab.dataset.cat;
+      buildEmojiPicker();
+    });
+  });
+
+  panel.querySelectorAll('.emoji-btn').forEach(btn => {
+    btn.addEventListener('click', e => {
+      e.stopPropagation();
+      const start = commentText.selectionStart;
+      const end   = commentText.selectionEnd;
+      const val   = commentText.value;
+      commentText.value = val.slice(0, start) + btn.dataset.emoji + val.slice(end);
+      commentText.selectionStart = commentText.selectionEnd = start + btn.dataset.emoji.length;
+      commentText.focus();
+      charCount.textContent = commentText.value.length;
+      liveUpdate();
+    });
+  });
+}
+
+$('emojiBtn').addEventListener('click', e => {
+  e.stopPropagation();
+  emojiPickerOpen = !emojiPickerOpen;
+  const panel = $('emojiPanel');
+  panel.classList.toggle('open', emojiPickerOpen);
+  if (emojiPickerOpen) buildEmojiPicker();
+});
+
+$('emojiPanel').addEventListener('click', e => e.stopPropagation());
+
+document.addEventListener('click', () => {
+  emojiPickerOpen = false;
+  $('emojiPanel').classList.remove('open');
+});
+
+/* ============================================================
    INIT — auto-genera al cargar la página
    ============================================================ */
 function init() {

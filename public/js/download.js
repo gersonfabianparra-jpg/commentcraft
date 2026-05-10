@@ -17,15 +17,25 @@ async function captureAsCanvas(el) {
   });
 }
 
-async function downloadAsPng(el, filename = 'commentcraft') {
+async function downloadAsPng(el, filename = 'mockpost') {
+  const outerCard = document.getElementById('previewOuter');
+
+  /* Animación de captura antes de generar el PNG */
+  if (outerCard) {
+    outerCard.classList.add('capturing');
+    await new Promise(r => setTimeout(r, 720));
+  }
+
   try {
     const canvas = await captureAsCanvas(el);
-    const a      = document.createElement('a');
-    a.download   = `${filename}-${Date.now()}.png`;
-    a.href       = canvas.toDataURL('image/png');
+    if (outerCard) outerCard.classList.remove('capturing');
+    const a    = document.createElement('a');
+    a.download = `${filename}-${Date.now()}.png`;
+    a.href     = canvas.toDataURL('image/png');
     a.click();
     return true;
   } catch (err) {
+    if (outerCard) outerCard.classList.remove('capturing');
     console.error('Download error:', err);
     return false;
   }
