@@ -255,9 +255,11 @@ saveBtn.addEventListener('click', () => {
   items.unshift({
     id:           Date.now().toString(),
     platform:     currentPlatform,
+    tiktokBubble: tiktokBubbleMode,
     username:     data.username,
     comment_text: data.commentText,
     created_at:   new Date().toISOString(),
+    formData:     { ...data, avatarImg: avatarImg }, // avatarImg = base64 del upload actual
   });
   if (items.length > 50) items.length = 50;
   localStorage.setItem('cc_history', JSON.stringify(items));
@@ -277,6 +279,47 @@ function loadHistory() {
   renderHistory(getStoredHistory());
 }
 
+const PLATFORM_BG = {
+  tiktok:    '#121212',
+  facebook:  '#F0F2F5',
+  instagram: '#FFFFFF',
+  whatsapp:  '#E5DDD5',
+  youtube:   '#FFFFFF',
+};
+
+async function reDownloadFromHistory(item, btn) {
+  const key = (item.platform === 'tiktok' && item.tiktokBubble) ? 'tiktokBubble' : item.platform;
+  const generator = Generators[key];
+  if (!generator) return;
+
+  const bg = PLATFORM_BG[item.platform] || '#121212';
+  const wrapper = document.createElement('div');
+  wrapper.style.cssText = `position:absolute;top:-9999px;left:0;width:400px;padding:10px 12px;background:${bg};border-radius:14px;`;
+  wrapper.innerHTML = generator(item.formData);
+  document.body.appendChild(wrapper);
+
+  // Esperar dos frames para que CSS aplique
+  await new Promise(r => requestAnimationFrame(() => requestAnimationFrame(r)));
+
+  try {
+    const canvas = await html2canvas(wrapper, {
+      scale: 3, useCORS: true, allowTaint: true,
+      backgroundColor: bg, logging: false,
+      removeContainer: true, imageTimeout: 20000,
+    });
+    const a = document.createElement('a');
+    a.download = `${item.platform}-mockpost-${item.id}.png`;
+    a.href = canvas.toDataURL('image/png');
+    a.click();
+    showToast('✅ Imagen descargada', 'success');
+  } catch (err) {
+    showToast('❌ Error al descargar', 'error');
+    console.error(err);
+  } finally {
+    document.body.removeChild(wrapper);
+  }
+}
+
 function renderHistory(items) {
   if (!items.length) {
     historyGrid.innerHTML = `
@@ -288,6 +331,11 @@ function renderHistory(items) {
   const labels = { tiktok:'TikTok', facebook:'Facebook', instagram:'Instagram', whatsapp:'WhatsApp', youtube:'YouTube' };
   historyGrid.innerHTML = items.map(item => {
     const date = new Date(item.created_at).toLocaleDateString('es-ES', { day:'2-digit', month:'short', hour:'2-digit', minute:'2-digit' });
+    const dlBtn = item.formData
+      ? `<button class="history-dl btn-ghost btn-sm" data-id="${item.id}" title="Descargar imagen">
+           <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4M7 10l5 5 5-5M12 15V3"/></svg>
+         </button>`
+      : '';
     return `
 <div class="history-card" data-id="${item.id}">
   <span class="history-platform-badge badge-${item.platform}">${labels[item.platform] || item.platform}</span>
@@ -295,10 +343,26 @@ function renderHistory(items) {
   <p class="history-text">${escHtml(item.comment_text)}</p>
   <div class="history-footer">
     <span class="history-date">${date}</span>
-    <button class="history-delete btn-ghost btn-sm" data-id="${item.id}">🗑</button>
+    <div class="history-actions">
+      ${dlBtn}
+      <button class="history-delete btn-ghost btn-sm" data-id="${item.id}" title="Eliminar">🗑</button>
+    </div>
   </div>
 </div>`;
   }).join('');
+
+  document.querySelectorAll('.history-dl').forEach(btn => {
+    btn.addEventListener('click', async e => {
+      e.stopPropagation();
+      const item = getStoredHistory().find(i => i.id === btn.dataset.id);
+      if (!item?.formData) return;
+      btn.disabled = true;
+      btn.innerHTML = '⏳';
+      await reDownloadFromHistory(item, btn);
+      btn.disabled = false;
+      btn.innerHTML = `<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4M7 10l5 5 5-5M12 15V3"/></svg>`;
+    });
+  });
 
   document.querySelectorAll('.history-delete').forEach(btn => {
     btn.addEventListener('click', e => {

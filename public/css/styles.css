@@ -1142,14 +1142,18 @@ input, textarea, select { font-family: var(--font); }
   justify-content: space-between;
 }
 .history-date { font-size: 0.72rem; color: var(--text-3); }
-.history-delete {
+.history-actions { display: flex; align-items: center; gap: 2px; }
+.history-delete, .history-dl {
   font-size: 0.75rem;
   color: var(--text-3);
-  padding: 4px 8px;
+  padding: 4px 7px;
   border-radius: 6px;
   transition: all var(--transition);
+  line-height: 1;
 }
 .history-delete:hover { background: rgba(239,68,68,0.15); color: #F87171; }
+.history-dl:hover:not(:disabled) { background: rgba(124,58,237,0.15); color: var(--primary-light); }
+.history-dl:disabled { opacity: 0.4; cursor: not-allowed; }
 
 /* ============================================================
    FOOTER
