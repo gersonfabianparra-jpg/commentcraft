@@ -190,34 +190,31 @@ const Generators = {
   },
 
   /* ── WhatsApp ─────────────────────────────────────────── */
-  whatsapp({ username, avatarColor, avatarImg, commentText, waTime, waStatus, waIsGroup, waDarkMode, waIsSent }) {
-    const initial = (username || 'U').charAt(0).toUpperCase();
+  whatsapp({ username, avatarColor, avatarImg, commentText, waTime, waIsGroup, waType }) {
+    const initial  = (username || 'U').charAt(0).toUpperCase();
+    const isSent   = waType !== 'received';
+    const sideClass   = isSent ? 'sent-side' : 'received-side';
+    const bubbleClass = isSent ? 'sent' : 'received';
 
     const tickMap = {
-      sent:      `<span class="wa-tick-svg"><svg viewBox="0 0 12 9" width="15" height="11" fill="none"><polyline points="1,4.5 4,7.5 11,1" stroke="#92A3AD" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg></span>`,
-      delivered: `<span class="wa-tick-svg"><svg viewBox="0 0 17 9" width="19" height="11" fill="none"><polyline points="1,4.5 4,7.5 11,1" stroke="#92A3AD" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/><polyline points="6,4.5 9,7.5 16,1" stroke="#92A3AD" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg></span>`,
-      read:      `<span class="wa-tick-svg"><svg viewBox="0 0 17 9" width="19" height="11" fill="none"><polyline points="1,4.5 4,7.5 11,1" stroke="#53BDEB" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/><polyline points="6,4.5 9,7.5 16,1" stroke="#53BDEB" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg></span>`,
+      sent:      `<span class="wa-tick-svg"><svg viewBox="0 0 12 9" width="15" height="11" fill="none"><polyline points="1,4.5 4,7.5 11,1" stroke="#92A3AD" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></span>`,
+      delivered: `<span class="wa-tick-svg"><svg viewBox="0 0 17 9" width="19" height="11" fill="none"><polyline points="1,4.5 4,7.5 11,1" stroke="#92A3AD" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/><polyline points="6,4.5 9,7.5 16,1" stroke="#92A3AD" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></span>`,
+      read:      `<span class="wa-tick-svg"><svg viewBox="0 0 17 9" width="19" height="11" fill="none"><polyline points="1,4.5 4,7.5 11,1" stroke="#53BDEB" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/><polyline points="6,4.5 9,7.5 16,1" stroke="#53BDEB" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></span>`,
     };
-    const ticks       = waIsSent ? (tickMap[waStatus] || tickMap.sent) : '';
-    const darkClass   = waDarkMode ? 'dark' : '';
-    const bubbleClass = waIsSent ? 'sent' : 'received';
-    const sideClass   = waIsSent ? 'sent-side' : 'received-side';
+    const ticks = isSent ? (tickMap[waType] || '') : '';
 
-    /* Avatar a la izquierda del bubble (solo en mensajes recibidos de grupo) */
-    const receiverAvatar = (waIsGroup && !waIsSent)
+    const receiverAvatar = (waIsGroup && !isSent)
       ? avatarEl(avatarImg, avatarColor, initial, 'wa-recv-avatar')
       : '';
-
-    /* Nombre del remitente dentro del bubble (solo en grupo recibido) */
-    const senderName = (waIsGroup && !waIsSent)
+    const senderName = (waIsGroup && !isSent)
       ? `<span class="wa-sender-name">${escHtml(username || 'Usuario')}</span>`
       : '';
 
     return `
-<div class="wa-wrapper ${darkClass}">
+<div class="wa-wrapper">
   <div class="wa-bubble-container ${sideClass}">
     ${receiverAvatar}
-    <div class="wa-message ${bubbleClass} ${waDarkMode ? 'wa-dark' : ''}">
+    <div class="wa-message ${bubbleClass}">
       ${senderName}
       <p class="wa-text">${escHtml(commentText)}</p>
       <div class="wa-meta">

@@ -913,11 +913,6 @@ input, textarea, select { font-family: var(--font); }
   border-top: 8px solid transparent;
 }
 
-.wa-dark .wa-message.sent { background: #005C4B; }
-.wa-dark .wa-message.sent::after { border-left-color: #005C4B; }
-.wa-dark .wa-message.received { background: #1F2C34; }
-.wa-dark .wa-message.received::after { border-right-color: #1F2C34; }
-
 /* Nombre del remitente dentro del bubble */
 .wa-sender-name {
   font-size: 13px;
@@ -950,6 +945,38 @@ input, textarea, select { font-family: var(--font); }
 .wa-tick-svg {
   display: inline-flex;
   align-items: center;
+}
+
+/* Selector de tipo de mensaje WhatsApp */
+.wa-msg-type {
+  display: flex;
+  gap: 4px;
+  background: var(--bg-input);
+  padding: 4px;
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--border);
+}
+.wa-type-opt {
+  flex: 1;
+  cursor: pointer;
+}
+.wa-type-opt input[type="radio"] { display: none; }
+.wa-type-label {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 7px 6px;
+  border-radius: 5px;
+  font-size: 0.78rem;
+  font-weight: 600;
+  color: var(--text-2);
+  transition: all var(--transition);
+  min-height: 32px;
+}
+.wa-type-opt input:checked + .wa-type-label {
+  background: linear-gradient(135deg, #128C7E, #25D366);
+  color: #fff;
+  box-shadow: 0 2px 8px rgba(18,140,126,0.35);
 }
 
 /* ============================================================

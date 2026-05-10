@@ -121,11 +121,9 @@ function getFormData() {
     fbReplies:   $('fbReplies')?.value.trim()  || '',
     igReplies:   $('igReplies')?.value.trim()  || '',
     igStoryRing: $('igStoryRing')?.checked     || false,
-    waTime:      $('waTime')?.value.trim()     || '12:00',
-    waStatus:    $('waStatus')?.value          || 'read',
-    waIsGroup:   $('waIsGroup')?.checked       || false,
-    waDarkMode:  $('waDarkMode')?.checked      || false,
-    waIsSent:          $('waIsSent')?.checked      || false,
+    waTime:    $('waTime')?.value.trim() || '12:00',
+    waIsGroup: $('waIsGroup')?.checked  || false,
+    waType:    document.querySelector('input[name="waType"]:checked')?.value || 'received',
     ytPinned:          $('ytPinned')?.checked        || false,
     ytCreatorHeart:    $('ytCreatorHeart')?.checked  || false,
     ytReplies:         $('ytReplies')?.value.trim()  || '',
@@ -178,9 +176,13 @@ function liveUpdate() {
   if (el) el.addEventListener('input', liveUpdate);
 });
 
-['isVerified', 'fbReaction', 'waStatus', 'waIsGroup', 'waDarkMode', 'waIsSent', 'ytPinned', 'ytCreatorHeart', 'igStoryRing'].forEach(id => {
+['isVerified', 'fbReaction', 'waIsGroup', 'ytPinned', 'ytCreatorHeart', 'igStoryRing'].forEach(id => {
   const el = $(id);
   if (el) el.addEventListener('change', generatePreview);
+});
+
+document.querySelectorAll('input[name="waType"]').forEach(el => {
+  el.addEventListener('change', generatePreview);
 });
 
 /* ============================================================

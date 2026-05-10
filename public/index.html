@@ -260,35 +260,38 @@
             <label class="form-label" for="waTime">Hora del mensaje</label>
             <input class="form-input" type="text" id="waTime" placeholder="12:34" maxlength="10" value="12:34" />
           </div>
-          <div class="form-group">
-            <label class="form-label" for="waStatus">Estado</label>
-            <select class="form-input form-select" id="waStatus">
-              <option value="sent">✓ Enviado</option>
-              <option value="delivered">✓✓ Entregado</option>
-              <option value="read" selected>✓✓ Leído</option>
-            </select>
-          </div>
-        </div>
-        <div class="form-group center-v">
-          <label class="form-label" for="waIsGroup">Mensaje de grupo</label>
-          <label class="toggle-switch">
-            <input type="checkbox" id="waIsGroup" checked />
-            <span class="toggle-slider"></span>
-          </label>
-        </div>
-        <div class="form-row">
           <div class="form-group center-v">
-            <label class="form-label" for="waDarkMode">Modo oscuro</label>
+            <label class="form-label" for="waIsGroup">Es grupo</label>
             <label class="toggle-switch">
-              <input type="checkbox" id="waDarkMode" />
+              <input type="checkbox" id="waIsGroup" checked />
               <span class="toggle-slider"></span>
             </label>
           </div>
-          <div class="form-group center-v">
-            <label class="form-label" for="waIsSent">Mensaje enviado</label>
-            <label class="toggle-switch">
-              <input type="checkbox" id="waIsSent" />
-              <span class="toggle-slider"></span>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Estado del mensaje</label>
+          <div class="wa-msg-type">
+            <label class="wa-type-opt" title="Recibido">
+              <input type="radio" name="waType" id="waTypeReceived" value="received" checked />
+              <span class="wa-type-label">Recibido</span>
+            </label>
+            <label class="wa-type-opt" title="Enviado">
+              <input type="radio" name="waType" id="waTypeSent" value="sent" />
+              <span class="wa-type-label">
+                <svg viewBox="0 0 12 9" width="16" height="12" fill="none"><polyline points="1,4.5 4,7.5 11,1" stroke="#92A3AD" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"/></svg>
+              </span>
+            </label>
+            <label class="wa-type-opt" title="Entregado">
+              <input type="radio" name="waType" id="waTypeDelivered" value="delivered" />
+              <span class="wa-type-label">
+                <svg viewBox="0 0 17 9" width="20" height="12" fill="none"><polyline points="1,4.5 4,7.5 11,1" stroke="#92A3AD" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"/><polyline points="6,4.5 9,7.5 16,1" stroke="#92A3AD" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"/></svg>
+              </span>
+            </label>
+            <label class="wa-type-opt" title="Leído">
+              <input type="radio" name="waType" id="waTypeRead" value="read" />
+              <span class="wa-type-label">
+                <svg viewBox="0 0 17 9" width="20" height="12" fill="none"><polyline points="1,4.5 4,7.5 11,1" stroke="#53BDEB" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"/><polyline points="6,4.5 9,7.5 16,1" stroke="#53BDEB" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"/></svg>
+              </span>
             </label>
           </div>
         </div>
