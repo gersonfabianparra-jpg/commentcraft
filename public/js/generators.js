@@ -190,9 +190,8 @@ const Generators = {
   },
 
   /* ── WhatsApp ─────────────────────────────────────────── */
-  whatsapp({ username, avatarColor, avatarImg, commentText, waTime, waStatus, waIsGroup, waGroupName, waDarkMode, waIsSent }) {
-    const initial   = (username || 'U').charAt(0).toUpperCase();
-    const groupInit = (waGroupName || 'G').charAt(0).toUpperCase();
+  whatsapp({ username, avatarColor, avatarImg, commentText, waTime, waStatus, waIsGroup, waDarkMode, waIsSent }) {
+    const initial = (username || 'U').charAt(0).toUpperCase();
 
     const tickMap = {
       sent:      `<span class="wa-tick-svg"><svg viewBox="0 0 12 9" width="15" height="11" fill="none"><polyline points="1,4.5 4,7.5 11,1" stroke="#92A3AD" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg></span>`,
@@ -201,23 +200,23 @@ const Generators = {
     };
     const ticks       = waIsSent ? (tickMap[waStatus] || tickMap.sent) : '';
     const darkClass   = waDarkMode ? 'dark' : '';
-    const bubbleClass = waIsSent  ? 'sent' : 'received';
-    const sideClass   = waIsSent  ? 'sent-side' : 'received-side';
+    const bubbleClass = waIsSent ? 'sent' : 'received';
+    const sideClass   = waIsSent ? 'sent-side' : 'received-side';
 
-    const groupHeader = waIsGroup ? `
-      <div class="wa-group-header">
-        ${avatarEl(avatarImg, avatarColor, groupInit, 'wa-group-avatar')}
-        <span class="wa-group-name ${waDarkMode ? 'wa-dark' : ''}">${escHtml(waGroupName || 'Grupo')}</span>
-      </div>` : '';
+    /* Avatar a la izquierda del bubble (solo en mensajes recibidos de grupo) */
+    const receiverAvatar = (waIsGroup && !waIsSent)
+      ? avatarEl(avatarImg, avatarColor, initial, 'wa-recv-avatar')
+      : '';
 
+    /* Nombre del remitente dentro del bubble (solo en grupo recibido) */
     const senderName = (waIsGroup && !waIsSent)
       ? `<span class="wa-sender-name">${escHtml(username || 'Usuario')}</span>`
       : '';
 
     return `
 <div class="wa-wrapper ${darkClass}">
-  ${groupHeader}
   <div class="wa-bubble-container ${sideClass}">
+    ${receiverAvatar}
     <div class="wa-message ${bubbleClass} ${waDarkMode ? 'wa-dark' : ''}">
       ${senderName}
       <p class="wa-text">${escHtml(commentText)}</p>

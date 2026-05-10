@@ -105,13 +105,6 @@ commentText.addEventListener('input', () => {
 });
 
 /* ============================================================
-   WHATSAPP GROUP TOGGLE
-   ============================================================ */
-$('waIsGroup').addEventListener('change', e => {
-  $('waGroupField').style.display = e.target.checked ? 'flex' : 'none';
-});
-
-/* ============================================================
    FORM DATA
    ============================================================ */
 function getFormData() {
@@ -131,7 +124,6 @@ function getFormData() {
     waTime:      $('waTime')?.value.trim()     || '12:00',
     waStatus:    $('waStatus')?.value          || 'read',
     waIsGroup:   $('waIsGroup')?.checked       || false,
-    waGroupName: $('waGroupName')?.value.trim()|| 'Grupo',
     waDarkMode:  $('waDarkMode')?.checked      || false,
     waIsSent:          $('waIsSent')?.checked !== false,
     ytPinned:          $('ytPinned')?.checked        || false,
@@ -180,7 +172,7 @@ function liveUpdate() {
 }
 
 ['username', 'commentText', 'timestamp', 'likesCount',
- 'replyCount', 'fbReplies', 'igReplies', 'waTime', 'waGroupName', 'ytReplies',
+ 'replyCount', 'fbReplies', 'igReplies', 'waTime', 'ytReplies',
 ].forEach(id => {
   const el = $(id);
   if (el) el.addEventListener('input', liveUpdate);

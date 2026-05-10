@@ -846,38 +846,32 @@ input, textarea, select { font-family: var(--font); }
 }
 .wa-wrapper.dark { background: #0D1117; }
 
-.wa-group-header {
+/* Contenedor del bubble + avatar */
+.wa-bubble-container {
   display: flex;
-  align-items: center;
-  gap: 8px;
-  padding: 6px 8px 10px;
-  border-bottom: 1px solid rgba(0,0,0,0.06);
-  margin-bottom: 10px;
+  align-items: flex-end;
+  gap: 6px;
 }
-.wa-group-avatar {
-  width: 36px; height: 36px;
+.wa-bubble-container.sent-side {
+  flex-direction: row-reverse; /* bubble a la derecha */
+}
+.wa-bubble-container.received-side {
+  flex-direction: row; /* avatar izq, bubble derecha */
+}
+
+/* Avatar del remitente (mensajes recibidos en grupo) */
+.wa-recv-avatar {
+  width: 28px; height: 28px;
   border-radius: 50%;
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 14px;
+  font-size: 11px;
   font-weight: 700;
   color: #fff;
   flex-shrink: 0;
+  overflow: hidden;
 }
-.wa-group-name {
-  font-size: 14px;
-  font-weight: 600;
-  color: #111B21;
-}
-.wa-dark .wa-group-name { color: #E9EDEF; }
-
-.wa-bubble-container {
-  display: flex;
-  flex-direction: column;
-}
-.wa-bubble-container.sent-side { align-items: flex-end; }
-.wa-bubble-container.received-side { align-items: flex-start; }
 
 .wa-message {
   max-width: 78%;
@@ -888,6 +882,8 @@ input, textarea, select { font-family: var(--font); }
   font-family: -apple-system, 'Helvetica Neue', Arial, sans-serif;
   box-shadow: 0 1px 0.5px rgba(0,0,0,0.13);
 }
+
+/* Enviado — colita arriba-derecha */
 .wa-message.sent {
   background: #DCF8C6;
   border-top-right-radius: 2px;
@@ -897,39 +893,45 @@ input, textarea, select { font-family: var(--font); }
   position: absolute;
   right: -8px;
   top: 0;
+  width: 0; height: 0;
   border-left: 8px solid #DCF8C6;
   border-bottom: 8px solid transparent;
 }
+
+/* Recibido — colita abajo-izquierda (donde está el avatar) */
 .wa-message.received {
   background: #FFFFFF;
-  border-top-left-radius: 2px;
+  border-bottom-left-radius: 2px;
 }
 .wa-message.received::after {
   content: '';
   position: absolute;
   left: -8px;
-  top: 0;
+  bottom: 0;
+  width: 0; height: 0;
   border-right: 8px solid #FFFFFF;
-  border-bottom: 8px solid transparent;
+  border-top: 8px solid transparent;
 }
+
 .wa-dark .wa-message.sent { background: #005C4B; }
 .wa-dark .wa-message.sent::after { border-left-color: #005C4B; }
 .wa-dark .wa-message.received { background: #1F2C34; }
 .wa-dark .wa-message.received::after { border-right-color: #1F2C34; }
 
+/* Nombre del remitente dentro del bubble */
 .wa-sender-name {
-  font-size: 12.5px;
+  font-size: 13px;
   font-weight: 600;
-  color: #128C7E;
-  margin-bottom: 2px;
+  color: #00A884;
+  margin-bottom: 1px;
   display: block;
 }
+
 .wa-text {
-  font-size: 14px;
+  font-size: 14.5px;
   color: #111B21;
-  line-height: 1.45;
+  line-height: 1.5;
   word-break: break-word;
-  padding-right: 52px;
 }
 .wa-dark .wa-text { color: #E9EDEF; }
 
@@ -938,18 +940,13 @@ input, textarea, select { font-family: var(--font); }
   align-items: center;
   justify-content: flex-end;
   gap: 4px;
-  margin-top: 2px;
+  margin-top: 3px;
 }
 .wa-time {
-  font-size: 11.5px;
+  font-size: 11px;
   color: rgba(0,0,0,0.45);
 }
 .wa-dark .wa-time { color: rgba(255,255,255,0.4); }
-.wa-ticks {
-  font-size: 13px;
-  color: #92A3AD;
-}
-.wa-ticks.read { color: #53BDEB; }
 .wa-tick-svg {
   display: inline-flex;
   align-items: center;
