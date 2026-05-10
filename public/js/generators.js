@@ -103,38 +103,41 @@ const Generators = {
 
   /* ── Facebook ─────────────────────────────────────────── */
   facebook({ username, avatarColor, avatarImg, commentText, likesCount, verified, timestamp, fbReaction }) {
-    const initial  = (username || 'U').charAt(0).toUpperCase();
-    const reactions = {
-      like:  ['👍', 'Me gusta'],
-      love:  ['❤️', 'Me encanta'],
-      haha:  ['😂', 'Me divierte'],
-      wow:   ['😮', 'Me asombra'],
-      sad:   ['😢', 'Me entristece'],
-      angry: ['😡', 'Me enoja'],
+    const initial = (username || 'U').charAt(0).toUpperCase();
+
+    const reactionMap = {
+      like:  { emoji: '👍', label: 'Me gusta',      color: '#1877F2', bg: '#e7f0fd' },
+      love:  { emoji: '❤️', label: 'Me encanta',    color: '#F33E58', bg: '#fdedf0' },
+      haha:  { emoji: '😂', label: 'Me divierte',   color: '#E8A400', bg: '#fdf5e0' },
+      wow:   { emoji: '😮', label: 'Me asombra',    color: '#E8A400', bg: '#fdf5e0' },
+      sad:   { emoji: '😢', label: 'Me entristece', color: '#E8A400', bg: '#fdf5e0' },
+      angry: { emoji: '😡', label: 'Me enoja',      color: '#E9710F', bg: '#fdeee3' },
     };
-    const [reactionEmoji, reactionLabel] = reactions[fbReaction] || reactions.like;
+    const r = reactionMap[fbReaction] || reactionMap.like;
+
+    const reactionBadge = (likesCount && likesCount !== '0') ? `
+      <div class="fb-react-badge">
+        <span class="fb-react-circle" style="background:${r.color};">${r.emoji}</span>
+        <span class="fb-react-count">${escHtml(likesCount)}</span>
+      </div>` : '';
 
     return `
 <div class="fb-wrapper">
   <div class="fb-comment">
     ${avatarEl(avatarImg, avatarColor, initial, 'fb-avatar')}
-    <div class="fb-bubble">
-      <div class="fb-username">
-        ${escHtml(username || 'Usuario')}
-        ${verified ? verifiedSVG('#1877F2', '#fff', 15) : ''}
+    <div class="fb-right">
+      <div class="fb-bubble">
+        <span class="fb-username">${escHtml(username || 'Usuario')}${verified ? verifiedSVG('#1877F2', '#fff', 14) : ''}</span>
+        <p class="fb-text">${escHtml(commentText)}</p>
       </div>
-      <p class="fb-text">${escHtml(commentText)}</p>
-    </div>
-  </div>
-  <div class="fb-actions">
-    <span class="fb-action-btn">${reactionEmoji} ${reactionLabel}</span>
-    <span class="fb-dot">·</span>
-    <span class="fb-action-btn">Responder</span>
-    <span class="fb-dot">·</span>
-    <span class="fb-time-small">${escHtml(timestamp)}</span>
-    <div class="fb-reaction-summary">
-      <span class="fb-reaction-icon">${reactionEmoji}</span>
-      <span>${escHtml(likesCount)}</span>
+      <div class="fb-actions">
+        <span class="fb-action" style="color:${r.color};">${r.label}</span>
+        <span class="fb-sep">·</span>
+        <span class="fb-action">Responder</span>
+        <span class="fb-sep">·</span>
+        <span class="fb-time">${escHtml(timestamp)}</span>
+        ${reactionBadge}
+      </div>
     </div>
   </div>
 </div>`;
