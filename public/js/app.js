@@ -294,18 +294,25 @@ async function reDownloadFromHistory(item, btn) {
 
   const bg = PLATFORM_BG[item.platform] || '#121212';
   const wrapper = document.createElement('div');
-  wrapper.style.cssText = `position:absolute;top:-9999px;left:0;width:400px;padding:10px 12px;background:${bg};border-radius:14px;`;
-  wrapper.innerHTML = generator(item.formData);
+  wrapper.className = 'preview-card-outer';
+  wrapper.dataset.platform = item.platform;
+  wrapper.style.cssText = 'position:absolute;top:-9999px;left:0;width:400px;border-radius:14px;';
+  const inner = document.createElement('div');
+  inner.className = 'preview-card';
+  inner.innerHTML = generator(item.formData);
+  wrapper.appendChild(inner);
   document.body.appendChild(wrapper);
 
   // Esperar dos frames para que CSS aplique
   await new Promise(r => requestAnimationFrame(() => requestAnimationFrame(r)));
 
   try {
+    const computedBg = window.getComputedStyle(wrapper).backgroundColor;
+    const isTransparent = !computedBg || computedBg === 'transparent' || computedBg === 'rgba(0, 0, 0, 0)';
     const canvas = await html2canvas(wrapper, {
       scale: 3, useCORS: true, allowTaint: true,
-      backgroundColor: bg, logging: false,
-      removeContainer: true, imageTimeout: 20000,
+      backgroundColor: isTransparent ? null : computedBg,
+      logging: false, removeContainer: true, imageTimeout: 20000,
     });
     const a = document.createElement('a');
     a.download = `${item.platform}-mockpost-${item.id}.png`;
