@@ -3,14 +3,17 @@
    ============================================================ */
 
 async function captureAsCanvas(el) {
-  /* backgroundColor: null → el fondo viene del CSS del elemento capturado.
-     Para previewOuter (card): su CSS tiene el color de plataforma → se captura.
-     Para previewContent en modo burbuja: no tiene fondo → transparente.       */
+  /* Leer el background real del elemento para pasárselo explícitamente a html2canvas.
+     Si el elemento no tiene fondo propio (ej. burbuja TikTok) → null = transparente. */
+  const computedBg = window.getComputedStyle(el).backgroundColor;
+  const isTransparent = !computedBg || computedBg === 'transparent' || computedBg === 'rgba(0, 0, 0, 0)';
+  const backgroundColor = isTransparent ? null : computedBg;
+
   return html2canvas(el, {
-    scale:           3,        // 3× resolución — calidad máxima
+    scale:           3,
     useCORS:         true,
     allowTaint:      true,
-    backgroundColor: null,
+    backgroundColor,
     logging:         false,
     removeContainer: true,
     imageTimeout:    20000,
