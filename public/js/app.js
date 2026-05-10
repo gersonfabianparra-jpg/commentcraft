@@ -22,7 +22,6 @@ const charCount      = $('charCount');
 const commentText    = $('commentText');
 const avatarThumb    = $('avatarThumb');
 const avatarFile     = $('avatarFile');
-const avatarUrl      = $('avatarUrl');
 const removeAvatarBtn = $('removeAvatarBtn');
 
 /* ============================================================
@@ -78,45 +77,15 @@ avatarFile.addEventListener('change', e => {
   const reader = new FileReader();
   reader.onload = ev => {
     avatarImg = ev.target.result;
-    avatarUrl.value = '';
     updateAvatarThumb();
     generatePreview();
   };
   reader.readAsDataURL(file);
 });
 
-/* URL input */
-let urlTimer;
-avatarUrl.addEventListener('input', e => {
-  clearTimeout(urlTimer);
-  const url = e.target.value.trim();
-  if (!url) {
-    avatarImg = null;
-    updateAvatarThumb();
-    generatePreview();
-    return;
-  }
-  urlTimer = setTimeout(() => {
-    const testImg = new Image();
-    testImg.onload = () => {
-      avatarImg = url;
-      updateAvatarThumb();
-      generatePreview();
-    };
-    testImg.onerror = () => {
-      avatarImg = null;
-      updateAvatarThumb();
-      generatePreview();
-      showToast('❌ No se pudo cargar esa URL. Los perfiles de redes sociales están bloqueados por el navegador — sube la foto con el botón 📷', 'error');
-    };
-    testImg.src = url;
-  }, 600);
-});
-
 /* Remove photo */
 removeAvatarBtn.addEventListener('click', () => {
   avatarImg     = null;
-  avatarUrl.value = '';
   avatarFile.value = '';
   updateAvatarThumb();
   generatePreview();
