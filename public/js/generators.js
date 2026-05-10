@@ -246,8 +246,8 @@ const Generators = {
 
     const seeReplies = ytReplies ? `
       <div class="yt-see-replies">
-        <svg width="16" height="16" viewBox="0 0 24 24" fill="#065FD4"><path d="M20 11H7.83l2.88-2.88L9.3 6.7 4.59 11.41c-.39.39-.39 1.02 0 1.41L9.3 17.3l1.41-1.41L7.83 13H20v-2z"/></svg>
         ${escHtml(ytReplies)}
+        <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="#0F0F0F" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="9,18 15,12 9,6"/></svg>
       </div>` : '';
 
     return `
@@ -261,24 +261,27 @@ const Generators = {
         ${verified ? verifiedSVG('#AAAAAA', '#fff', 14) : ''}
         <span class="yt-dot">·</span>
         <span class="yt-time">${escHtml(timestamp)}</span>
+        <span class="yt-more-btn">⋮</span>
       </div>
       <p class="yt-text">${escHtml(commentText)}</p>
       <div class="yt-actions">
         <div class="yt-like-group">
           <button class="yt-action-btn">
-            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#606060" stroke-width="1.8"><path d="M14 9V5a3 3 0 00-3-3l-4 9v11h11.28a2 2 0 002-1.7l1.38-9a2 2 0 00-2-2.3z"/><path d="M7 22H4a2 2 0 01-2-2v-7a2 2 0 012-2h3"/></svg>
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#606060" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M14 9V5a3 3 0 00-3-3l-4 9v11h11.28a2 2 0 002-1.7l1.38-9a2 2 0 00-2-2.3z"/><path d="M7 22H4a2 2 0 01-2-2v-7a2 2 0 012-2h3"/></svg>
           </button>
           ${likesCount && likesCount !== '0' ? `<span class="yt-like-count">${escHtml(likesCount)}</span>` : ''}
           <button class="yt-action-btn">
-            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#606060" stroke-width="1.8"><path d="M10 15v4a3 3 0 003 3l4-9V2H5.72a2 2 0 00-2 1.7l-1.38 9a2 2 0 002 2.3z"/><path d="M17 2h2.67A2.31 2.31 0 0122 4v7a2.31 2.31 0 01-2.33 2H17"/></svg>
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#606060" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M10 15v4a3 3 0 003 3l4-9V2H5.72a2 2 0 00-2 1.7l-1.38 9a2 2 0 002 2.3z"/><path d="M17 2h2.67A2.31 2.31 0 0122 4v7a2.31 2.31 0 01-2.33 2H17"/></svg>
           </button>
         </div>
-        <button class="yt-reply-btn">Responder</button>
+        <button class="yt-action-btn">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#606060" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/></svg>
+        </button>
         ${creatorHeart}
       </div>
-      ${seeReplies}
     </div>
   </div>
+  ${seeReplies}
 </div>`;
   },
 };

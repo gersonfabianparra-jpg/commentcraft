@@ -1491,14 +1491,13 @@ input, textarea, select { font-family: var(--font); }
   display: flex;
   align-items: center;
   gap: 6px;
-  flex-wrap: wrap;
   margin-bottom: 4px;
   overflow: visible;
 }
 
 .yt-username {
   font-size: 13px;
-  font-weight: 600;
+  font-weight: 500;
   color: #0F0F0F;
 }
 .yt-dot {
@@ -1506,10 +1505,17 @@ input, textarea, select { font-family: var(--font); }
   color: #606060;
   line-height: 1;
 }
-
 .yt-time {
   font-size: 12px;
   color: #606060;
+}
+.yt-more-btn {
+  margin-left: auto;
+  font-size: 18px;
+  color: #606060;
+  flex-shrink: 0;
+  line-height: 1;
+  letter-spacing: 1px;
 }
 
 .yt-text {
@@ -1517,19 +1523,19 @@ input, textarea, select { font-family: var(--font); }
   color: #0F0F0F;
   line-height: 1.5;
   word-break: break-word;
-  margin-bottom: 8px;
+  margin-bottom: 6px;
 }
 
 .yt-actions {
   display: flex;
   align-items: center;
-  gap: 4px;
+  gap: 0;
 }
 
 .yt-like-group {
   display: flex;
   align-items: center;
-  gap: 2px;
+  gap: 0;
   margin-right: 4px;
 }
 
@@ -1547,20 +1553,10 @@ input, textarea, select { font-family: var(--font); }
 }
 
 .yt-like-count {
-  font-size: 12px;
-  color: #606060;
-  margin: 0 4px 0 0;
-}
-
-.yt-reply-btn {
   font-size: 13px;
-  font-weight: 500;
-  color: #606060;
-  background: none;
-  border: none;
-  padding: 6px 12px;
-  border-radius: 18px;
-  cursor: pointer;
+  color: #0F0F0F;
+  margin: 0 8px 0 2px;
+  font-weight: 400;
 }
 
 .yt-creator-heart {
@@ -1579,12 +1575,26 @@ input, textarea, select { font-family: var(--font); }
 .yt-see-replies {
   display: flex;
   align-items: center;
-  gap: 6px;
+  gap: 4px;
   font-size: 14px;
-  font-weight: 500;
-  color: #065FD4;
-  padding: 8px 0 0 52px;
+  font-weight: 700;
+  color: #0F0F0F;
+  padding: 4px 0 0 52px;
+  margin-top: 2px;
   cursor: pointer;
+  position: relative;
+}
+
+.yt-see-replies::before {
+  content: '';
+  position: absolute;
+  left: 20px;
+  top: 0;
+  width: 14px;
+  height: 16px;
+  border-left: 1.5px solid #C9C9C9;
+  border-bottom: 1.5px solid #C9C9C9;
+  border-bottom-left-radius: 6px;
 }
 
 /* ============================================================
