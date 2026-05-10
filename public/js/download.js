@@ -53,5 +53,27 @@ async function copyToClipboard(el) {
   }
 }
 
+async function shareImage(el, platform = 'mockpost') {
+  const outerCard = document.getElementById('previewOuter');
+  if (outerCard) {
+    outerCard.classList.add('capturing');
+    await new Promise(r => setTimeout(r, 720));
+  }
+  try {
+    const canvas = await captureAsCanvas(el);
+    if (outerCard) outerCard.classList.remove('capturing');
+    const blob = await new Promise(r => canvas.toBlob(r, 'image/png'));
+    const file = new File([blob], `${platform}-mockpost.png`, { type: 'image/png' });
+    await navigator.share({ files: [file], title: 'MockPost' });
+    return 'shared';
+  } catch (err) {
+    if (outerCard) outerCard.classList.remove('capturing');
+    if (err.name === 'AbortError') return 'aborted';
+    console.error('Share error:', err);
+    return false;
+  }
+}
+
 window.downloadAsPng   = downloadAsPng;
 window.copyToClipboard = copyToClipboard;
+window.shareImage      = shareImage;

@@ -15,6 +15,7 @@ const previewOuter   = $('previewOuter');
 const previewContent = $('previewContent');
 const generateBtn    = $('generateBtn');
 const downloadBtn    = $('downloadPngBtn');
+const shareBtn       = $('shareImgBtn');
 const copyBtn        = $('copyImgBtn');
 const saveBtn        = $('saveHistoryBtn');
 const historyGrid    = $('historyGrid');
@@ -156,6 +157,7 @@ function generatePreview() {
   previewContent.innerHTML = generator(data);
   downloadBtn.disabled = false;
   copyBtn.disabled     = false;
+  if (canShare) shareBtn.disabled = false;
 }
 
 generateBtn.addEventListener('click', generatePreview);
@@ -211,6 +213,23 @@ downloadBtn.addEventListener('click', async () => {
       <path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4M7 10l5 5 5-5M12 15V3"/>
     </svg>
     Descargar PNG`;
+});
+
+/* ============================================================
+   SHARE (Web Share API — móvil)
+   ============================================================ */
+const canShare = !!(navigator.canShare &&
+  navigator.canShare({ files: [new File([''], 'test.png', { type: 'image/png' })] }));
+
+if (canShare) shareBtn.classList.remove('hidden');
+
+shareBtn.addEventListener('click', async () => {
+  shareBtn.disabled = true;
+  shareBtn.innerHTML = `<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/></svg> Preparando...`;
+  const result = await shareImage(getCaptureTarget(), currentPlatform);
+  if (result === false) showToast('❌ No se pudo compartir', 'error');
+  shareBtn.disabled = false;
+  shareBtn.innerHTML = `<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/></svg> Compartir`;
 });
 
 /* ============================================================
