@@ -117,7 +117,24 @@ input, textarea, select { font-family: var(--font); }
 }
 .nav-link:hover { color: var(--text-1); background: rgba(255,255,255,0.06); }
 
-.nav-actions { display: flex; gap: 8px; }
+.nav-actions { display: flex; align-items: center; gap: 8px; }
+
+.btn-nav-refresh {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  color: var(--text-3);
+  transition: color var(--transition), background var(--transition), transform 0.35s ease;
+  flex-shrink: 0;
+}
+.btn-nav-refresh:hover {
+  color: var(--text-1);
+  background: rgba(255,255,255,0.06);
+}
+.btn-nav-refresh:active { transform: rotate(180deg); }
 
 /* ============================================================
    BUTTONS
