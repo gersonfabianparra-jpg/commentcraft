@@ -153,6 +153,9 @@ function getFormData() {
     waGroupName: $('waGroupName')?.value.trim()|| 'Grupo',
     waDarkMode:  $('waDarkMode')?.checked      || false,
     waIsSent:          $('waIsSent')?.checked !== false,
+    ytPinned:          $('ytPinned')?.checked        || false,
+    ytCreatorHeart:    $('ytCreatorHeart')?.checked  || false,
+    ytReplies:         $('ytReplies')?.value.trim()  || '',
   };
 }
 
@@ -196,13 +199,13 @@ function liveUpdate() {
 }
 
 ['username', 'commentText', 'timestamp', 'likesCount',
- 'replyCount', 'igReplies', 'waTime', 'waGroupName',
+ 'replyCount', 'igReplies', 'waTime', 'waGroupName', 'ytReplies',
 ].forEach(id => {
   const el = $(id);
   if (el) el.addEventListener('input', liveUpdate);
 });
 
-['isVerified', 'fbReaction', 'waStatus', 'waIsGroup', 'waDarkMode', 'waIsSent'].forEach(id => {
+['isVerified', 'fbReaction', 'waStatus', 'waIsGroup', 'waDarkMode', 'waIsSent', 'ytPinned', 'ytCreatorHeart'].forEach(id => {
   const el = $(id);
   if (el) el.addEventListener('change', generatePreview);
 });
@@ -288,7 +291,7 @@ function renderHistory(items) {
       </div>`;
     return;
   }
-  const labels = { tiktok:'TikTok', facebook:'Facebook', instagram:'Instagram', whatsapp:'WhatsApp' };
+  const labels = { tiktok:'TikTok', facebook:'Facebook', instagram:'Instagram', whatsapp:'WhatsApp', youtube:'YouTube' };
   historyGrid.innerHTML = items.map(item => {
     const date = new Date(item.created_at).toLocaleDateString('es-ES', { day:'2-digit', month:'short', hour:'2-digit', minute:'2-digit' });
     return `

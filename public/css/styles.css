@@ -262,6 +262,7 @@ input, textarea, select { font-family: var(--font); }
 .facebook-badge  { background: rgba(24,119,242,0.15); border: 1px solid rgba(24,119,242,0.3); color: #4A9EF5; }
 .instagram-badge { background: rgba(228,64,95,0.15); border: 1px solid rgba(228,64,95,0.3); color: #F45B78; }
 .whatsapp-badge  { background: rgba(37,211,102,0.12); border: 1px solid rgba(37,211,102,0.3); color: #25D366; }
+.youtube-badge   { background: rgba(255,0,0,0.12);   border: 1px solid rgba(255,0,0,0.3);   color: #FF4444; }
 
 .btn-hero { padding: 14px 36px; font-size: 1.05rem; border-radius: var(--radius-lg); }
 
@@ -329,6 +330,7 @@ input, textarea, select { font-family: var(--font); }
 .tab-btn[data-platform="facebook"].active  { background: linear-gradient(135deg, #1877F2, #42A5F5); }
 .tab-btn[data-platform="instagram"].active { background: linear-gradient(135deg, #833AB4, #FD1D1D, #FCB045); }
 .tab-btn[data-platform="whatsapp"].active  { background: linear-gradient(135deg, #128C7E, #25D366); }
+.tab-btn[data-platform="youtube"].active   { background: linear-gradient(135deg, #CC0000, #FF4444); }
 
 /* ============================================================
    EDITOR GRID
@@ -990,6 +992,7 @@ input, textarea, select { font-family: var(--font); }
 .badge-facebook  { background: rgba(24,119,242,0.15); color: #4A9EF5; border: 1px solid rgba(24,119,242,0.2); }
 .badge-instagram { background: rgba(228,64,95,0.15); color: #F45B78; border: 1px solid rgba(228,64,95,0.2); }
 .badge-whatsapp  { background: rgba(37,211,102,0.12); color: #25D366; border: 1px solid rgba(37,211,102,0.2); }
+.badge-youtube   { background: rgba(255,0,0,0.12);   color: #FF4444; border: 1px solid rgba(255,0,0,0.2); }
 
 .history-username {
   font-size: 0.9rem;
@@ -1176,6 +1179,7 @@ input, textarea, select { font-family: var(--font); }
 .preview-card-outer[data-platform="facebook"]  { background: #F0F2F5; box-shadow: 0 8px 48px rgba(0,0,0,0.18); }
 .preview-card-outer[data-platform="instagram"] { background: #FFFFFF; box-shadow: 0 8px 48px rgba(0,0,0,0.15); }
 .preview-card-outer[data-platform="whatsapp"]  { background: #E5DDD5; box-shadow: 0 8px 48px rgba(0,0,0,0.2); }
+.preview-card-outer[data-platform="youtube"]   { background: #FFFFFF; box-shadow: 0 8px 48px rgba(0,0,0,0.12); }
 
 .preview-card {
   padding: 10px 12px;
@@ -1377,6 +1381,140 @@ input, textarea, select { font-family: var(--font); }
   padding: 6px 0 2px;
   letter-spacing: -0.02em;
   word-break: break-word;
+}
+
+/* ============================================================
+   YOUTUBE COMMENT PREVIEW
+   ============================================================ */
+.yt-wrapper {
+  background: #fff;
+  padding: 0;
+  font-family: 'Roboto', -apple-system, Arial, sans-serif;
+}
+
+.yt-pinned {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 12px;
+  font-weight: 500;
+  color: #606060;
+  margin-bottom: 10px;
+}
+
+.yt-comment {
+  display: flex;
+  gap: 12px;
+  align-items: flex-start;
+}
+
+.yt-avatar {
+  width: 40px; height: 40px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 16px;
+  font-weight: 700;
+  color: #fff;
+  flex-shrink: 0;
+}
+
+.yt-body { flex: 1; min-width: 0; }
+
+.yt-header {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  flex-wrap: wrap;
+  margin-bottom: 4px;
+  overflow: visible;
+}
+
+.yt-username {
+  font-size: 13px;
+  font-weight: 500;
+  color: #0F0F0F;
+}
+
+.yt-time {
+  font-size: 12px;
+  color: #606060;
+}
+
+.yt-text {
+  font-size: 14px;
+  color: #0F0F0F;
+  line-height: 1.5;
+  word-break: break-word;
+  margin-bottom: 8px;
+}
+
+.yt-actions {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.yt-like-group {
+  display: flex;
+  align-items: center;
+  gap: 2px;
+  margin-right: 4px;
+}
+
+.yt-action-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px; height: 32px;
+  border-radius: 50%;
+  border: none;
+  background: none;
+  color: #606060;
+  cursor: pointer;
+  padding: 0;
+}
+
+.yt-like-count {
+  font-size: 12px;
+  color: #606060;
+  margin: 0 4px 0 0;
+}
+
+.yt-reply-btn {
+  font-size: 13px;
+  font-weight: 500;
+  color: #606060;
+  background: none;
+  border: none;
+  padding: 6px 12px;
+  border-radius: 18px;
+  cursor: pointer;
+}
+
+.yt-creator-heart {
+  margin-left: auto;
+  width: 24px; height: 24px;
+  background: #FF0000;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 12px;
+  color: #fff;
+  font-style: normal;
+}
+
+.yt-see-replies {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 14px;
+  font-weight: 500;
+  color: #065FD4;
+  padding: 8px 0 0 52px;
+  cursor: pointer;
 }
 
 /* ============================================================
