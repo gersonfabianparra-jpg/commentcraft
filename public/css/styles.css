@@ -586,16 +586,15 @@ input, textarea, select { font-family: var(--font); }
   margin-bottom: 3px;
 }
 .tt-username {
-  font-size: 13.5px;
-  font-weight: 700;
-  color: #fff;
+  font-size: 13px;
+  font-weight: 400;
+  color: rgba(255,255,255,0.9);
   font-family: system-ui, sans-serif;
 }
 /* Badge verificado — ahora es SVG inline, no necesita clase CSS */
 .tt-time {
-  font-size: 12px;
+  font-size: 11px;
   color: rgba(255,255,255,0.4);
-  margin-left: 3px;
 }
 .tt-text {
   font-size: 14px;
@@ -613,20 +612,40 @@ input, textarea, select { font-family: var(--font); }
 .tt-reply {
   font-size: 12px;
   color: rgba(255,255,255,0.5);
-  font-weight: 600;
+  font-weight: 500;
 }
 .tt-replies {
   font-size: 12px;
   color: rgba(255,255,255,0.45);
 }
+.tt-see-replies {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding-left: 48px;
+  margin-top: 4px;
+  font-size: 13px;
+  font-weight: 500;
+  color: rgba(255,255,255,0.55);
+  font-family: system-ui, sans-serif;
+  cursor: pointer;
+}
+.tt-see-replies-dash {
+  color: rgba(255,255,255,0.25);
+  letter-spacing: -2px;
+  margin-right: 2px;
+}
 .tt-heart-btn {
   margin-left: auto;
   display: flex;
-  flex-direction: column;
+  flex-direction: row;
   align-items: center;
-  gap: 2px;
+  gap: 4px;
+  flex-shrink: 0;
+  align-self: flex-end;
+  padding-bottom: 2px;
 }
-.tt-heart-count { font-size: 10px; color: rgba(255,255,255,0.5); }
+.tt-heart-count { font-size: 12px; color: rgba(255,255,255,0.5); }
 .tt-divider { display: none; }
 
 /* ============================================================

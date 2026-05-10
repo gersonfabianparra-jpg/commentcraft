@@ -41,7 +41,7 @@ const Generators = {
   /* ── TikTok Comentario ────────────────────────────────── */
   tiktok({ username, avatarColor, avatarImg, commentText, likesCount, verified, timestamp, replyCount }) {
     const initial = (username || 'U').charAt(0).toUpperCase();
-    const user    = username ? `@${username}` : '@usuario';
+    const user    = username || 'usuario';
 
     return `
 <div class="tt-wrapper">
@@ -50,20 +50,25 @@ const Generators = {
     <div class="tt-body">
       <div class="tt-header">
         <span class="tt-username">${escHtml(user)}</span>
-        ${verified ? verifiedSVG('#20D5EC', '#000', 15) : ''}
-        <span class="tt-time">${escHtml(timestamp)}</span>
+        ${verified ? verifiedSVG('#20D5EC', '#000', 14) : ''}
       </div>
       <p class="tt-text">${escHtml(commentText)}</p>
       <div class="tt-actions">
+        ${timestamp ? `<span class="tt-time">${escHtml(timestamp)}</span>` : ''}
         <span class="tt-reply">Responder</span>
-        ${replyCount ? `<span class="tt-replies">${escHtml(replyCount)} respuestas</span>` : ''}
       </div>
     </div>
     <div class="tt-heart-btn">
-      <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="rgba(255,255,255,0.65)" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M20.84 4.61a5.5 5.5 0 00-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 00-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 000-7.78z"/></svg>
+      <svg viewBox="0 0 24 24" width="21" height="21" fill="none" stroke="rgba(255,255,255,0.7)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20.84 4.61a5.5 5.5 0 00-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 00-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 000-7.78z"/></svg>
       ${likesCount ? `<span class="tt-heart-count">${escHtml(likesCount)}</span>` : ''}
     </div>
   </div>
+  ${replyCount ? `
+  <div class="tt-see-replies">
+    <span class="tt-see-replies-dash">——</span>
+    Ver ${escHtml(replyCount)} respuestas
+    <svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="rgba(255,255,255,0.5)" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6,9 12,15 18,9"/></svg>
+  </div>` : ''}
 </div>`;
   },
 
