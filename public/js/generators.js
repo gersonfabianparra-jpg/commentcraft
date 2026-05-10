@@ -280,6 +280,210 @@ const Generators = {
   ${seeReplies}
 </div>`;
   },
+
+  /* ── Twitter / X ─────────────────────────────────────── */
+  twitter({ username, twitterHandle, avatarColor, avatarImg, commentText, likesCount, verified, timestamp, twitterReplies, twitterRetweets, twitterViews, twitterReplyTo }) {
+    const initial = (username || 'U').charAt(0).toUpperCase();
+    const handle  = twitterHandle || username.replace(/\s+/g, '').toLowerCase();
+
+    const verifiedBadge = verified
+      ? `<span style="display:inline-flex;align-items:center;flex-shrink:0;margin-left:2px;"><svg viewBox="0 0 22 22" width="18" height="18" style="display:block;"><path fill="#1D9BF0" d="M20.396 11c-.018-.646-.215-1.275-.57-1.816-.354-.54-.852-.972-1.438-1.246.223-.607.27-1.264.14-1.897-.131-.634-.437-1.218-.882-1.687-.47-.445-1.053-.75-1.687-.882-.633-.13-1.29-.083-1.897.14-.273-.587-.704-1.086-1.245-1.44S11.647 1.62 11 1.604c-.646.017-1.273.213-1.813.568s-.969.854-1.24 1.44c-.608-.223-1.267-.272-1.902-.14-.635.13-1.22.436-1.69.882-.445.47-.749 1.055-.878 1.688-.13.633-.08 1.29.144 1.896-.587.274-1.087.705-1.443 1.245-.356.54-.555 1.17-.574 1.817.02.647.218 1.276.574 1.817.356.54.856.972 1.443 1.245-.224.606-.274 1.263-.144 1.896.13.634.433 1.218.877 1.688.47.443 1.054.747 1.687.878.633.132 1.29.084 1.897-.136.274.586.705 1.084 1.246 1.439.54.354 1.17.551 1.816.569.647-.016 1.276-.213 1.817-.567s.972-.854 1.245-1.44c.604.239 1.266.296 1.903.164.636-.132 1.22-.447 1.68-.907.46-.46.776-1.044.908-1.681s.075-1.299-.165-1.903c.586-.274 1.084-.705 1.439-1.246.354-.54.551-1.17.569-1.816zM9.662 14.85l-3.429-3.428 1.293-1.302 2.072 2.072 4.4-4.794 1.347 1.246z"/></svg></span>`
+      : '';
+
+    const replyToHtml = twitterReplyTo
+      ? `<p class="tw-reply-to">Respondiendo a <span class="tw-reply-handle">@${escHtml(twitterReplyTo)}</span></p>`
+      : '';
+
+    return `
+<div class="tw-wrapper">
+  <div class="tw-left">${avatarEl(avatarImg, avatarColor, initial, 'tw-avatar')}</div>
+  <div class="tw-body">
+    <div class="tw-user-row">
+      <span class="tw-name">${escHtml(username || 'Usuario')}</span>${verifiedBadge}
+      <span class="tw-handle">@${escHtml(handle)}</span>
+      <span class="tw-sep">·</span>
+      <span class="tw-time">${escHtml(timestamp)}</span>
+      <span class="tw-more">···</span>
+    </div>
+    ${replyToHtml}
+    <p class="tw-text">${escHtml(commentText)}</p>
+    <div class="tw-actions">
+      <span class="tw-action tw-act-reply">
+        <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/></svg>
+        ${twitterReplies ? `<span>${escHtml(twitterReplies)}</span>` : ''}
+      </span>
+      <span class="tw-action tw-act-rt">
+        <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M17 1l4 4-4 4M3 11V9a4 4 0 014-4h14M7 23l-4-4 4-4M21 13v2a4 4 0 01-4 4H3"/></svg>
+        ${twitterRetweets ? `<span>${escHtml(twitterRetweets)}</span>` : ''}
+      </span>
+      <span class="tw-action tw-act-like">
+        <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M20.84 4.61a5.5 5.5 0 00-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 00-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 000-7.78z"/></svg>
+        ${likesCount && likesCount !== '0' ? `<span>${escHtml(likesCount)}</span>` : ''}
+      </span>
+      <span class="tw-action tw-act-views">
+        <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M8.75 21V3h2v18h-2zM18 21V8.5h2V21h-2zM4 21l.004-10h2L6 21H4zm9.248 0v-7h2v7h-2z"/></svg>
+        ${twitterViews ? `<span>${escHtml(twitterViews)}</span>` : ''}
+      </span>
+    </div>
+  </div>
+</div>`;
+  },
+
+  /* ── Threads ──────────────────────────────────────────── */
+  threads({ username, avatarColor, avatarImg, commentText, likesCount, verified, timestamp, threadsReplies }) {
+    const initial = (username || 'U').charAt(0).toUpperCase();
+    const verifiedBadge = verified
+      ? `<span style="display:inline-flex;align-items:center;flex-shrink:0;margin-left:2px;"><svg viewBox="0 0 16 16" width="14" height="14" style="display:block;"><circle cx="8" cy="8" r="8" fill="#000"/><polyline points="4,8 7,11 12,5" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" fill="none"/></svg></span>`
+      : '';
+    return `
+<div class="th-wrapper">
+  <div class="th-comment">
+    <div class="th-left">${avatarEl(avatarImg, avatarColor, initial, 'th-avatar')}</div>
+    <div class="th-body">
+      <div class="th-user-row">
+        <span class="th-username">${escHtml(username || 'usuario')}</span>${verifiedBadge}
+        <span class="th-time">${escHtml(timestamp)}</span>
+        <span class="th-more">···</span>
+      </div>
+      <p class="th-text">${escHtml(commentText)}</p>
+      <div class="th-actions">
+        <span class="th-action">
+          <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M20.84 4.61a5.5 5.5 0 00-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 00-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 000-7.78z"/></svg>
+        </span>
+        <span class="th-action">
+          <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/></svg>
+        </span>
+        <span class="th-action">
+          <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M17 1l4 4-4 4M3 11V9a4 4 0 014-4h14M7 23l-4-4 4-4M21 13v2a4 4 0 01-4 4H3"/></svg>
+        </span>
+        <span class="th-action">
+          <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M4 12v8a2 2 0 002 2h12a2 2 0 002-2v-8M16 6l-4-4-4 4M12 2v13"/></svg>
+        </span>
+      </div>
+      ${likesCount && likesCount !== '0' ? `<p class="th-like-count">${escHtml(likesCount)} Me gusta</p>` : ''}
+      ${threadsReplies ? `<p class="th-replies-count">${escHtml(threadsReplies)}</p>` : ''}
+    </div>
+  </div>
+</div>`;
+  },
+
+  /* ── LinkedIn ─────────────────────────────────────────── */
+  linkedin({ username, avatarColor, avatarImg, commentText, likesCount, verified, timestamp, linkedinTitle, linkedinDegree, linkedinReaction }) {
+    const initial = (username || 'U').charAt(0).toUpperCase();
+    const reactionMap = {
+      like:       { emoji: '👍', label: 'Me gusta' },
+      celebrate:  { emoji: '🎉', label: 'Celebrar' },
+      support:    { emoji: '💚', label: 'Apoyo' },
+      love:       { emoji: '❤️', label: 'Me encanta' },
+      insightful: { emoji: '💡', label: 'Interesante' },
+      curious:    { emoji: '🤔', label: 'Curioso' },
+    };
+    const reaction = reactionMap[linkedinReaction] || reactionMap.like;
+    return `
+<div class="li-wrapper">
+  <div class="li-comment">
+    ${avatarEl(avatarImg, avatarColor, initial, 'li-avatar')}
+    <div class="li-right">
+      <div class="li-bubble">
+        <div class="li-name-row">
+          <span class="li-name">${escHtml(username || 'Usuario')}</span>
+          ${verified ? verifiedSVG('#0A66C2', '#fff', 13) : ''}
+          ${linkedinDegree ? `<span class="li-degree">${escHtml(linkedinDegree)}</span>` : ''}
+        </div>
+        ${linkedinTitle ? `<p class="li-title">${escHtml(linkedinTitle)}</p>` : ''}
+        <p class="li-text">${escHtml(commentText)}</p>
+      </div>
+      <div class="li-footer">
+        <span class="li-time">${escHtml(timestamp)}</span>
+        <span class="li-react-btn">${reaction.emoji} ${reaction.label}</span>
+        <span class="li-sep">·</span>
+        <span class="li-reply-btn">Responder</span>
+      </div>
+      ${likesCount && likesCount !== '0' ? `<div class="li-reactions"><span>👍</span><span class="li-react-count">${escHtml(likesCount)}</span></div>` : ''}
+    </div>
+  </div>
+</div>`;
+  },
+
+  /* ── Reddit ──────────────────────────────────────────── */
+  reddit({ username, avatarColor, commentText, timestamp, redditSub, redditVotes, redditAwards, redditReplies, redditIsOp }) {
+    const user = username || 'usuario';
+    const sub  = redditSub  || 'AskReddit';
+
+    /* Awards row */
+    let awardsHtml = '';
+    const numAwards = parseInt(redditAwards, 10) || 0;
+    if (numAwards > 0) {
+      const types = [
+        { cls: 'rd-award-gold',   label: '🏅', name: 'Oro' },
+        { cls: 'rd-award-silver', label: '🥈', name: 'Plata' },
+        { cls: 'rd-award-bronze', label: '🥉', name: 'Bronce' },
+      ];
+      const shown = [];
+      for (let i = 0; i < Math.min(numAwards, 3); i++) {
+        const t = types[i];
+        shown.push(`<span class="rd-award">
+          <span class="rd-award-icon ${t.cls}">${t.label}</span>
+        </span>`);
+      }
+      if (numAwards > 3) {
+        shown.push(`<span class="rd-award" style="color:#818384;font-size:0.75rem;">+${numAwards - 3}</span>`);
+      }
+      awardsHtml = `<div class="rd-awards">${shown.join('')}</div>`;
+    }
+
+    const opBadge = redditIsOp ? `<span class="rd-op-badge">OP</span>` : '';
+
+    const repliesAction = redditReplies
+      ? `<span class="rd-action">
+           <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/></svg>
+           ${escHtml(redditReplies)} respuestas
+         </span>`
+      : `<span class="rd-action">
+           <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/></svg>
+           Responder
+         </span>`;
+
+    return `
+<div class="rd-wrapper">
+  <div class="rd-header">
+    <span class="rd-sub">r/${escHtml(sub)}</span>
+    <span class="rd-sub-sep">·</span>
+    <span class="rd-user">u/${escHtml(user)}</span>
+    <span class="rd-sub-sep">·</span>
+    <span class="rd-time">${escHtml(timestamp)}</span>
+  </div>
+  <div class="rd-comment">
+    <div class="rd-vote">
+      <span class="rd-vote-up">
+        <svg viewBox="0 0 24 24" width="18" height="18" fill="currentColor"><path d="M12 4l8 8H4z"/></svg>
+      </span>
+      <span class="rd-vote-count">${escHtml(redditVotes || '•')}</span>
+      <span class="rd-vote-down">
+        <svg viewBox="0 0 24 24" width="18" height="18" fill="currentColor"><path d="M12 20l-8-8h16z"/></svg>
+      </span>
+    </div>
+    <div class="rd-body">
+      <div class="rd-user-row">
+        <span class="rd-username">u/${escHtml(user)}</span>
+        ${opBadge}
+        <span class="rd-timestamp">${escHtml(timestamp)}</span>
+      </div>
+      <p class="rd-text">${escHtml(commentText)}</p>
+      ${awardsHtml}
+      <div class="rd-actions">
+        ${repliesAction}
+        <span class="rd-action">
+          <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/></svg>
+          Compartir
+        </span>
+        <span class="rd-action">···</span>
+      </div>
+    </div>
+  </div>
+</div>`;
+  },
+
 };
 
 window.Generators = Generators;

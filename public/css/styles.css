@@ -297,6 +297,10 @@ input, textarea, select { font-family: var(--font); }
 .instagram-badge { background: rgba(228,64,95,0.15); border: 1px solid rgba(228,64,95,0.3); color: #F45B78; }
 .whatsapp-badge  { background: rgba(37,211,102,0.12); border: 1px solid rgba(37,211,102,0.3); color: #25D366; }
 .youtube-badge   { background: rgba(255,0,0,0.12);   border: 1px solid rgba(255,0,0,0.3);   color: #FF4444; }
+.twitter-badge   { background: rgba(255,255,255,0.08); border: 1px solid #333; color: #fff; }
+.threads-badge   { background: rgba(255,255,255,0.06); border: 1px solid #444; color: #aaa; }
+.linkedin-badge  { background: rgba(10,102,194,0.15); border: 1px solid rgba(10,102,194,0.3); color: #4A9EF5; }
+.reddit-badge    { background: rgba(255,69,0,0.12); border: 1px solid rgba(255,69,0,0.3); color: #FF6534; }
 
 .btn-hero { padding: 14px 36px; font-size: 1.05rem; border-radius: var(--radius-lg); }
 
@@ -365,6 +369,10 @@ input, textarea, select { font-family: var(--font); }
 .tab-btn[data-platform="instagram"].active { background: linear-gradient(135deg, #833AB4, #FD1D1D, #FCB045); }
 .tab-btn[data-platform="whatsapp"].active  { background: linear-gradient(135deg, #128C7E, #25D366); }
 .tab-btn[data-platform="youtube"].active   { background: linear-gradient(135deg, #CC0000, #FF4444); }
+.tab-btn[data-platform="twitter"].active   { background: linear-gradient(135deg, #000000, #14171A); box-shadow: 0 4px 16px rgba(0,0,0,0.5); }
+.tab-btn[data-platform="threads"].active   { background: linear-gradient(135deg, #101010, #383838); box-shadow: 0 4px 16px rgba(0,0,0,0.5); }
+.tab-btn[data-platform="linkedin"].active  { background: linear-gradient(135deg, #0A66C2, #0077B5); box-shadow: 0 4px 16px rgba(10,102,194,0.4); }
+.tab-btn[data-platform="reddit"].active    { background: linear-gradient(135deg, #FF4500, #FF6534); box-shadow: 0 4px 16px rgba(255,69,0,0.4); }
 
 /* ============================================================
    EDITOR GRID
@@ -1116,6 +1124,10 @@ input, textarea, select { font-family: var(--font); }
 .badge-instagram { background: rgba(228,64,95,0.15); color: #F45B78; border: 1px solid rgba(228,64,95,0.2); }
 .badge-whatsapp  { background: rgba(37,211,102,0.12); color: #25D366; border: 1px solid rgba(37,211,102,0.2); }
 .badge-youtube   { background: rgba(255,0,0,0.12);   color: #FF4444; border: 1px solid rgba(255,0,0,0.2); }
+.badge-twitter   { background: rgba(0,0,0,0.6); color: #fff; border: 1px solid #333; }
+.badge-threads   { background: rgba(255,255,255,0.08); color: #aaa; border: 1px solid #444; }
+.badge-linkedin  { background: rgba(10,102,194,0.15); color: #4A9EF5; border: 1px solid rgba(10,102,194,0.2); }
+.badge-reddit    { background: rgba(255,69,0,0.12); color: #FF6534; border: 1px solid rgba(255,69,0,0.2); }
 
 .history-username {
   font-size: 0.9rem;
@@ -1386,6 +1398,10 @@ input, textarea, select { font-family: var(--font); }
 .preview-card-outer[data-platform="instagram"] { background: #FFFFFF; box-shadow: 0 8px 48px rgba(0,0,0,0.15); }
 .preview-card-outer[data-platform="whatsapp"]  { background: #E5DDD5; box-shadow: 0 8px 48px rgba(0,0,0,0.2); }
 .preview-card-outer[data-platform="youtube"]   { background: #FFFFFF; box-shadow: 0 8px 48px rgba(0,0,0,0.12); }
+.preview-card-outer[data-platform="twitter"]   { background: #000000; box-shadow: 0 8px 48px rgba(0,0,0,0.55); }
+.preview-card-outer[data-platform="threads"]   { background: #FFFFFF; box-shadow: 0 8px 48px rgba(0,0,0,0.15); }
+.preview-card-outer[data-platform="linkedin"]  { background: #F3F2EF; box-shadow: 0 8px 48px rgba(0,0,0,0.18); }
+.preview-card-outer[data-platform="reddit"]    { background: #1A1A1B; box-shadow: 0 8px 48px rgba(0,0,0,0.55); }
 
 .preview-card {
   padding: 10px 12px;
@@ -1396,10 +1412,14 @@ input, textarea, select { font-family: var(--font); }
   min-height: 100px;
   padding: 24px 16px;
 }
-.preview-card-outer[data-platform="tiktok"]    .preview-placeholder { color: rgba(255,255,255,0.3); }
+.preview-card-outer[data-platform="tiktok"]   .preview-placeholder { color: rgba(255,255,255,0.3); }
+.preview-card-outer[data-platform="twitter"]  .preview-placeholder { color: rgba(255,255,255,0.3); }
+.preview-card-outer[data-platform="reddit"]   .preview-placeholder { color: rgba(255,255,255,0.3); }
+.preview-card-outer[data-platform="threads"]  .preview-placeholder { color: rgba(0,0,0,0.28); }
 .preview-card-outer[data-platform="facebook"]  .preview-placeholder,
 .preview-card-outer[data-platform="instagram"] .preview-placeholder,
-.preview-card-outer[data-platform="whatsapp"]  .preview-placeholder { color: rgba(0,0,0,0.28); }
+.preview-card-outer[data-platform="whatsapp"]  .preview-placeholder,
+.preview-card-outer[data-platform="linkedin"]  .preview-placeholder { color: rgba(0,0,0,0.28); }
 
 /* Smooth entrance for generated comments */
 .preview-card > * {
@@ -1908,4 +1928,221 @@ input, textarea, select { font-family: var(--font); }
    ============================================================ */
 .tt-header   { overflow: visible; }
 .fb-username { overflow: visible; }
+
+/* ============================================================
+   TWITTER / X
+   ============================================================ */
+.tw-wrapper {
+  background: #000;
+  padding: 16px;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  display: flex;
+  gap: 12px;
+}
+.tw-left { flex-shrink: 0; }
+.tw-avatar {
+  width: 40px; height: 40px;
+  border-radius: 50%;
+  font-size: 16px; font-weight: 700; color: #fff;
+  display: flex; align-items: center; justify-content: center;
+  flex-shrink: 0;
+}
+.tw-body { flex: 1; min-width: 0; }
+.tw-user-row {
+  display: flex; align-items: center; gap: 4px;
+  flex-wrap: wrap; margin-bottom: 2px; overflow: visible;
+}
+.tw-name { color: #fff; font-weight: 700; font-size: 0.95rem; }
+.tw-handle { color: #71767B; font-size: 0.85rem; }
+.tw-sep { color: #71767B; font-size: 0.85rem; }
+.tw-time { color: #71767B; font-size: 0.85rem; }
+.tw-more { color: #71767B; margin-left: auto; font-size: 1.2rem; line-height: 1; }
+.tw-reply-to { color: #71767B; font-size: 0.85rem; margin-bottom: 4px; }
+.tw-reply-handle { color: #1D9BF0; }
+.tw-text {
+  color: #E7E9EA; font-size: 0.97rem;
+  line-height: 1.5; margin: 4px 0 10px;
+  word-break: break-word;
+}
+.tw-actions {
+  display: flex; gap: 18px; margin-top: 2px;
+}
+.tw-action {
+  display: inline-flex; align-items: center; gap: 6px;
+  color: #71767B; font-size: 0.82rem; cursor: pointer;
+  transition: color 0.15s;
+}
+.tw-act-reply:hover  { color: #1D9BF0; }
+.tw-act-rt:hover     { color: #00BA7C; }
+.tw-act-like:hover   { color: #F91880; }
+.tw-act-views:hover  { color: #1D9BF0; }
+
+/* ============================================================
+   THREADS
+   ============================================================ */
+.th-wrapper {
+  background: #fff;
+  padding: 14px 16px;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+}
+.th-comment { display: flex; gap: 10px; align-items: flex-start; }
+.th-left { flex-shrink: 0; }
+.th-avatar {
+  width: 36px; height: 36px;
+  border-radius: 50%;
+  font-size: 14px; font-weight: 700; color: #fff;
+  display: flex; align-items: center; justify-content: center;
+}
+.th-body { flex: 1; min-width: 0; }
+.th-user-row {
+  display: flex; align-items: center; gap: 4px;
+  margin-bottom: 4px; overflow: visible;
+}
+.th-username { font-weight: 700; font-size: 0.9rem; color: #000; }
+.th-time { color: #999; font-size: 0.8rem; margin-left: 4px; }
+.th-more { color: #999; margin-left: auto; font-size: 1rem; cursor: pointer; }
+.th-text {
+  color: #000; font-size: 0.9rem;
+  line-height: 1.4; margin-bottom: 10px;
+  word-break: break-word;
+}
+.th-actions { display: flex; gap: 14px; margin-bottom: 6px; }
+.th-action { color: #666; cursor: pointer; display: inline-flex; align-items: center; }
+.th-action:hover { color: #000; }
+.th-like-count { color: #999; font-size: 0.8rem; margin-top: 2px; }
+.th-replies-count { color: #999; font-size: 0.8rem; margin-top: 1px; }
+
+/* ============================================================
+   LINKEDIN
+   ============================================================ */
+.li-wrapper {
+  background: #fff;
+  padding: 14px 16px;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Arial, sans-serif;
+}
+.li-comment { display: flex; gap: 10px; }
+.li-avatar {
+  width: 38px; height: 38px;
+  border-radius: 50%;
+  font-size: 15px; font-weight: 700; color: #fff;
+  display: flex; align-items: center; justify-content: center;
+  flex-shrink: 0;
+}
+.li-right { flex: 1; min-width: 0; }
+.li-bubble {
+  background: #F3F2EF;
+  border-radius: 0 12px 12px 12px;
+  padding: 10px 14px;
+}
+.li-name-row {
+  display: flex; align-items: center; gap: 5px;
+  margin-bottom: 1px; overflow: visible;
+}
+.li-name { font-weight: 700; font-size: 0.9rem; color: rgba(0,0,0,0.9); }
+.li-degree {
+  background: rgba(0,0,0,0.08); color: rgba(0,0,0,0.5);
+  border-radius: 3px; font-size: 0.7rem; font-weight: 600;
+  padding: 1px 5px;
+}
+.li-title { color: rgba(0,0,0,0.55); font-size: 0.78rem; margin-bottom: 5px; }
+.li-text {
+  color: rgba(0,0,0,0.9); font-size: 0.9rem;
+  line-height: 1.45; word-break: break-word;
+}
+.li-footer {
+  display: flex; align-items: center; gap: 8px;
+  margin-top: 6px; font-size: 0.8rem;
+}
+.li-time { color: rgba(0,0,0,0.5); }
+.li-react-btn { color: rgba(0,0,0,0.6); font-weight: 600; cursor: pointer; }
+.li-react-btn:hover { color: rgba(0,0,0,0.9); }
+.li-sep { color: rgba(0,0,0,0.3); }
+.li-reply-btn { color: rgba(0,0,0,0.6); font-weight: 600; cursor: pointer; }
+.li-reply-btn:hover { color: rgba(0,0,0,0.9); }
+.li-reactions {
+  display: flex; align-items: center; gap: 4px;
+  margin-top: 5px; font-size: 0.78rem;
+}
+.li-react-count { color: rgba(0,0,0,0.55); }
+
+/* ============================================================
+   REDDIT (dark mode)
+   ============================================================ */
+.rd-wrapper {
+  background: #1A1A1B;
+  padding: 12px 16px;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+}
+.rd-header {
+  display: flex; align-items: center; gap: 6px;
+  margin-bottom: 10px; font-size: 0.78rem;
+}
+.rd-sub { color: #D7DADC; font-weight: 700; }
+.rd-sub-sep { color: #818384; }
+.rd-user { color: #818384; }
+.rd-time { color: #818384; }
+.rd-comment {
+  display: flex; gap: 10px; align-items: flex-start;
+}
+.rd-vote {
+  display: flex; flex-direction: column;
+  align-items: center; gap: 4px;
+  flex-shrink: 0;
+}
+.rd-vote-up, .rd-vote-down {
+  width: 24px; height: 24px;
+  display: flex; align-items: center; justify-content: center;
+  border-radius: 2px; cursor: pointer; color: #818384;
+  transition: color 0.15s;
+}
+.rd-vote-up:hover   { color: #FF4500; }
+.rd-vote-down:hover { color: #7193FF; }
+.rd-vote-count {
+  font-size: 0.78rem; font-weight: 700;
+  color: #D7DADC; line-height: 1;
+}
+.rd-body { flex: 1; min-width: 0; }
+.rd-user-row {
+  display: flex; align-items: center; gap: 6px;
+  margin-bottom: 6px; font-size: 0.8rem;
+}
+.rd-username { color: #D7DADC; font-weight: 700; }
+.rd-op-badge {
+  background: #FF4500; color: #fff;
+  font-size: 0.65rem; font-weight: 700;
+  padding: 1px 5px; border-radius: 2px;
+}
+.rd-timestamp { color: #818384; }
+.rd-text {
+  color: #D7DADC; font-size: 0.9rem;
+  line-height: 1.55; word-break: break-word;
+  margin-bottom: 10px;
+}
+.rd-awards {
+  display: flex; align-items: center; gap: 5px;
+  margin-bottom: 8px; flex-wrap: wrap;
+}
+.rd-award {
+  display: inline-flex; align-items: center; gap: 3px;
+  font-size: 0.75rem; color: #818384;
+}
+.rd-award-icon {
+  width: 16px; height: 16px;
+  border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 10px; font-weight: 700;
+}
+.rd-award-gold   { background: #FFD700; color: #000; }
+.rd-award-silver { background: #C0C0C0; color: #000; }
+.rd-award-bronze { background: #CD7F32; color: #fff; }
+.rd-actions {
+  display: flex; align-items: center; gap: 4px;
+}
+.rd-action {
+  display: inline-flex; align-items: center; gap: 5px;
+  color: #818384; font-size: 0.78rem; font-weight: 700;
+  padding: 5px 8px; border-radius: 2px;
+  cursor: pointer; transition: background 0.15s, color 0.15s;
+}
+.rd-action:hover { background: rgba(255,255,255,0.06); color: #D7DADC; }
 .ig-user-row { overflow: visible; }

@@ -128,6 +128,20 @@ function getFormData() {
     ytPinned:          $('ytPinned')?.checked        || false,
     ytCreatorHeart:    $('ytCreatorHeart')?.checked  || false,
     ytReplies:         $('ytReplies')?.value.trim()  || '',
+    twitterHandle:     $('twitterHandle')?.value.trim()   || '',
+    twitterReplyTo:    $('twitterReplyTo')?.value.trim()  || '',
+    twitterReplies:    $('twitterReplies')?.value.trim()  || '',
+    twitterRetweets:   $('twitterRetweets')?.value.trim() || '',
+    twitterViews:      $('twitterViews')?.value.trim()    || '',
+    threadsReplies:    $('threadsReplies')?.value.trim()  || '',
+    linkedinTitle:     $('linkedinTitle')?.value.trim()   || '',
+    linkedinDegree:    $('linkedinDegree')?.value         || '1st',
+    linkedinReaction:  $('linkedinReaction')?.value       || 'like',
+    redditSub:         $('redditSub')?.value.trim()       || 'AskReddit',
+    redditVotes:       $('redditVotes')?.value.trim()     || '1K',
+    redditAwards:      $('redditAwards')?.value.trim()    || '',
+    redditReplies:     $('redditReplies')?.value.trim()   || '',
+    redditIsOp:        $('redditIsOp')?.checked           || false,
   };
 }
 
@@ -173,12 +187,17 @@ function liveUpdate() {
 
 ['username', 'commentText', 'timestamp', 'likesCount',
  'replyCount', 'fbReplies', 'igReplies', 'waTime', 'ytReplies',
+ 'twitterHandle', 'twitterReplyTo', 'twitterReplies', 'twitterRetweets', 'twitterViews',
+ 'threadsReplies', 'linkedinTitle',
+ 'redditSub', 'redditVotes', 'redditAwards', 'redditReplies',
 ].forEach(id => {
   const el = $(id);
   if (el) el.addEventListener('input', liveUpdate);
 });
 
-['isVerified', 'fbReaction', 'waIsGroup', 'ytPinned', 'ytCreatorHeart', 'igStoryRing'].forEach(id => {
+['isVerified', 'fbReaction', 'waIsGroup', 'ytPinned', 'ytCreatorHeart', 'igStoryRing',
+ 'linkedinDegree', 'linkedinReaction', 'redditIsOp',
+].forEach(id => {
   const el = $(id);
   if (el) el.addEventListener('change', generatePreview);
 });
@@ -285,6 +304,10 @@ const PLATFORM_BG = {
   instagram: '#FFFFFF',
   whatsapp:  '#E5DDD5',
   youtube:   '#FFFFFF',
+  twitter:   '#000000',
+  threads:   '#FFFFFF',
+  linkedin:  '#F3F2EF',
+  reddit:    '#1A1A1B',
 };
 
 async function reDownloadFromHistory(item, btn) {
@@ -335,7 +358,7 @@ function renderHistory(items) {
       </div>`;
     return;
   }
-  const labels = { tiktok:'TikTok', facebook:'Facebook', instagram:'Instagram', whatsapp:'WhatsApp', youtube:'YouTube' };
+  const labels = { tiktok:'TikTok', facebook:'Facebook', instagram:'Instagram', whatsapp:'WhatsApp', youtube:'YouTube', twitter:'Twitter', threads:'Threads', linkedin:'LinkedIn', reddit:'Reddit' };
   historyGrid.innerHTML = items.map(item => {
     const date = new Date(item.created_at).toLocaleDateString('es-ES', { day:'2-digit', month:'short', hour:'2-digit', minute:'2-digit' });
     const dlBtn = item.formData
