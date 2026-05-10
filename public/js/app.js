@@ -125,7 +125,7 @@ function getFormData() {
     waStatus:    $('waStatus')?.value          || 'read',
     waIsGroup:   $('waIsGroup')?.checked       || false,
     waDarkMode:  $('waDarkMode')?.checked      || false,
-    waIsSent:          $('waIsSent')?.checked !== false,
+    waIsSent:          $('waIsSent')?.checked      || false,
     ytPinned:          $('ytPinned')?.checked        || false,
     ytCreatorHeart:    $('ytCreatorHeart')?.checked  || false,
     ytReplies:         $('ytReplies')?.value.trim()  || '',
