@@ -25,6 +25,8 @@
        crossorigin="anonymous"></script>
 
   <link rel="icon" type="image/svg+xml" href="assets/logo.svg" />
+  <link rel="apple-touch-icon" href="assets/logo.svg" />
+  <link rel="manifest" href="manifest.json" />
   <link rel="stylesheet" href="css/styles.css" />
 </head>
 <body>
@@ -414,6 +416,27 @@
 
 <!-- ===== TOAST ===== -->
 <div class="toast" id="toast" role="alert" aria-live="assertive"></div>
+
+<!-- ===== PWA INSTALL BANNER ===== -->
+<div class="pwa-banner" id="pwaBanner">
+  <div class="pwa-banner-icon">
+    <img src="assets/logo.svg" width="40" height="40" alt="MockPost" />
+  </div>
+  <div class="pwa-banner-body">
+    <p class="pwa-banner-title">Instala MockPost</p>
+    <!-- iOS instructions -->
+    <p class="pwa-banner-sub ios-hint">
+      Toca
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" style="display:inline-block;vertical-align:middle;margin:0 2px"><path d="M4 12v8a2 2 0 002 2h12a2 2 0 002-2v-8M16 6l-4-4-4 4M12 2v13"/></svg>
+      y luego <strong>"Añadir a pantalla de inicio"</strong>
+    </p>
+    <!-- Android button -->
+    <button class="pwa-install-btn android-hint" id="pwaInstallBtn">
+      ＋ Instalar app
+    </button>
+  </div>
+  <button class="pwa-banner-close" id="pwaBannerClose" aria-label="Cerrar">✕</button>
+</div>
 
 <!-- ===== SCRIPTS ===== -->
 <script src="https://html2canvas.hertzen.com/dist/html2canvas.min.js"></script>

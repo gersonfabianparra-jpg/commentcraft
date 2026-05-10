@@ -392,3 +392,55 @@ function init() {
 }
 
 document.addEventListener('DOMContentLoaded', init);
+
+/* ============================================================
+   PWA INSTALL BANNER
+   ============================================================ */
+(function () {
+  const banner     = $('pwaBanner');
+  const closeBtn   = $('pwaBannerClose');
+  const installBtn = $('pwaInstallBtn');
+  if (!banner) return;
+
+  const isIOS        = /iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream;
+  const isStandalone = window.navigator.standalone || window.matchMedia('(display-mode: standalone)').matches;
+  const dismissed    = localStorage.getItem('pwa_banner_dismissed');
+
+  if (isStandalone || dismissed) return;
+
+  let deferredPrompt = null;
+
+  /* Android / Chrome — captura el evento de instalación nativa */
+  window.addEventListener('beforeinstallprompt', e => {
+    e.preventDefault();
+    deferredPrompt = e;
+    document.querySelector('.android-hint').style.display = 'inline-flex';
+    showBanner();
+  });
+
+  /* iOS Safari — muestra instrucciones manuales */
+  if (isIOS) {
+    document.querySelector('.ios-hint').style.display = 'block';
+    setTimeout(showBanner, 3000);
+  }
+
+  function showBanner() {
+    banner.classList.add('show');
+  }
+
+  closeBtn.addEventListener('click', () => {
+    banner.classList.remove('show');
+    localStorage.setItem('pwa_banner_dismissed', '1');
+  });
+
+  installBtn.addEventListener('click', async () => {
+    if (!deferredPrompt) return;
+    deferredPrompt.prompt();
+    const { outcome } = await deferredPrompt.userChoice;
+    if (outcome === 'accepted') {
+      banner.classList.remove('show');
+      localStorage.setItem('pwa_banner_dismissed', '1');
+    }
+    deferredPrompt = null;
+  });
+})();
