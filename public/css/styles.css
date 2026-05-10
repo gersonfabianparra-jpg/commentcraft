@@ -1187,6 +1187,7 @@ input, textarea, select { font-family: var(--font); }
 
 /* ── Móvil ─────────────────────────────────────────────── */
 @media (max-width: 600px) {
+  .history-section { display: none; }
   /* Hero */
   .hero { padding: 36px 0 24px; }
   .hero-title    { font-size: 1.75rem; letter-spacing: -0.02em; }
