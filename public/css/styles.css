@@ -1189,8 +1189,15 @@ input, textarea, select { font-family: var(--font); }
 @media (max-width: 600px) {
   /* Ocultar solo lo que no aporta en móvil */
   .ad-container    { display: none; }
-  .history-section { display: none; }
   #clearHistoryBtn { display: none; }
+
+  /* ── Historial compacto ── */
+  .history-section { padding: 20px 0 32px; }
+  .history-header { margin-bottom: 14px; }
+  .history-header .section-title { font-size: 1.1rem; }
+  .history-grid { grid-template-columns: 1fr; gap: 10px; }
+  .history-card { padding: 12px; }
+  .history-empty { padding: 28px 16px; font-size: 0.82rem; }
 
   /* ── Hero compacto ── */
   .hero { padding: 20px 0 16px; }
