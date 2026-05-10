@@ -127,7 +127,7 @@ const Generators = {
     ${avatarEl(avatarImg, avatarColor, initial, 'fb-avatar')}
     <div class="fb-right">
       <div class="fb-bubble">
-        <span class="fb-username">${escHtml(username || 'Usuario')}${verified ? verifiedSVG('#1877F2', '#fff', 14) : ''}</span>
+        <div class="fb-username">${escHtml(username || 'Usuario')}${verified ? verifiedSVG('#1877F2', '#fff', 14) : ''}</div>
         <p class="fb-text">${escHtml(commentText)}</p>
       </div>
       <div class="fb-actions">
