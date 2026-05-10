@@ -586,20 +586,20 @@ input, textarea, select { font-family: var(--font); }
   margin-bottom: 3px;
 }
 .tt-username {
-  font-size: 13px;
-  font-weight: 600;
-  color: rgba(255,255,255,0.9);
+  font-size: 13.5px;
+  font-weight: 700;
+  color: #fff;
   font-family: system-ui, sans-serif;
 }
 /* Badge verificado — ahora es SVG inline, no necesita clase CSS */
 .tt-time {
-  font-size: 11px;
-  color: rgba(255,255,255,0.45);
-  margin-left: 2px;
+  font-size: 12px;
+  color: rgba(255,255,255,0.4);
+  margin-left: 3px;
 }
 .tt-text {
-  font-size: 13px;
-  color: rgba(255,255,255,0.87);
+  font-size: 14px;
+  color: rgba(255,255,255,0.92);
   line-height: 1.5;
   word-break: break-word;
   margin-bottom: 6px;
@@ -612,12 +612,12 @@ input, textarea, select { font-family: var(--font); }
 }
 .tt-reply {
   font-size: 12px;
-  color: rgba(255,255,255,0.45);
-  font-weight: 500;
+  color: rgba(255,255,255,0.5);
+  font-weight: 600;
 }
 .tt-replies {
   font-size: 12px;
-  color: rgba(255,255,255,0.4);
+  color: rgba(255,255,255,0.45);
 }
 .tt-heart-btn {
   margin-left: auto;
@@ -654,8 +654,8 @@ input, textarea, select { font-family: var(--font); }
 
 .fb-bubble {
   background: #F0F2F5;
-  border-radius: 18px;
-  padding: 8px 12px 9px;
+  border-radius: 20px;
+  padding: 8px 12px 10px;
   display: inline-block;
   max-width: 100%;
 }
@@ -664,7 +664,7 @@ input, textarea, select { font-family: var(--font); }
   align-items: center;
   gap: 3px;
   font-size: 13px;
-  font-weight: 700;
+  font-weight: 600;
   color: #050505;
   line-height: 1.3;
   margin-bottom: 1px;
@@ -706,13 +706,13 @@ input, textarea, select { font-family: var(--font); }
   padding-left: 8px;
 }
 .fb-react-circle {
-  width: 18px; height: 18px;
+  width: 16px; height: 16px;
   border-radius: 50%;
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  font-size: 11px;
-  border: 1.5px solid #fff;
+  font-size: 10px;
+  border: 1px solid #fff;
   box-shadow: 0 1px 3px rgba(0,0,0,0.2);
   line-height: 1;
 }
@@ -757,7 +757,7 @@ input, textarea, select { font-family: var(--font); }
 }
 .ig-content { flex: 1; min-width: 0; }
 .ig-comment-text {
-  font-size: 13.5px;
+  font-size: 14px;
   color: #262626;
   line-height: 1.45;
   word-break: break-word;
@@ -770,12 +770,12 @@ input, textarea, select { font-family: var(--font); }
 .ig-meta {
   display: flex;
   align-items: center;
-  gap: 12px;
-  margin-top: 4px;
+  gap: 16px;
+  margin-top: 5px;
 }
-.ig-time { font-size: 11.5px; color: #8E8E8E; }
-.ig-likes-count { font-size: 11.5px; font-weight: 600; color: #262626; }
-.ig-reply-btn { font-size: 11.5px; font-weight: 600; color: #8E8E8E; }
+.ig-time { font-size: 11px; color: #8E8E8E; }
+.ig-likes-count { font-size: 11px; font-weight: 600; color: #262626; }
+.ig-reply-btn { font-size: 11px; font-weight: 600; color: #8E8E8E; }
 .ig-heart {
   margin-left: auto;
   display: flex;
@@ -837,9 +837,9 @@ input, textarea, select { font-family: var(--font); }
 .wa-bubble-container.received-side { align-items: flex-start; }
 
 .wa-message {
-  max-width: 75%;
-  min-width: 120px;
-  border-radius: 8px;
+  max-width: 78%;
+  min-width: 80px;
+  border-radius: 10px;
   padding: 6px 9px 8px;
   position: relative;
   font-family: -apple-system, 'Helvetica Neue', Arial, sans-serif;
@@ -898,8 +898,8 @@ input, textarea, select { font-family: var(--font); }
   margin-top: 2px;
 }
 .wa-time {
-  font-size: 11px;
-  color: rgba(0,0,0,0.4);
+  font-size: 11.5px;
+  color: rgba(0,0,0,0.45);
 }
 .wa-dark .wa-time { color: rgba(255,255,255,0.4); }
 .wa-ticks {
@@ -1292,25 +1292,25 @@ input, textarea, select { font-family: var(--font); }
   flex-direction: row;
   align-items: flex-start;
   gap: 10px;
-  background: rgba(255, 255, 255, 0.95);
-  border-radius: 16px;
-  padding: 11px 16px 13px 11px;
+  background: #fff;
+  border-radius: 20px;
+  padding: 10px 14px 12px 10px;
   max-width: 290px;
   position: relative;
-  box-shadow: 0 2px 16px rgba(0,0,0,0.35);
+  box-shadow: 0 2px 16px rgba(0,0,0,0.3);
 }
 
 /* Speech bubble tail — punta abajo-izquierda */
 .tt-reply-bubble::after {
   content: '';
   position: absolute;
-  bottom: -10px;
-  left: 18px;
+  bottom: -9px;
+  left: 16px;
   width: 0;
   height: 0;
   border-style: solid;
-  border-width: 11px 11px 0 0;
-  border-color: rgba(255,255,255,0.95) transparent transparent transparent;
+  border-width: 10px 10px 0 0;
+  border-color: #fff transparent transparent transparent;
 }
 
 /* Avatar inside the bubble */
@@ -1369,17 +1369,17 @@ input, textarea, select { font-family: var(--font); }
 }
 
 .tt-bubble-username {
-  font-size: 13px;
+  font-size: 12px;
   font-weight: 700;
-  color: rgba(0,0,0,0.55);
+  color: rgba(0,0,0,0.68);
   font-family: -apple-system, system-ui, sans-serif;
   line-height: 1.2;
 }
 
 .tt-bubble-comment {
-  font-size: 20px;
+  font-size: 18px;
   font-weight: 800;
-  color: rgba(0,0,0,0.9);
+  color: #000;
   font-family: -apple-system, system-ui, sans-serif;
   line-height: 1.3;
   word-break: break-word;
@@ -1455,8 +1455,13 @@ input, textarea, select { font-family: var(--font); }
 
 .yt-username {
   font-size: 13px;
-  font-weight: 500;
+  font-weight: 600;
   color: #0F0F0F;
+}
+.yt-dot {
+  font-size: 12px;
+  color: #606060;
+  line-height: 1;
 }
 
 .yt-time {
@@ -1489,7 +1494,7 @@ input, textarea, select { font-family: var(--font); }
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 32px; height: 32px;
+  width: 36px; height: 36px;
   border-radius: 50%;
   border: none;
   background: none;
@@ -1516,14 +1521,14 @@ input, textarea, select { font-family: var(--font); }
 }
 
 .yt-creator-heart {
-  margin-left: auto;
-  width: 24px; height: 24px;
+  margin-left: 4px;
+  width: 20px; height: 20px;
   background: #FF0000;
   border-radius: 50%;
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 12px;
+  font-size: 10px;
   color: #fff;
   font-style: normal;
 }

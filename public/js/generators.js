@@ -51,7 +51,7 @@ const Generators = {
       <div class="tt-header">
         <span class="tt-username">${escHtml(user)}</span>
         ${verified ? verifiedSVG('#20D5EC', '#000', 15) : ''}
-        <span class="tt-time">· ${escHtml(timestamp)}</span>
+        <span class="tt-time">${escHtml(timestamp)}</span>
       </div>
       <p class="tt-text">${escHtml(commentText)}</p>
       <div class="tt-actions">
@@ -239,6 +239,7 @@ const Generators = {
       <div class="yt-header">
         <span class="yt-username">@${escHtml(user)}</span>
         ${verified ? verifiedSVG('#AAAAAA', '#fff', 14) : ''}
+        <span class="yt-dot">·</span>
         <span class="yt-time">${escHtml(timestamp)}</span>
       </div>
       <p class="yt-text">${escHtml(commentText)}</p>
