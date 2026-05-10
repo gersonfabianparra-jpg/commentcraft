@@ -9,21 +9,9 @@ const api     = require('./routes/api');
 const app  = express();
 const PORT = process.env.PORT || 3000;
 
-app.use(helmet({
-  contentSecurityPolicy: {
-    directives: {
-      defaultSrc: ["'self'"],
-      scriptSrc:  ["'self'", "'unsafe-inline'", "https://html2canvas.hertzen.com",
-                   "https://pagead2.googlesyndication.com", "https://www.googletagmanager.com",
-                   "https://partner.googleadservices.com"],
-      styleSrc:   ["'self'", "'unsafe-inline'", "https://fonts.googleapis.com"],
-      fontSrc:    ["'self'", "https://fonts.gstatic.com"],
-      imgSrc:     ["'self'", "data:", "https:", "blob:"],
-      connectSrc: ["'self'"],
-      frameSrc:   ["https://googleads.g.doubleclick.net", "https://tpc.googlesyndication.com"],
-    },
-  },
-}));
+/* CSP desactivado — AdSense usa docenas de dominios de Google que
+   no se pueden blanquear estáticamente sin romper la verificación */
+app.use(helmet({ contentSecurityPolicy: false }));
 
 app.use(cors());
 app.use(morgan('dev'));
