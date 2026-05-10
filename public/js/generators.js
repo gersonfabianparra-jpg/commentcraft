@@ -124,7 +124,7 @@ const Generators = {
 
     const reactionBadge = (likesCount && likesCount !== '0') ? `
       <div class="fb-react-badge">
-        <span class="fb-react-circle" style="background:${r.color};">${r.emoji}</span>
+        <span class="fb-react-emoji">${r.emoji}</span>
         <span class="fb-react-count">${escHtml(likesCount)}</span>
       </div>` : '';
 
