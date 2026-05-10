@@ -1,0 +1,377 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>CommentCraft — Generador de Comentarios para Redes Sociales</title>
+  <meta name="description" content="Crea comentarios ficticios realistas de TikTok, Facebook, Instagram y WhatsApp. Descarga como imagen en segundos." />
+  <meta name="keywords" content="comentarios falsos, fake comments, tiktok, facebook, instagram, whatsapp, generador" />
+  <meta property="og:title" content="CommentCraft — Generador de Comentarios" />
+  <meta property="og:description" content="Diseña comentarios de redes sociales y descárgalos al instante." />
+  <meta property="og:type" content="website" />
+
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" />
+
+  <!-- ============================================================
+       GOOGLE ADSENSE — reemplaza ca-pub-XXXXXXXXXXXXXXXX con tu ID
+       ============================================================ -->
+  <!-- <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-XXXXXXXXXXXXXXXX" crossorigin="anonymous"></script> -->
+
+  <link rel="stylesheet" href="css/styles.css" />
+</head>
+<body>
+
+<!-- ===== HEADER ===== -->
+<header class="header">
+  <nav class="nav container">
+    <a href="/" class="logo">
+      <img src="assets/logo.svg" alt="CommentCraft Logo" width="38" height="38" />
+      <span class="logo-text">Comment<span class="logo-accent">Craft</span></span>
+    </a>
+    <div class="nav-links">
+      <a href="#generator" class="nav-link">Generador</a>
+      <a href="#history"   class="nav-link">Historial</a>
+      <a href="#howto"     class="nav-link">¿Cómo usar?</a>
+    </div>
+    <div class="nav-actions">
+      <button class="btn-ghost" id="clearHistoryBtn" title="Limpiar historial">🗑 Historial</button>
+    </div>
+  </nav>
+</header>
+
+<!-- ===== HERO ===== -->
+<section class="hero">
+  <div class="container hero-inner">
+    <div class="hero-badge">✨ 100% Gratis · Sin registro</div>
+    <h1 class="hero-title">Genera comentarios<br /><span class="gradient-text">de redes sociales</span></h1>
+    <p class="hero-subtitle">Diseña comentarios realistas de <strong>TikTok, Facebook, Instagram y WhatsApp</strong> y descárgalos como imagen en segundos.</p>
+    <div class="hero-platforms">
+      <span class="platform-badge tiktok-badge">TikTok</span>
+      <span class="platform-badge facebook-badge">Facebook</span>
+      <span class="platform-badge instagram-badge">Instagram</span>
+      <span class="platform-badge whatsapp-badge">WhatsApp</span>
+    </div>
+    <a href="#generator" class="btn-primary btn-hero">Comenzar ahora →</a>
+  </div>
+</section>
+
+<!-- ===== AD BANNER TOP ===== -->
+<div class="ad-container container ad-top">
+  <div class="ad-placeholder">
+    <!-- Publicidad -->
+    <!-- <ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-XXXXXXXXXXXXXXXX" data-ad-slot="XXXXXXXXXX" data-ad-format="auto" data-full-width-responsive="true"></ins>
+    <script>(adsbygoogle = window.adsbygoogle || []).push({});</script> -->
+    <span class="ad-label">Publicidad</span>
+  </div>
+</div>
+
+<!-- ===== GENERATOR ===== -->
+<main class="main container" id="generator">
+
+  <!-- Platform Tabs -->
+  <div class="platform-tabs" role="tablist" aria-label="Seleccionar plataforma">
+    <button class="tab-btn active" data-platform="tiktok"    role="tab" aria-selected="true">
+      <svg class="tab-icon" viewBox="0 0 24 24" fill="currentColor"><path d="M19.59 6.69a4.83 4.83 0 01-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 01-2.88 2.5 2.89 2.89 0 01-2.89-2.89 2.89 2.89 0 012.89-2.89c.28 0 .54.04.79.1V9.01a6.33 6.33 0 00-.79-.05 6.34 6.34 0 00-6.34 6.34 6.34 6.34 0 006.34 6.34 6.34 6.34 0 006.33-6.34V8.69a8.26 8.26 0 004.84 1.55V6.79a4.85 4.85 0 01-1.07-.1z"/></svg>
+      TikTok
+    </button>
+    <button class="tab-btn" data-platform="facebook"  role="tab" aria-selected="false">
+      <svg class="tab-icon" viewBox="0 0 24 24" fill="currentColor"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg>
+      Facebook
+    </button>
+    <button class="tab-btn" data-platform="instagram" role="tab" aria-selected="false">
+      <svg class="tab-icon" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg>
+      Instagram
+    </button>
+    <button class="tab-btn" data-platform="whatsapp"  role="tab" aria-selected="false">
+      <svg class="tab-icon" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+      WhatsApp
+    </button>
+  </div>
+
+  <!-- Editor Grid -->
+  <div class="editor-grid">
+
+    <!-- FORM PANEL -->
+    <aside class="form-panel card">
+      <h2 class="panel-title">Personalizar comentario</h2>
+
+      <!-- Common fields -->
+      <div class="form-group">
+        <label class="form-label" for="username">Usuario / Nombre</label>
+        <input class="form-input" type="text" id="username" placeholder="ej: juan_perez" maxlength="40" />
+      </div>
+
+      <!-- Avatar upload -->
+      <div class="form-group">
+        <label class="form-label">Foto de perfil</label>
+        <div class="avatar-upload-row">
+          <div class="avatar-thumb" id="avatarThumb">
+            <span class="avatar-thumb-text" id="avatarThumbText">U</span>
+          </div>
+          <div class="avatar-upload-actions">
+            <label class="btn-secondary btn-sm avatar-file-label" for="avatarFile">
+              📷 Subir foto
+            </label>
+            <input type="file" id="avatarFile" accept="image/*" hidden />
+            <button class="btn-ghost btn-sm hidden" id="removeAvatarBtn">✕ Quitar foto</button>
+          </div>
+        </div>
+        <input class="form-input" type="text" id="avatarUrl" placeholder="O pega una URL de imagen (https://...)" style="margin-top:8px;" />
+      </div>
+
+      <div class="form-row">
+        <div class="form-group">
+          <label class="form-label" for="avatarColor">Color de fondo</label>
+          <input class="form-input form-color" type="color" id="avatarColor" value="#7C3AED" />
+        </div>
+        <div class="form-group">
+          <label class="form-label" for="timestamp">Tiempo</label>
+          <input class="form-input" type="text" id="timestamp" placeholder="2h · 5m · ahora" maxlength="20" value="2h" />
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label class="form-label" for="commentText">Texto del comentario</label>
+        <textarea class="form-input form-textarea" id="commentText" placeholder="Escribe el comentario aquí..." maxlength="400" rows="4"></textarea>
+        <span class="char-count"><span id="charCount">0</span>/400</span>
+      </div>
+
+      <!-- TikTok / Facebook / Instagram fields -->
+      <div class="platform-fields" id="fields-standard">
+        <div class="form-row">
+          <div class="form-group">
+            <label class="form-label" for="likesCount">Likes / reacciones</label>
+            <input class="form-input" type="text" id="likesCount" placeholder="1.2K · 0 · 300" maxlength="10" value="1.2K" />
+          </div>
+          <div class="form-group center-v">
+            <label class="form-label" for="isVerified">Verificado</label>
+            <label class="toggle-switch">
+              <input type="checkbox" id="isVerified" />
+              <span class="toggle-slider"></span>
+            </label>
+          </div>
+        </div>
+
+        <!-- TikTok only -->
+        <div class="platform-specific" id="tiktok-extra">
+
+          <!-- Mode toggle -->
+          <div class="tt-mode-tabs">
+            <button class="tt-mode-btn active" data-mode="comment" id="ttModeComment">
+              💬 Comentario
+            </button>
+            <button class="tt-mode-btn" data-mode="bubble" id="ttModeBubble">
+              💭 Globo
+            </button>
+          </div>
+
+          <!-- Normal comment fields -->
+          <div id="tiktok-normal-fields">
+            <div class="form-group">
+              <label class="form-label" for="replyCount">Respuestas</label>
+              <input class="form-input" type="text" id="replyCount" placeholder="45" maxlength="10" value="45" />
+            </div>
+          </div>
+
+          <!-- Bubble mode: no extra fields needed, uses username/comment/avatar already -->
+          <div id="tiktok-reply-fields" class="hidden">
+            <div class="tt-reply-info">
+              💭 El comentario se mostrará como <strong>globo de TikTok</strong> — usa los campos de arriba (usuario, foto y texto)
+            </div>
+          </div>
+
+        </div>
+
+        <!-- Facebook only -->
+        <div class="platform-specific hidden" id="facebook-extra">
+          <div class="form-group">
+            <label class="form-label" for="fbReaction">Reacción principal</label>
+            <select class="form-input form-select" id="fbReaction">
+              <option value="like">👍 Me gusta</option>
+              <option value="love">❤️ Me encanta</option>
+              <option value="haha">😂 Me divierte</option>
+              <option value="wow">😮 Me asombra</option>
+              <option value="sad">😢 Me entristece</option>
+              <option value="angry">😡 Me enoja</option>
+            </select>
+          </div>
+        </div>
+
+        <!-- Instagram only -->
+        <div class="platform-specific hidden" id="instagram-extra">
+          <div class="form-group">
+            <label class="form-label" for="igReplies">Respuestas</label>
+            <input class="form-input" type="text" id="igReplies" placeholder="Ver 12 respuestas" maxlength="30" value="" />
+          </div>
+        </div>
+      </div>
+
+      <!-- WhatsApp fields -->
+      <div class="platform-fields hidden" id="fields-whatsapp">
+        <div class="form-row">
+          <div class="form-group">
+            <label class="form-label" for="waTime">Hora del mensaje</label>
+            <input class="form-input" type="text" id="waTime" placeholder="12:34" maxlength="10" value="12:34" />
+          </div>
+          <div class="form-group">
+            <label class="form-label" for="waStatus">Estado</label>
+            <select class="form-input form-select" id="waStatus">
+              <option value="sent">✓ Enviado</option>
+              <option value="delivered">✓✓ Entregado</option>
+              <option value="read" selected>✓✓ Leído</option>
+            </select>
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="form-group center-v">
+            <label class="form-label" for="waIsGroup">Es grupo</label>
+            <label class="toggle-switch">
+              <input type="checkbox" id="waIsGroup" />
+              <span class="toggle-slider"></span>
+            </label>
+          </div>
+          <div class="form-group" id="waGroupField" style="display:none">
+            <label class="form-label" for="waGroupName">Nombre del grupo</label>
+            <input class="form-input" type="text" id="waGroupName" placeholder="Mi Grupo" maxlength="30" />
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="form-group center-v">
+            <label class="form-label" for="waDarkMode">Modo oscuro</label>
+            <label class="toggle-switch">
+              <input type="checkbox" id="waDarkMode" />
+              <span class="toggle-slider"></span>
+            </label>
+          </div>
+          <div class="form-group center-v">
+            <label class="form-label" for="waIsSent">Mensaje enviado</label>
+            <label class="toggle-switch">
+              <input type="checkbox" id="waIsSent" checked />
+              <span class="toggle-slider"></span>
+            </label>
+          </div>
+        </div>
+      </div>
+
+      <div class="form-actions">
+        <button class="btn-secondary btn-generate" id="generateBtn">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M1 4v6h6M23 20v-6h-6"/><path d="M20.49 9A9 9 0 005.64 5.64L1 10M23 14l-4.64 4.36A9 9 0 013.51 15"/></svg>
+          Actualizar vista
+        </button>
+        <button class="btn-secondary" id="saveHistoryBtn">
+          💾 Guardar
+        </button>
+      </div>
+    </aside>
+
+    <!-- PREVIEW PANEL -->
+    <div class="preview-panel">
+      <!-- Ad sidebar -->
+      <div class="ad-sidebar ad-placeholder">
+        <!-- <ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-XXXXXXXXXXXXXXXX" data-ad-slot="XXXXXXXXXX" data-ad-format="auto"></ins>
+        <script>(adsbygoogle = window.adsbygoogle || []).push({});</script> -->
+        <span class="ad-label">Publicidad</span>
+      </div>
+
+      <div class="preview-wrapper">
+        <h2 class="panel-title">Vista previa</h2>
+
+        <div class="preview-card-outer" id="previewOuter" data-platform="tiktok">
+          <div class="preview-card" id="previewContent">
+            <div class="preview-placeholder">
+              <div class="placeholder-icon">💬</div>
+              <p>Empieza a escribir y el<br/>comentario aparecerá aquí</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="preview-actions">
+          <button class="btn-download" id="downloadPngBtn" disabled>
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4M7 10l5 5 5-5M12 15V3"/></svg>
+            Descargar PNG
+          </button>
+          <button class="btn-copy" id="copyImgBtn" disabled title="Copiar al portapapeles">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"/></svg>
+            Copiar
+          </button>
+        </div>
+
+        <p class="preview-tip">💡 La imagen se descarga con el fondo de la plataforma. La vista previa se actualiza en tiempo real.</p>
+      </div>
+    </div>
+  </div><!-- /editor-grid -->
+
+</main><!-- /main -->
+
+<!-- ===== HOW TO ===== -->
+<section class="howto-section" id="howto">
+  <div class="container">
+    <h2 class="section-title">¿Cómo usar CommentCraft?</h2>
+    <div class="steps-grid">
+      <div class="step-card">
+        <div class="step-number">1</div>
+        <h3>Elige la plataforma</h3>
+        <p>Selecciona entre TikTok, Facebook, Instagram o WhatsApp según el tipo de comentario que quieres crear.</p>
+      </div>
+      <div class="step-card">
+        <div class="step-number">2</div>
+        <h3>Personaliza el comentario</h3>
+        <p>Ingresa el nombre de usuario, el texto del comentario, cantidad de likes y otras opciones específicas de cada red social.</p>
+      </div>
+      <div class="step-card">
+        <div class="step-number">3</div>
+        <h3>Genera y descarga</h3>
+        <p>Haz clic en <strong>Generar preview</strong> para ver el resultado y luego descárgalo como imagen PNG de alta calidad.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== AD MIDDLE ===== -->
+<div class="ad-container container">
+  <div class="ad-placeholder ad-wide">
+    <!-- <ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-XXXXXXXXXXXXXXXX" data-ad-slot="XXXXXXXXXX" data-ad-format="auto" data-full-width-responsive="true"></ins>
+    <script>(adsbygoogle = window.adsbygoogle || []).push({});</script> -->
+    <span class="ad-label">Publicidad</span>
+  </div>
+</div>
+
+<!-- ===== HISTORY ===== -->
+<section class="history-section container" id="history">
+  <div class="history-header">
+    <h2 class="section-title" style="margin-bottom:0">Historial guardado</h2>
+    <button class="btn-ghost btn-sm" id="clearHistoryBtn2">🗑 Limpiar todo</button>
+  </div>
+  <div class="history-grid" id="historyGrid">
+    <div class="history-empty">
+      <p>No hay comentarios guardados aún.<br/>Genera un comentario y haz clic en <strong>💾 Guardar</strong>.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ===== FOOTER ===== -->
+<footer class="footer">
+  <div class="container footer-inner">
+    <div class="footer-brand">
+      <img src="assets/logo.svg" alt="CommentCraft" width="32" height="32" />
+      <span class="logo-text">Comment<span class="logo-accent">Craft</span></span>
+    </div>
+    <p class="footer-copy">© 2025 CommentCraft. Herramienta para uso educativo y creativo.</p>
+    <p class="footer-disclaimer">Este generador crea comentarios ficticios únicamente con fines de entretenimiento, educación y diseño. No promueve la desinformación.</p>
+  </div>
+</footer>
+
+<!-- ===== TOAST ===== -->
+<div class="toast" id="toast" role="alert" aria-live="assertive"></div>
+
+<!-- ===== SCRIPTS ===== -->
+<script src="https://html2canvas.hertzen.com/dist/html2canvas.min.js"></script>
+<script src="js/generators.js"></script>
+<script src="js/download.js"></script>
+<script src="js/app.js"></script>
+
+</body>
+</html>
