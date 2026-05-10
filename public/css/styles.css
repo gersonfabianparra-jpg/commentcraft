@@ -2146,3 +2146,187 @@ input, textarea, select { font-family: var(--font); }
 }
 .rd-action:hover { background: rgba(255,255,255,0.06); color: #D7DADC; }
 .ig-user-row { overflow: visible; }
+
+/* ============================================================
+   DARK MODE — YouTube
+   ============================================================ */
+.yt-dark { background: #0F0F0F !important; }
+.yt-dark .yt-pinned { color: #AAAAAA; }
+.yt-dark .yt-pinned svg { fill: #AAAAAA; }
+.yt-dark .yt-username { color: #F1F1F1; }
+.yt-dark .yt-dot, .yt-dark .yt-time { color: #AAAAAA; }
+.yt-dark .yt-more-btn { color: #AAAAAA; }
+.yt-dark .yt-text { color: #F1F1F1; }
+.yt-dark .yt-action-btn { color: #AAAAAA; }
+.yt-dark .yt-action-btn svg { stroke: #AAAAAA; }
+.yt-dark .yt-like-count { color: #F1F1F1; }
+.yt-dark .yt-see-replies { color: #3EA6FF; }
+.yt-dark .yt-see-replies::before { border-color: #3EA6FF; }
+.yt-dark .yt-see-replies svg { stroke: #3EA6FF; }
+
+/* ============================================================
+   DARK MODE — Instagram
+   ============================================================ */
+.ig-dark { background: #000000 !important; }
+.ig-dark .ig-username { color: #FAFAFA; }
+.ig-dark .ig-time { color: #A8A8A8; }
+.ig-dark .ig-text { color: #FAFAFA; }
+.ig-dark .ig-reply-btn { color: #A8A8A8; }
+.ig-dark .ig-heart svg { stroke: #FAFAFA; }
+.ig-dark .ig-like-count { color: #FAFAFA; }
+.ig-dark .ig-see-replies { color: #A8A8A8; }
+
+/* ============================================================
+   DARK MODE — LinkedIn
+   ============================================================ */
+.li-dark { background: #1B1B1B !important; }
+.li-dark .li-bubble { background: #2A2A2A; }
+.li-dark .li-name { color: rgba(255,255,255,0.9); }
+.li-dark .li-title { color: rgba(255,255,255,0.5); }
+.li-dark .li-text { color: rgba(255,255,255,0.88); }
+.li-dark .li-time { color: rgba(255,255,255,0.45); }
+.li-dark .li-react-btn { color: rgba(255,255,255,0.6); }
+.li-dark .li-reply-btn { color: rgba(255,255,255,0.6); }
+.li-dark .li-sep { color: rgba(255,255,255,0.25); }
+.li-dark .li-react-count { color: rgba(255,255,255,0.5); }
+
+/* ============================================================
+   ATTACHED IMAGE (Reddit / Twitter)
+   ============================================================ */
+.comment-attached-img {
+  margin-top: 8px;
+  border-radius: 12px;
+  overflow: hidden;
+  width: 100%;
+}
+.comment-attached-img img {
+  width: 100%;
+  max-height: 260px;
+  object-fit: cover;
+  display: block;
+}
+
+/* ============================================================
+   NESTED REPLY
+   ============================================================ */
+.nested-reply {
+  padding-left: 52px;
+  position: relative;
+  margin-top: 0;
+}
+.nested-reply::before {
+  content: '';
+  position: absolute;
+  left: 20px;
+  top: 0;
+  width: 16px;
+  height: 22px;
+  border-left: 1.5px solid rgba(255,255,255,0.12);
+  border-bottom: 1.5px solid rgba(255,255,255,0.12);
+  border-bottom-left-radius: 6px;
+}
+.nested-reply.light-reply::before {
+  border-color: rgba(0,0,0,0.12);
+}
+.nested-reply .tt-wrapper,
+.nested-reply .fb-wrapper,
+.nested-reply .ig-wrapper,
+.nested-reply .yt-wrapper,
+.nested-reply .tw-wrapper,
+.nested-reply .th-wrapper,
+.nested-reply .li-wrapper,
+.nested-reply .rd-wrapper {
+  background: transparent !important;
+  padding: 6px 0 0;
+}
+
+/* ============================================================
+   STACKED COMMENTS
+   ============================================================ */
+.stack-divider {
+  height: 1px;
+  background: rgba(255,255,255,0.07);
+  margin: 6px 0;
+}
+.preview-card-outer[data-platform="facebook"]  .stack-divider,
+.preview-card-outer[data-platform="instagram"] .stack-divider,
+.preview-card-outer[data-platform="whatsapp"]  .stack-divider,
+.preview-card-outer[data-platform="youtube"]   .stack-divider,
+.preview-card-outer[data-platform="threads"]   .stack-divider,
+.preview-card-outer[data-platform="linkedin"]  .stack-divider {
+  background: rgba(0,0,0,0.07);
+}
+
+/* ============================================================
+   EXTRA SLOT UI
+   ============================================================ */
+.extra-slot {
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 14px;
+  margin-top: 10px;
+  background: rgba(255,255,255,0.02);
+}
+.slot-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 10px;
+}
+.slot-label {
+  font-size: 0.78rem;
+  font-weight: 700;
+  color: var(--text-2);
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+}
+.slot-remove {
+  font-size: 0.75rem;
+  color: var(--text-3);
+  padding: 2px 8px;
+  border-radius: 4px;
+  transition: all var(--transition);
+}
+.slot-remove:hover { color: #F45B78; background: rgba(244,91,120,0.1); }
+
+.stack-add-btn {
+  width: 100%;
+  margin-top: 10px;
+  padding: 8px;
+  border: 1px dashed var(--border);
+  border-radius: var(--radius);
+  color: var(--text-3);
+  font-size: 0.82rem;
+  font-weight: 600;
+  transition: all var(--transition);
+  background: none;
+  cursor: pointer;
+}
+.stack-add-btn:hover:not(:disabled) {
+  border-color: var(--primary);
+  color: var(--primary);
+  background: rgba(124,58,237,0.05);
+}
+.stack-add-btn:disabled { opacity: 0.35; cursor: default; }
+
+/* ============================================================
+   REPLY SECTION
+   ============================================================ */
+.reply-section {
+  border-top: 1px solid var(--border);
+  padding-top: 14px;
+  margin-top: 14px;
+}
+.reply-toggle-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.reply-toggle-label {
+  font-size: 0.82rem;
+  font-weight: 700;
+  color: var(--text-2);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+.reply-fields { margin-top: 12px; }

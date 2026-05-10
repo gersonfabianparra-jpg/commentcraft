@@ -158,7 +158,7 @@ const Generators = {
   },
 
   /* ── Instagram ────────────────────────────────────────── */
-  instagram({ username, avatarColor, avatarImg, commentText, likesCount, verified, timestamp, igReplies, igStoryRing }) {
+  instagram({ username, avatarColor, avatarImg, commentText, likesCount, verified, timestamp, igReplies, igStoryRing, darkMode }) {
     const initial = (username || 'U').charAt(0).toUpperCase();
 
     const avatarHtml = igStoryRing
@@ -166,7 +166,7 @@ const Generators = {
       : avatarEl(avatarImg, avatarColor, initial, 'ig-avatar');
 
     return `
-<div class="ig-wrapper">
+<div class="ig-wrapper${darkMode ? ' ig-dark' : ''}">
   <div class="ig-comment">
     ${avatarHtml}
     <div class="ig-body">
@@ -227,7 +227,7 @@ const Generators = {
   },
 
   /* ── YouTube ──────────────────────────────────────────── */
-  youtube({ username, avatarColor, avatarImg, commentText, likesCount, verified, timestamp, ytPinned, ytCreatorHeart, ytReplies }) {
+  youtube({ username, avatarColor, avatarImg, commentText, likesCount, verified, timestamp, ytPinned, ytCreatorHeart, ytReplies, darkMode }) {
     const initial = (username || 'U').charAt(0).toUpperCase();
     const user    = username || 'usuario';
 
@@ -247,7 +247,7 @@ const Generators = {
       </div>` : '';
 
     return `
-<div class="yt-wrapper">
+<div class="yt-wrapper${darkMode ? ' yt-dark' : ''}">
   ${pinnedBadge}
   <div class="yt-comment">
     ${avatarEl(avatarImg, avatarColor, initial, 'yt-avatar')}
@@ -282,7 +282,7 @@ const Generators = {
   },
 
   /* ── Twitter / X ─────────────────────────────────────── */
-  twitter({ username, twitterHandle, avatarColor, avatarImg, commentText, likesCount, verified, timestamp, twitterReplies, twitterRetweets, twitterViews, twitterReplyTo }) {
+  twitter({ username, twitterHandle, avatarColor, avatarImg, commentText, likesCount, verified, timestamp, twitterReplies, twitterRetweets, twitterViews, twitterReplyTo, attachedImg }) {
     const initial = (username || 'U').charAt(0).toUpperCase();
     const handle  = twitterHandle || username.replace(/\s+/g, '').toLowerCase();
 
@@ -307,6 +307,7 @@ const Generators = {
     </div>
     ${replyToHtml}
     <p class="tw-text">${escHtml(commentText)}</p>
+    ${attachedImg ? `<div class="comment-attached-img" style="border-radius:14px;"><img src="${attachedImg}" alt="adjunto" style="border-radius:14px;" /></div>` : ''}
     <div class="tw-actions">
       <span class="tw-action tw-act-reply">
         <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/></svg>
@@ -368,7 +369,7 @@ const Generators = {
   },
 
   /* ── LinkedIn ─────────────────────────────────────────── */
-  linkedin({ username, avatarColor, avatarImg, commentText, likesCount, verified, timestamp, linkedinTitle, linkedinDegree, linkedinReaction }) {
+  linkedin({ username, avatarColor, avatarImg, commentText, likesCount, verified, timestamp, linkedinTitle, linkedinDegree, linkedinReaction, darkMode }) {
     const initial = (username || 'U').charAt(0).toUpperCase();
     const reactionMap = {
       like:       { emoji: '👍', label: 'Me gusta' },
@@ -380,7 +381,7 @@ const Generators = {
     };
     const reaction = reactionMap[linkedinReaction] || reactionMap.like;
     return `
-<div class="li-wrapper">
+<div class="li-wrapper${darkMode ? ' li-dark' : ''}">
   <div class="li-comment">
     ${avatarEl(avatarImg, avatarColor, initial, 'li-avatar')}
     <div class="li-right">
@@ -406,7 +407,7 @@ const Generators = {
   },
 
   /* ── Reddit ──────────────────────────────────────────── */
-  reddit({ username, avatarColor, commentText, timestamp, redditSub, redditVotes, redditAwards, redditReplies, redditIsOp }) {
+  reddit({ username, avatarColor, commentText, timestamp, redditSub, redditVotes, redditAwards, redditReplies, redditIsOp, attachedImg }) {
     const user = username || 'usuario';
     const sub  = redditSub  || 'AskReddit';
 
@@ -470,6 +471,7 @@ const Generators = {
         <span class="rd-timestamp">${escHtml(timestamp)}</span>
       </div>
       <p class="rd-text">${escHtml(commentText)}</p>
+      ${attachedImg ? `<div class="comment-attached-img"><img src="${attachedImg}" alt="adjunto" /></div>` : ''}
       ${awardsHtml}
       <div class="rd-actions">
         ${repliesAction}

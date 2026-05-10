@@ -6,6 +6,9 @@
 let currentPlatform  = 'tiktok';
 let avatarImg        = null;
 let tiktokBubbleMode = false;
+let attachedImg2     = null;   // imagen adjunta (Reddit / Twitter)
+let replyAvatarImg   = null;   // avatar de la respuesta anidada
+let slotCount        = 0;      // número de slots extra (0–3)
 
 /* ----- DOM refs ----- */
 const $ = id => document.getElementById(id);
@@ -49,6 +52,26 @@ function updatePlatformFields() {
     const extra = $(`${currentPlatform}-extra`);
     if (extra) extra.classList.remove('hidden');
   }
+
+  /* dark mode toggle — solo YouTube, Instagram, LinkedIn */
+  const darkRow = $('darkModeRow');
+  if (darkRow) {
+    const supportsDark = ['youtube', 'instagram', 'linkedin'].includes(currentPlatform);
+    darkRow.style.display = supportsDark ? '' : 'none';
+    if (!supportsDark && $('darkMode')) $('darkMode').checked = false;
+  }
+
+  /* imagen adjunta — solo Reddit y Twitter */
+  const attachedRow = $('attachedImgRow');
+  if (attachedRow) {
+    const supportsAttached = ['reddit', 'twitter'].includes(currentPlatform);
+    attachedRow.style.display = supportsAttached ? '' : 'none';
+    if (!supportsAttached) { attachedImg2 = null; }
+  }
+
+  /* reply — ocultar en WhatsApp */
+  const replySection = $('replySection');
+  if (replySection) replySection.style.display = isWhatsapp ? 'none' : '';
 }
 
 /* ============================================================
@@ -142,6 +165,13 @@ function getFormData() {
     redditAwards:      $('redditAwards')?.value.trim()    || '',
     redditReplies:     $('redditReplies')?.value.trim()   || '',
     redditIsOp:        $('redditIsOp')?.checked           || false,
+    darkMode:          $('darkMode')?.checked             || false,
+    attachedImg:       attachedImg2,
+    showReply:         $('showReply')?.checked            || false,
+    replyUsername:     $('replyUsername')?.value.trim()   || '',
+    replyAvatarColor:  $('replyAvatarColor')?.value       || '#E53E3E',
+    replyText:         $('replyText')?.value.trim()       || '',
+    replyLikes:        $('replyLikes')?.value.trim()      || '0',
   };
 }
 
@@ -162,13 +192,62 @@ document.querySelectorAll('.tt-mode-btn').forEach(btn => {
 /* ============================================================
    GENERATE PREVIEW (called on every input change)
    ============================================================ */
+/* Plataformas claras (requieren línea conectora oscura en reply) */
+const LIGHT_PLATFORMS = new Set(['facebook','instagram','youtube','linkedin','threads']);
+
 function generatePreview() {
   const data = getFormData();
   const key  = (currentPlatform === 'tiktok' && tiktokBubbleMode) ? 'tiktokBubble' : currentPlatform;
   const generator = Generators[key];
   if (!generator) return;
 
-  previewContent.innerHTML = generator(data);
+  /* --- fondo dark mode en previewOuter --- */
+  const darkBgs = { youtube: '#0F0F0F', instagram: '#000000', linkedin: '#1B1B1B' };
+  if (data.darkMode && darkBgs[currentPlatform]) {
+    previewOuter.style.background = darkBgs[currentPlatform];
+  } else {
+    previewOuter.style.background = '';
+  }
+
+  /* --- comentario principal --- */
+  let html = generator(data);
+
+  /* --- respuesta anidada --- */
+  if (data.showReply && data.replyText) {
+    const replyData = {
+      ...data,
+      username:    data.replyUsername || 'usuario',
+      avatarColor: data.replyAvatarColor,
+      avatarImg:   replyAvatarImg,
+      commentText: data.replyText,
+      likesCount:  data.replyLikes,
+      verified: false, ytPinned: false, ytCreatorHeart: false,
+      twitterReplyTo: '', igStoryRing: false,
+    };
+    const isLight = LIGHT_PLATFORMS.has(currentPlatform) && !data.darkMode;
+    html += `<div class="nested-reply${isLight ? ' light-reply' : ''}">${generator(replyData)}</div>`;
+  }
+
+  /* --- slots apilados --- */
+  document.querySelectorAll('.extra-slot').forEach(slot => {
+    const u  = slot.querySelector('.slot-username').value.trim() || 'usuario';
+    const t  = slot.querySelector('.slot-text').value.trim();
+    if (!t) return;
+    const slotData = {
+      ...data,
+      username:    u,
+      avatarColor: slot.querySelector('.slot-color').value || '#E53E3E',
+      avatarImg:   null,
+      commentText: t,
+      likesCount:  slot.querySelector('.slot-likes').value.trim() || '0',
+      verified: false, ytPinned: false, ytCreatorHeart: false,
+      twitterReplyTo: '', igStoryRing: false,
+      showReply: false, attachedImg: null,
+    };
+    html += `<div class="stack-divider"></div>${generator(slotData)}`;
+  });
+
+  previewContent.innerHTML = html;
   downloadBtn.disabled = false;
   copyBtn.disabled     = false;
   if (canShare) shareBtn.disabled = false;
@@ -492,6 +571,123 @@ $('emojiPanel').addEventListener('click', e => e.stopPropagation());
 document.addEventListener('click', () => {
   emojiPickerOpen = false;
   $('emojiPanel').classList.remove('open');
+});
+
+/* ============================================================
+   DARK MODE TOGGLE
+   ============================================================ */
+const darkModeEl = $('darkMode');
+if (darkModeEl) darkModeEl.addEventListener('change', generatePreview);
+
+/* ============================================================
+   IMAGEN ADJUNTA (Reddit / Twitter)
+   ============================================================ */
+const attachedFile = $('attachedFile');
+if (attachedFile) {
+  attachedFile.addEventListener('change', e => {
+    const file = e.target.files[0];
+    if (!file) return;
+    const reader = new FileReader();
+    reader.onload = ev => {
+      attachedImg2 = ev.target.result;
+      const preview = $('attachedPreview');
+      if (preview) { preview.src = attachedImg2; preview.style.display = 'block'; }
+      $('removeAttachedBtn')?.classList.remove('hidden');
+      generatePreview();
+    };
+    reader.readAsDataURL(file);
+  });
+}
+$('removeAttachedBtn')?.addEventListener('click', () => {
+  attachedImg2 = null;
+  if (attachedFile) attachedFile.value = '';
+  const preview = $('attachedPreview');
+  if (preview) { preview.src = ''; preview.style.display = 'none'; }
+  $('removeAttachedBtn')?.classList.add('hidden');
+  generatePreview();
+});
+
+/* ============================================================
+   REPLY ANIDADA
+   ============================================================ */
+$('showReply')?.addEventListener('change', () => {
+  $('replyFields')?.classList.toggle('hidden', !$('showReply').checked);
+  generatePreview();
+});
+
+/* Reply avatar file */
+const replyAvatarFile = $('replyAvatarFile');
+if (replyAvatarFile) {
+  replyAvatarFile.addEventListener('change', e => {
+    const file = e.target.files[0];
+    if (!file) return;
+    const reader = new FileReader();
+    reader.onload = ev => { replyAvatarImg = ev.target.result; generatePreview(); };
+    reader.readAsDataURL(file);
+  });
+}
+
+/* Reply live fields */
+['replyUsername', 'replyText', 'replyLikes'].forEach(id => {
+  $(id)?.addEventListener('input', liveUpdate);
+});
+$('replyAvatarColor')?.addEventListener('input', liveUpdate);
+
+/* ============================================================
+   STACK DE COMENTARIOS
+   ============================================================ */
+const SLOT_COLORS = ['#E53E3E', '#D69E2E', '#38A169'];
+
+$('addSlotBtn')?.addEventListener('click', () => {
+  if (slotCount >= 3) return;
+  slotCount++;
+  const idx   = slotCount;
+  const color = SLOT_COLORS[idx - 1];
+  const slot  = document.createElement('div');
+  slot.className   = 'extra-slot';
+  slot.dataset.slot = idx;
+  slot.innerHTML = `
+    <div class="slot-header">
+      <span class="slot-label">Comentario ${idx + 1}</span>
+      <button class="slot-remove btn-ghost btn-sm" data-slot="${idx}">✕ Quitar</button>
+    </div>
+    <div class="form-row">
+      <div class="form-group">
+        <label class="form-label">Usuario</label>
+        <input class="form-input slot-username" type="text" placeholder="usuario${idx + 1}" maxlength="40" />
+      </div>
+      <div class="form-group">
+        <label class="form-label">Color</label>
+        <input class="form-input form-color slot-color" type="color" value="${color}" />
+      </div>
+    </div>
+    <div class="form-group">
+      <textarea class="form-input form-textarea slot-text" placeholder="Texto del comentario..." rows="2" maxlength="400"></textarea>
+    </div>
+    <div class="form-group">
+      <label class="form-label">Likes</label>
+      <input class="form-input slot-likes" type="text" placeholder="0" maxlength="10" />
+    </div>`;
+  $('slotsContainer').appendChild(slot);
+
+  /* Remove button */
+  slot.querySelector('.slot-remove').addEventListener('click', () => {
+    slot.remove();
+    slotCount--;
+    $('addSlotBtn').disabled = slotCount >= 3;
+    generatePreview();
+  });
+
+  /* Live update for slot inputs */
+  slot.querySelectorAll('input, textarea').forEach(el => {
+    el.addEventListener('input', liveUpdate);
+  });
+
+  $('addSlotBtn').disabled = slotCount >= 3;
+  $('addSlotBtn').textContent = slotCount >= 3
+    ? '＋ Máximo 4 comentarios'
+    : `＋ Añadir comentario (${slotCount + 1}/4)`;
+  generatePreview();
 });
 
 /* ============================================================

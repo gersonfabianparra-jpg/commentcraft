@@ -169,6 +169,32 @@
         </div>
       </div>
 
+      <!-- Imagen adjunta (Reddit / Twitter) -->
+      <div class="form-group" id="attachedImgRow" style="display:none">
+        <label class="form-label">Imagen adjunta</label>
+        <div class="avatar-upload-row">
+          <img id="attachedPreview" src="" alt="" style="display:none;width:48px;height:48px;object-fit:cover;border-radius:8px;flex-shrink:0;" />
+          <div class="avatar-upload-actions">
+            <label class="btn-secondary btn-sm avatar-file-label" for="attachedFile">
+              📎 Adjuntar imagen
+            </label>
+            <input type="file" id="attachedFile" accept="image/*" hidden />
+            <button class="btn-ghost btn-sm hidden" id="removeAttachedBtn">✕ Quitar</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Modo oscuro (YouTube / Instagram / LinkedIn) -->
+      <div class="form-row" id="darkModeRow" style="display:none">
+        <div class="form-group center-v">
+          <label class="form-label" for="darkMode">🌙 Modo oscuro</label>
+          <label class="toggle-switch">
+            <input type="checkbox" id="darkMode" />
+            <span class="toggle-slider"></span>
+          </label>
+        </div>
+      </div>
+
       <div class="form-group">
         <div class="form-label-row">
           <label class="form-label" for="commentText">Texto del comentario</label>
@@ -420,6 +446,48 @@
             </label>
           </div>
         </div>
+      </div>
+
+      <!-- ── RESPUESTA ANIDADA ── -->
+      <div class="reply-section" id="replySection">
+        <div class="reply-toggle-row">
+          <span class="reply-toggle-label">↩ Respuesta anidada</span>
+          <label class="toggle-switch">
+            <input type="checkbox" id="showReply" />
+            <span class="toggle-slider"></span>
+          </label>
+        </div>
+        <div class="reply-fields hidden" id="replyFields">
+          <div class="form-row" style="margin-top:12px">
+            <div class="form-group">
+              <label class="form-label" for="replyUsername">Usuario (respuesta)</label>
+              <input class="form-input" type="text" id="replyUsername" placeholder="otro_usuario" maxlength="40" />
+            </div>
+            <div class="form-group">
+              <label class="form-label" for="replyAvatarColor">Color avatar</label>
+              <input class="form-input form-color" type="color" id="replyAvatarColor" value="#E53E3E" />
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="form-label" for="replyAvatarFile">Foto de perfil (opcional)</label>
+            <label class="btn-secondary btn-sm avatar-file-label" for="replyAvatarFile">📷 Subir foto</label>
+            <input type="file" id="replyAvatarFile" accept="image/*" hidden />
+          </div>
+          <div class="form-group">
+            <label class="form-label" for="replyText">Texto de la respuesta</label>
+            <textarea class="form-input form-textarea" id="replyText" placeholder="Respuesta aquí..." maxlength="400" rows="3"></textarea>
+          </div>
+          <div class="form-group">
+            <label class="form-label" for="replyLikes">Likes</label>
+            <input class="form-input" type="text" id="replyLikes" placeholder="0" maxlength="10" value="0" />
+          </div>
+        </div>
+      </div>
+
+      <!-- ── STACK DE COMENTARIOS ── -->
+      <div style="margin-top:14px;border-top:1px solid var(--border);padding-top:14px;">
+        <div id="slotsContainer"></div>
+        <button class="stack-add-btn" id="addSlotBtn">＋ Añadir comentario (2/4)</button>
       </div>
 
       <div class="form-actions">
