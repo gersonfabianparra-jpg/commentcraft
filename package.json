@@ -1,7 +1,7 @@
 {
-  "name": "commentcraft",
+  "name": "mockpost",
   "version": "1.0.0",
-  "description": "Generador profesional de comentarios ficticios para redes sociales",
+  "description": "Generador de comentarios ficticios para redes sociales — MockPost",
   "main": "src/server.js",
   "scripts": {
     "start": "node src/server.js",
