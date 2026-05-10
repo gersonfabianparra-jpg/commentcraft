@@ -610,13 +610,6 @@ input, textarea, select { font-family: var(--font); }
   align-items: center;
   gap: 14px;
 }
-.tt-likes {
-  display: flex;
-  align-items: center;
-  gap: 4px;
-  font-size: 12px;
-  color: rgba(255,255,255,0.5);
-}
 .tt-reply {
   font-size: 12px;
   color: rgba(255,255,255,0.45);
@@ -633,7 +626,6 @@ input, textarea, select { font-family: var(--font); }
   align-items: center;
   gap: 2px;
 }
-.tt-heart-icon { font-size: 18px; }
 .tt-heart-count { font-size: 10px; color: rgba(255,255,255,0.5); }
 .tt-divider { display: none; }
 
@@ -786,8 +778,8 @@ input, textarea, select { font-family: var(--font); }
 .ig-reply-btn { font-size: 11.5px; font-weight: 600; color: #8E8E8E; }
 .ig-heart {
   margin-left: auto;
-  font-size: 16px;
-  color: #262626;
+  display: flex;
+  align-items: center;
   cursor: pointer;
   flex-shrink: 0;
 }
@@ -915,6 +907,10 @@ input, textarea, select { font-family: var(--font); }
   color: #92A3AD;
 }
 .wa-ticks.read { color: #53BDEB; }
+.wa-tick-svg {
+  display: inline-flex;
+  align-items: center;
+}
 
 /* ============================================================
    HOW-TO SECTION

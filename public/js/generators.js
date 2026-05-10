@@ -55,12 +55,14 @@ const Generators = {
       </div>
       <p class="tt-text">${escHtml(commentText)}</p>
       <div class="tt-actions">
-        <span class="tt-likes">❤️ ${escHtml(likesCount)}</span>
         <span class="tt-reply">Responder</span>
         ${replyCount ? `<span class="tt-replies">${escHtml(replyCount)} respuestas</span>` : ''}
       </div>
     </div>
-    <div class="tt-heart-btn"><span class="tt-heart-icon">♡</span></div>
+    <div class="tt-heart-btn">
+      <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="rgba(255,255,255,0.65)" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M20.84 4.61a5.5 5.5 0 00-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 00-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 000-7.78z"/></svg>
+      ${likesCount ? `<span class="tt-heart-count">${escHtml(likesCount)}</span>` : ''}
+    </div>
   </div>
 </div>`;
   },
@@ -161,7 +163,7 @@ const Generators = {
         <span class="ig-reply-btn">Responder</span>
       </div>
     </div>
-    <div class="ig-heart">♡</div>
+    <div class="ig-heart"><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="#262626" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20.84 4.61a5.5 5.5 0 00-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 00-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 000-7.78z"/></svg></div>
   </div>
   ${igReplies ? `<p class="ig-see-replies">${escHtml(igReplies)}</p>` : ''}
 </div>`;
@@ -173,9 +175,9 @@ const Generators = {
     const groupInit = (waGroupName || 'G').charAt(0).toUpperCase();
 
     const tickMap = {
-      sent:      '<span class="wa-ticks">✓</span>',
-      delivered: '<span class="wa-ticks">✓✓</span>',
-      read:      '<span class="wa-ticks read">✓✓</span>',
+      sent:      `<span class="wa-tick-svg"><svg viewBox="0 0 12 9" width="15" height="11" fill="none"><polyline points="1,4.5 4,7.5 11,1" stroke="#92A3AD" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg></span>`,
+      delivered: `<span class="wa-tick-svg"><svg viewBox="0 0 17 9" width="19" height="11" fill="none"><polyline points="1,4.5 4,7.5 11,1" stroke="#92A3AD" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/><polyline points="6,4.5 9,7.5 16,1" stroke="#92A3AD" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg></span>`,
+      read:      `<span class="wa-tick-svg"><svg viewBox="0 0 17 9" width="19" height="11" fill="none"><polyline points="1,4.5 4,7.5 11,1" stroke="#53BDEB" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/><polyline points="6,4.5 9,7.5 16,1" stroke="#53BDEB" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg></span>`,
     };
     const ticks       = waIsSent ? (tickMap[waStatus] || tickMap.sent) : '';
     const darkClass   = waDarkMode ? 'dark' : '';
