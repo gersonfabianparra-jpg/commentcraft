@@ -1186,58 +1186,79 @@ input, textarea, select { font-family: var(--font); }
 
 /* ── Móvil ─────────────────────────────────────────────── */
 @media (max-width: 600px) {
-  /* Ocultar todo lo que no es la herramienta */
-  .hero            { display: none; }
+  /* Ocultar solo lo que no aporta en móvil */
   .ad-container    { display: none; }
-  .howto-section   { display: none; }
   .history-section { display: none; }
   #clearHistoryBtn { display: none; }
-  #saveHistoryBtn  { display: none; }
-  .preview-tip     { display: none; }
-  .panel-title     { display: none; }
 
-  /* Nav compacto */
+  /* ── Hero compacto ── */
+  .hero { padding: 20px 0 16px; }
+  .hero-badge { font-size: 0.7rem; padding: 4px 10px; margin-bottom: 10px; }
+  .hero-title { font-size: 1.55rem; line-height: 1.2; margin-bottom: 8px; }
+  .hero-subtitle { font-size: 0.82rem; line-height: 1.45; margin-bottom: 12px; }
+  .hero-platforms { gap: 6px; margin-bottom: 14px; flex-wrap: wrap; justify-content: center; }
+  .platform-badge { font-size: 0.7rem; padding: 4px 10px; }
+  .btn-hero { display: none; }
+
+  /* ── How-to compacto ── */
+  .howto-section { padding: 20px 0; }
+  .howto-section .section-title { font-size: 1.1rem; margin-bottom: 14px; }
+  .steps-grid { grid-template-columns: 1fr; gap: 10px; }
+  .step-card { padding: 12px 14px; display: flex; align-items: flex-start; gap: 12px; text-align: left; }
+  .step-number { flex-shrink: 0; width: 28px; height: 28px; font-size: 0.8rem; line-height: 28px; margin: 0; box-shadow: none; }
+  .step-card h3 { font-size: 0.85rem; margin-bottom: 2px; }
+  .step-card p  { font-size: 0.78rem; line-height: 1.4; }
+
+  /* ── Nav compacto ── */
   .nav { height: 52px; }
+  .nav-links { display: none; }
   .logo img { width: 30px; height: 30px; }
   .logo-text { font-size: 1.05rem; }
 
-  /* Main: sin espacio extra arriba */
+  /* ── Main ── */
   .main { padding-top: 0; }
+  .panel-title { font-size: 0.9rem; margin-bottom: 10px; }
+  .preview-tip { font-size: 0.72rem; line-height: 1.4; margin-top: 8px; }
 
-  /* Tabs */
+  /* ── Tabs ── */
   .platform-tabs {
     gap: 3px;
     padding: 4px;
     margin: 10px 0 10px;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
     border-radius: var(--radius);
   }
-  .tab-btn { flex: none; padding: 8px 11px; font-size: 0.75rem; gap: 4px; }
+  .platform-tabs::-webkit-scrollbar { display: none; }
+  .tab-btn { flex: none; padding: 8px 11px; font-size: 0.75rem; gap: 4px; white-space: nowrap; }
   .tab-icon { width: 15px; height: 15px; }
 
-  /* Editor grid sin margen */
+  /* ── Editor grid ── */
   .editor-grid { gap: 10px; margin-bottom: 24px; }
 
-  /* Cards */
+  /* ── Cards ── */
   .card { padding: 14px; border-radius: var(--radius); }
   .form-row { grid-template-columns: 1fr; }
   .form-label { font-size: 0.74rem; }
   .form-input { font-size: 0.85rem; padding: 9px 12px; }
   .form-textarea { min-height: 70px; }
 
-  /* Preview */
+  /* ── Preview ── */
   .preview-card-outer { max-width: 100%; border-radius: var(--radius); }
   .preview-actions { flex-direction: row; gap: 8px; margin-bottom: 0; }
   .btn-download { flex: 1; padding: 12px 14px; font-size: 0.88rem; }
   .btn-copy     { padding: 12px 14px; font-size: 0.85rem; }
 
-  /* Form actions: solo "Actualizar vista" */
-  .form-actions { margin-top: 14px; }
-  .btn-generate { width: 100%; justify-content: center; }
+  /* ── Form actions ── */
+  .form-actions { margin-top: 14px; gap: 8px; }
+  .btn-generate { flex: 1; justify-content: center; }
+  #saveHistoryBtn { padding: 10px 14px; font-size: 0.82rem; }
 
-  /* WhatsApp type selector */
+  /* ── WhatsApp ── */
   .wa-type-label { padding: 6px 4px; min-height: 28px; }
 
-  /* Avatar upload row compacto */
+  /* ── Avatar ── */
   .avatar-thumb { width: 46px; height: 46px; }
   .avatar-thumb-text { font-size: 18px; }
 }
@@ -1245,12 +1266,14 @@ input, textarea, select { font-family: var(--font); }
 /* ── Móvil pequeño (<420px) ────────────────────────────── */
 @media (max-width: 420px) {
   .container { padding: 0 10px; }
+  .hero-title { font-size: 1.35rem; }
 
   /* Solo íconos en tabs */
   .tab-btn { padding: 8px 9px; font-size: 0; gap: 0; }
-  .tab-icon { width: 16px; height: 16px; }
+  .tab-btn .tab-icon { width: 16px; height: 16px; }
 
   .card { padding: 12px; }
+  .step-card { padding: 10px 12px; }
 }
 
 /* ============================================================
