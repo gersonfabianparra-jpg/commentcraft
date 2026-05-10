@@ -146,6 +146,7 @@ function getFormData() {
     timestamp:   $('timestamp').value.trim()   || 'ahora',
     replyCount:  $('replyCount')?.value.trim() || '',
     fbReaction:  $('fbReaction')?.value        || 'like',
+    fbReplies:   $('fbReplies')?.value.trim()  || '',
     igReplies:   $('igReplies')?.value.trim()  || '',
     waTime:      $('waTime')?.value.trim()     || '12:00',
     waStatus:    $('waStatus')?.value          || 'read',
@@ -199,7 +200,7 @@ function liveUpdate() {
 }
 
 ['username', 'commentText', 'timestamp', 'likesCount',
- 'replyCount', 'igReplies', 'waTime', 'waGroupName', 'ytReplies',
+ 'replyCount', 'fbReplies', 'igReplies', 'waTime', 'waGroupName', 'ytReplies',
 ].forEach(id => {
   const el = $(id);
   if (el) el.addEventListener('input', liveUpdate);

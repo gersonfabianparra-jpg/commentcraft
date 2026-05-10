@@ -109,16 +109,16 @@ const Generators = {
   },
 
   /* ── Facebook ─────────────────────────────────────────── */
-  facebook({ username, avatarColor, avatarImg, commentText, likesCount, verified, timestamp, fbReaction }) {
+  facebook({ username, avatarColor, avatarImg, commentText, likesCount, verified, timestamp, fbReaction, fbReplies }) {
     const initial = (username || 'U').charAt(0).toUpperCase();
 
     const reactionMap = {
-      like:  { emoji: '👍', label: 'Me gusta',      color: '#1877F2', bg: '#e7f0fd' },
-      love:  { emoji: '❤️', label: 'Me encanta',    color: '#F33E58', bg: '#fdedf0' },
-      haha:  { emoji: '😂', label: 'Me divierte',   color: '#E8A400', bg: '#fdf5e0' },
-      wow:   { emoji: '😮', label: 'Me asombra',    color: '#E8A400', bg: '#fdf5e0' },
-      sad:   { emoji: '😢', label: 'Me entristece', color: '#E8A400', bg: '#fdf5e0' },
-      angry: { emoji: '😡', label: 'Me enoja',      color: '#E9710F', bg: '#fdeee3' },
+      like:  { emoji: '👍', color: '#1877F2' },
+      love:  { emoji: '❤️', color: '#F33E58' },
+      haha:  { emoji: '😂', color: '#E8A400' },
+      wow:   { emoji: '😮', color: '#E8A400' },
+      sad:   { emoji: '😢', color: '#E8A400' },
+      angry: { emoji: '😡', color: '#E9710F' },
     };
     const r = reactionMap[fbReaction] || reactionMap.like;
 
@@ -133,18 +133,25 @@ const Generators = {
   <div class="fb-comment">
     ${avatarEl(avatarImg, avatarColor, initial, 'fb-avatar')}
     <div class="fb-right">
-      <div class="fb-bubble">
-        <div class="fb-username">${escHtml(username || 'Usuario')}${verified ? verifiedSVG('#1877F2', '#fff', 14) : ''}</div>
-        <p class="fb-text">${escHtml(commentText)}</p>
-      </div>
-      <div class="fb-actions">
-        <span class="fb-action" style="color:${r.color};">${r.label}</span>
-        <span class="fb-sep">·</span>
-        <span class="fb-action">Responder</span>
-        <span class="fb-sep">·</span>
+      <div class="fb-name-row">
+        <span class="fb-username">${escHtml(username || 'Usuario')}</span>
+        ${verified ? verifiedSVG('#1877F2', '#fff', 14) : ''}
+        <span class="fb-time-sep">·</span>
         <span class="fb-time">${escHtml(timestamp)}</span>
-        ${reactionBadge}
       </div>
+      <p class="fb-text">${escHtml(commentText)}</p>
+      <div class="fb-actions">
+        <span class="fb-reply-btn">Responder</span>
+        ${reactionBadge}
+        <div class="fb-like-btn">
+          <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="#65676B" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M14 9V5a3 3 0 00-3-3l-4 9v11h11.28a2 2 0 002-1.7l1.38-9a2 2 0 00-2-2.3z"/><path d="M7 22H4a2 2 0 01-2-2v-7a2 2 0 012-2h3"/></svg>
+        </div>
+      </div>
+      ${fbReplies ? `
+      <div class="fb-see-replies">
+        <svg viewBox="0 0 24 24" width="12" height="12" fill="none" stroke="#65676B" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6,9 12,15 18,9"/></svg>
+        Ver ${escHtml(fbReplies)} respuesta${fbReplies !== '1' ? 's' : ''}
+      </div>` : ''}
     </div>
   </div>
 </div>`;
