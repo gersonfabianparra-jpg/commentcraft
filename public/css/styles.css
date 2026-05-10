@@ -1177,7 +1177,6 @@ input, textarea, select { font-family: var(--font); }
 /* ── Tablet / iPad ─────────────────────────────────────── */
 @media (max-width: 900px) {
   .editor-grid { grid-template-columns: 1fr; gap: 16px; }
-  /* Preview arriba, formulario abajo en móvil */
   .preview-panel { order: -1; }
   .form-panel    { order:  1; }
   .steps-grid    { grid-template-columns: 1fr; }
@@ -1187,68 +1186,71 @@ input, textarea, select { font-family: var(--font); }
 
 /* ── Móvil ─────────────────────────────────────────────── */
 @media (max-width: 600px) {
+  /* Ocultar todo lo que no es la herramienta */
+  .hero            { display: none; }
+  .ad-container    { display: none; }
+  .howto-section   { display: none; }
   .history-section { display: none; }
-  /* Hero */
-  .hero { padding: 36px 0 24px; }
-  .hero-title    { font-size: 1.75rem; letter-spacing: -0.02em; }
-  .hero-subtitle { font-size: 0.88rem; }
-  .hero-platforms { gap: 6px; }
-  .btn-hero { padding: 12px 28px; font-size: 0.95rem; }
+  #clearHistoryBtn { display: none; }
+  #saveHistoryBtn  { display: none; }
+  .preview-tip     { display: none; }
+  .panel-title     { display: none; }
 
-  /* Nav */
-  .nav { height: 56px; }
-  .logo-text { font-size: 1.1rem; }
-  .btn-ghost { padding: 6px 10px; font-size: 0.78rem; }
+  /* Nav compacto */
+  .nav { height: 52px; }
+  .logo img { width: 30px; height: 30px; }
+  .logo-text { font-size: 1.05rem; }
 
-  /* Tabs — scroll horizontal, sin flex: 1 */
-  .platform-tabs { gap: 3px; padding: 4px; margin: 20px 0 14px; }
-  .tab-btn { flex: none; padding: 8px 12px; font-size: 0.78rem; gap: 5px; }
+  /* Main: sin espacio extra arriba */
+  .main { padding-top: 0; }
+
+  /* Tabs */
+  .platform-tabs {
+    gap: 3px;
+    padding: 4px;
+    margin: 10px 0 10px;
+    border-radius: var(--radius);
+  }
+  .tab-btn { flex: none; padding: 8px 11px; font-size: 0.75rem; gap: 4px; }
   .tab-icon { width: 15px; height: 15px; }
 
-  /* Form */
-  .card { padding: 16px; }
-  .panel-title { font-size: 0.95rem; margin-bottom: 18px; }
+  /* Editor grid sin margen */
+  .editor-grid { gap: 10px; margin-bottom: 24px; }
+
+  /* Cards */
+  .card { padding: 14px; border-radius: var(--radius); }
   .form-row { grid-template-columns: 1fr; }
-  .form-label { font-size: 0.75rem; }
+  .form-label { font-size: 0.74rem; }
   .form-input { font-size: 0.85rem; padding: 9px 12px; }
-  .form-textarea { min-height: 72px; rows: 3; }
+  .form-textarea { min-height: 70px; }
 
   /* Preview */
   .preview-card-outer { max-width: 100%; border-radius: var(--radius); }
-  .preview-actions { flex-direction: row; gap: 8px; }
-  .btn-download { flex: 1; padding: 12px 16px; font-size: 0.9rem; }
+  .preview-actions { flex-direction: row; gap: 8px; margin-bottom: 0; }
+  .btn-download { flex: 1; padding: 12px 14px; font-size: 0.88rem; }
   .btn-copy     { padding: 12px 14px; font-size: 0.85rem; }
-  .preview-tip  { font-size: 0.72rem; }
 
-  /* Form actions */
-  .form-actions { flex-direction: column; gap: 8px; }
+  /* Form actions: solo "Actualizar vista" */
+  .form-actions { margin-top: 14px; }
   .btn-generate { width: 100%; justify-content: center; }
-  .form-actions .btn-secondary { width: 100%; justify-content: center; }
-
-  /* History */
-  .history-grid { grid-template-columns: 1fr 1fr; }
-  .history-section { padding: 28px 0 40px; }
 
   /* WhatsApp type selector */
   .wa-type-label { padding: 6px 4px; min-height: 28px; }
 
-  /* Howto */
-  .howto-section { padding: 40px 0; }
-  .section-title { font-size: 1.4rem; }
+  /* Avatar upload row compacto */
+  .avatar-thumb { width: 46px; height: 46px; }
+  .avatar-thumb-text { font-size: 18px; }
 }
 
-/* ── Móvil pequeño ─────────────────────────────────────── */
+/* ── Móvil pequeño (<420px) ────────────────────────────── */
 @media (max-width: 420px) {
-  .container { padding: 0 12px; }
-  .hero-title { font-size: 1.5rem; }
-  .platform-badge { font-size: 0.7rem; padding: 4px 10px; }
+  .container { padding: 0 10px; }
 
-  /* Tabs: solo íconos en pantallas muy pequeñas */
-  .tab-btn { padding: 8px 10px; font-size: 0; gap: 0; }
-  .tab-icon { width: 17px; height: 17px; }
+  /* Solo íconos en tabs */
+  .tab-btn { padding: 8px 9px; font-size: 0; gap: 0; }
+  .tab-icon { width: 16px; height: 16px; }
 
-  .history-grid { grid-template-columns: 1fr; }
-  .card { padding: 14px; }
+  .card { padding: 12px; }
 }
 
 /* ============================================================
