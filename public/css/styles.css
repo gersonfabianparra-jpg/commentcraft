@@ -767,47 +767,70 @@ input, textarea, select { font-family: var(--font); }
   color: #fff;
   flex-shrink: 0;
 }
-.ig-avatar-ring {
+.ig-story-ring {
   padding: 2px;
-  background: linear-gradient(45deg, #F09433, #E6683C, #DC2743, #CC2366, #BC1888);
+  background: linear-gradient(135deg, #feda75, #fa7e1e, #d62976, #962fbf, #4f5bd5);
   border-radius: 50%;
+  flex-shrink: 0;
 }
-.ig-avatar-ring .ig-avatar {
+.ig-story-ring .ig-avatar {
   border: 2px solid #fff;
 }
-.ig-content { flex: 1; min-width: 0; }
-.ig-comment-text {
+.ig-body { flex: 1; min-width: 0; }
+.ig-user-row {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  margin-bottom: 2px;
+  overflow: visible;
+}
+.ig-username {
+  font-size: 13.5px;
+  font-weight: 600;
+  color: #262626;
+}
+.ig-time { font-size: 12px; color: #8E8E8E; }
+.ig-text {
   font-size: 14px;
   color: #262626;
   line-height: 1.45;
   word-break: break-word;
+  margin-bottom: 6px;
 }
-.ig-username {
-  font-weight: 700;
-  color: #262626;
-  margin-right: 4px;
-}
-.ig-meta {
+.ig-actions {
   display: flex;
   align-items: center;
-  gap: 16px;
-  margin-top: 5px;
+  gap: 14px;
 }
-.ig-time { font-size: 11px; color: #8E8E8E; }
-.ig-likes-count { font-size: 11px; font-weight: 600; color: #262626; }
-.ig-reply-btn { font-size: 11px; font-weight: 600; color: #8E8E8E; }
+.ig-reply-btn {
+  font-size: 12px;
+  font-weight: 600;
+  color: #8E8E8E;
+  cursor: pointer;
+}
+.ig-heart-col {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
+  flex-shrink: 0;
+  padding-top: 2px;
+}
 .ig-heart {
-  margin-left: auto;
   display: flex;
   align-items: center;
   cursor: pointer;
-  flex-shrink: 0;
+}
+.ig-like-count {
+  font-size: 11px;
+  color: #262626;
+  font-weight: 400;
 }
 .ig-see-replies {
   font-size: 12px;
   font-weight: 600;
   color: #8E8E8E;
-  padding-left: 42px;
+  padding-left: 46px;
   margin-top: 2px;
   margin-bottom: 6px;
 }
@@ -1670,4 +1693,4 @@ input, textarea, select { font-family: var(--font); }
    ============================================================ */
 .tt-header   { overflow: visible; }
 .fb-username { overflow: visible; }
-.ig-comment-text { overflow: visible; }
+.ig-user-row { overflow: visible; }

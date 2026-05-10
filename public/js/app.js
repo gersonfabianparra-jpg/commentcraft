@@ -148,6 +148,7 @@ function getFormData() {
     fbReaction:  $('fbReaction')?.value        || 'like',
     fbReplies:   $('fbReplies')?.value.trim()  || '',
     igReplies:   $('igReplies')?.value.trim()  || '',
+    igStoryRing: $('igStoryRing')?.checked     || false,
     waTime:      $('waTime')?.value.trim()     || '12:00',
     waStatus:    $('waStatus')?.value          || 'read',
     waIsGroup:   $('waIsGroup')?.checked       || false,
@@ -206,7 +207,7 @@ function liveUpdate() {
   if (el) el.addEventListener('input', liveUpdate);
 });
 
-['isVerified', 'fbReaction', 'waStatus', 'waIsGroup', 'waDarkMode', 'waIsSent', 'ytPinned', 'ytCreatorHeart'].forEach(id => {
+['isVerified', 'fbReaction', 'waStatus', 'waIsGroup', 'waDarkMode', 'waIsSent', 'ytPinned', 'ytCreatorHeart', 'igStoryRing'].forEach(id => {
   const el = $(id);
   if (el) el.addEventListener('change', generatePreview);
 });

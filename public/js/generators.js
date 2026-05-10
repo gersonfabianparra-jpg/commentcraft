@@ -158,26 +158,34 @@ const Generators = {
   },
 
   /* ── Instagram ────────────────────────────────────────── */
-  instagram({ username, avatarColor, avatarImg, commentText, likesCount, verified, timestamp, igReplies }) {
+  instagram({ username, avatarColor, avatarImg, commentText, likesCount, verified, timestamp, igReplies, igStoryRing }) {
     const initial = (username || 'U').charAt(0).toUpperCase();
+
+    const avatarHtml = igStoryRing
+      ? `<div class="ig-story-ring">${avatarEl(avatarImg, avatarColor, initial, 'ig-avatar')}</div>`
+      : avatarEl(avatarImg, avatarColor, initial, 'ig-avatar');
 
     return `
 <div class="ig-wrapper">
   <div class="ig-comment">
-    ${avatarEl(avatarImg, avatarColor, initial, 'ig-avatar')}
-    <div class="ig-content">
-      <p class="ig-comment-text">
-        <span class="ig-username">${escHtml(username || 'usuario')}</span>${verified ? verifiedSVG('#0095F6', '#fff', 13) : ''}&nbsp;${escHtml(commentText)}
-      </p>
-      <div class="ig-meta">
+    ${avatarHtml}
+    <div class="ig-body">
+      <div class="ig-user-row">
+        <span class="ig-username">${escHtml(username || 'usuario')}</span>
+        ${verified ? verifiedSVG('#0095F6', '#fff', 13) : ''}
         <span class="ig-time">${escHtml(timestamp)}</span>
-        ${likesCount && likesCount !== '0' ? `<span class="ig-likes-count">${escHtml(likesCount)} Me gusta</span>` : ''}
+      </div>
+      <p class="ig-text">${escHtml(commentText)}</p>
+      <div class="ig-actions">
         <span class="ig-reply-btn">Responder</span>
       </div>
     </div>
-    <div class="ig-heart"><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="#262626" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20.84 4.61a5.5 5.5 0 00-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 00-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 000-7.78z"/></svg></div>
+    <div class="ig-heart-col">
+      <div class="ig-heart"><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="#262626" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20.84 4.61a5.5 5.5 0 00-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 00-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 000-7.78z"/></svg></div>
+      ${likesCount && likesCount !== '0' ? `<span class="ig-like-count">${escHtml(likesCount)}</span>` : ''}
+    </div>
   </div>
-  ${igReplies ? `<p class="ig-see-replies">${escHtml(igReplies)}</p>` : ''}
+  ${igReplies ? `<div class="ig-see-replies">${escHtml(igReplies)}</div>` : ''}
 </div>`;
   },
 
