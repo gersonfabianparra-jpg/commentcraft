@@ -97,9 +97,19 @@ avatarUrl.addEventListener('input', e => {
     return;
   }
   urlTimer = setTimeout(() => {
-    avatarImg = url;
-    updateAvatarThumb();
-    generatePreview();
+    const testImg = new Image();
+    testImg.onload = () => {
+      avatarImg = url;
+      updateAvatarThumb();
+      generatePreview();
+    };
+    testImg.onerror = () => {
+      avatarImg = null;
+      updateAvatarThumb();
+      generatePreview();
+      showToast('❌ No se pudo cargar esa URL. Los perfiles de redes sociales están bloqueados por el navegador — sube la foto con el botón 📷', 'error');
+    };
+    testImg.src = url;
   }, 600);
 });
 

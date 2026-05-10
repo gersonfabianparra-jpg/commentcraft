@@ -1589,9 +1589,9 @@ input, textarea, select { font-family: var(--font); }
   content: '';
   position: absolute;
   left: 20px;
-  top: 0;
+  top: -6px;
   width: 14px;
-  height: 16px;
+  height: 24px;
   border-left: 1.5px solid #C9C9C9;
   border-bottom: 1.5px solid #C9C9C9;
   border-bottom-left-radius: 6px;

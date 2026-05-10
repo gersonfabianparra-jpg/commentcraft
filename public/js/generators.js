@@ -28,8 +28,8 @@ function verifiedSVG(bgColor, checkColor, size = 16) {
 /* Avatar: foto o círculo coloreado con inicial */
 function avatarEl(avatarImg, avatarColor, initial, cls) {
   if (avatarImg) {
-    return `<div class="${cls}" style="background:${avatarColor};overflow:hidden;padding:0;flex-shrink:0;">` +
-           `<img src="${avatarImg}" alt="avatar" style="width:100%;height:100%;object-fit:cover;display:block;border-radius:50%;" /></div>`;
+    return `<div class="${cls}" style="background:${avatarColor};overflow:hidden;padding:0;flex-shrink:0;display:flex;align-items:center;justify-content:center;color:#fff;font-weight:700;">` +
+           `<img src="${avatarImg}" alt="avatar" style="width:100%;height:100%;object-fit:cover;display:block;border-radius:50%;" onerror="this.style.display='none';" /></div>`;
   }
   return `<div class="${cls}" style="background:${avatarColor};flex-shrink:0;">${initial}</div>`;
 }
