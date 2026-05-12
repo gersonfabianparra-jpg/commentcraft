@@ -3,14 +3,16 @@ const router               = express.Router();
 const { createToken, verifyToken } = require('../lib/tokens');
 const { checkAuth, DAILY_LIMIT }   = require('../middleware/usage');
 
-function logToSheets(email, type, ip) {
+async function logToSheets(email, type, ip) {
   const url = process.env.SHEETS_WEBHOOK_URL;
   if (!url) return;
-  fetch(url, {
-    method:  'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body:    JSON.stringify({ email, type, ip }),
-  }).catch(() => {}); // fire-and-forget, nunca bloquea
+  try {
+    await fetch(url, {
+      method:  'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body:    JSON.stringify({ email, type, ip }),
+    });
+  } catch (_) {}
 }
 
 router.get('/health', (_req, res) => res.json({ status: 'ok', app: 'CommentCraft', v: '1.0.0' }));
