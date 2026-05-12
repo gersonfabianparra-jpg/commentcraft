@@ -3,6 +3,16 @@ const router               = express.Router();
 const { createToken, verifyToken } = require('../lib/tokens');
 const { checkAuth, DAILY_LIMIT }   = require('../middleware/usage');
 
+function logToSheets(email, type, ip) {
+  const url = process.env.SHEETS_WEBHOOK_URL;
+  if (!url) return;
+  fetch(url, {
+    method:  'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body:    JSON.stringify({ email, type, ip }),
+  }).catch(() => {}); // fire-and-forget, nunca bloquea
+}
+
 router.get('/health', (_req, res) => res.json({ status: 'ok', app: 'CommentCraft', v: '1.0.0' }));
 
 /* ---- Consultar estado de autenticación ---- */
@@ -26,7 +36,10 @@ router.post('/auth/register', (req, res) => {
   const { email } = req.body;
   if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email))
     return res.status(400).json({ success: false, error: 'Email inválido' });
-  const token = createToken(email.toLowerCase().trim());
+  const clean = email.toLowerCase().trim();
+  const token = createToken(clean);
+  const ip    = req.headers['x-forwarded-for']?.split(',')[0]?.trim() || req.ip || '';
+  logToSheets(clean, 'registro', ip);
   res.json({ success: true, token });
 });
 
@@ -42,6 +55,7 @@ router.post('/auth/owner-unlock', (req, res) => {
     return res.status(401).json({ success: false, error: 'PIN incorrecto' });
 
   const token = createToken(ownerEmail.toLowerCase().trim());
+  logToSheets(ownerEmail.toLowerCase().trim(), 'propietario', req.ip || '');
   res.json({ success: true, token });
 });
 
