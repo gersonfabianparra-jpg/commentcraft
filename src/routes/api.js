@@ -7,11 +7,8 @@ async function logToSheets(email, type, ip) {
   const url = process.env.SHEETS_WEBHOOK_URL;
   if (!url) return;
   try {
-    await fetch(url, {
-      method:  'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body:    JSON.stringify({ email, type, ip }),
-    });
+    const params = new URLSearchParams({ email, type, ip });
+    await fetch(`${url}?${params}`, { redirect: 'follow' });
   } catch (_) {}
 }
 
