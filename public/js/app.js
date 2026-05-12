@@ -298,19 +298,26 @@ function getCaptureTarget() {
     : previewOuter;
 }
 
+const DOWNLOAD_ICON = `<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4M7 10l5 5 5-5M12 15V3"/></svg>`;
+
 downloadBtn.addEventListener('click', async () => {
   downloadBtn.disabled  = true;
-  downloadBtn.innerHTML = '⏳ Generando...';
+  downloadBtn.innerHTML = '⏳ Verificando...';
 
+  const allowed = await consumeUsage();
+  if (!allowed) {
+    showRegisterModal();
+    downloadBtn.disabled  = false;
+    downloadBtn.innerHTML = `${DOWNLOAD_ICON} Descargar PNG`;
+    return;
+  }
+
+  downloadBtn.innerHTML = '⏳ Generando...';
   const ok = await downloadAsPng(getCaptureTarget(), `${currentPlatform}-comment`);
   showToast(ok ? '✅ Imagen descargada' : '❌ Error al descargar', ok ? 'success' : 'error');
 
   downloadBtn.disabled  = false;
-  downloadBtn.innerHTML = `
-    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
-      <path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4M7 10l5 5 5-5M12 15V3"/>
-    </svg>
-    Descargar PNG`;
+  downloadBtn.innerHTML = `${DOWNLOAD_ICON} Descargar PNG`;
 });
 
 /* ============================================================
@@ -691,13 +698,238 @@ $('addSlotBtn')?.addEventListener('click', () => {
 });
 
 /* ============================================================
+   USAGE TRACKING
+   ============================================================ */
+const AUTH_TOKEN_KEY = 'cc_auth_token';
+const USAGE_KEY      = 'cc_usage';
+const DAILY_LIMIT    = 8;
+
+function getAuthToken()     { return localStorage.getItem(AUTH_TOKEN_KEY); }
+function saveAuthToken(tok) { localStorage.setItem(AUTH_TOKEN_KEY, tok); }
+
+function getLocalUsage() {
+  try {
+    const d     = JSON.parse(localStorage.getItem(USAGE_KEY) || '{}');
+    const today = new Date().toISOString().slice(0, 10);
+    return d.date === today ? d : { date: today, count: 0 };
+  } catch { return { date: new Date().toISOString().slice(0, 10), count: 0 }; }
+}
+
+function setLocalUsage(count) {
+  localStorage.setItem(USAGE_KEY, JSON.stringify({
+    date: new Date().toISOString().slice(0, 10),
+    count,
+  }));
+}
+
+function updateUsageBadge({ authenticated, isOwner, count, limit }) {
+  const badge = $('usageBadge');
+  if (!badge) return;
+  if (isOwner) {
+    badge.innerHTML = `<span class="usage-icon">👑</span><span class="usage-label">Modo Propietario — acceso ilimitado</span><button class="usage-logout" id="usageLogout" title="Salir del modo propietario">Salir</button>`;
+    badge.classList.remove('usage-warning', 'usage-empty', 'usage-ok');
+    badge.classList.add('usage-owner');
+    $('usageLogout')?.addEventListener('click', logoutSession);
+  } else if (authenticated) {
+    badge.innerHTML = `<span class="usage-icon">✓</span><span class="usage-label">Cuenta activa — descargas ilimitadas</span><button class="usage-logout" id="usageLogout" title="Cerrar sesión">Salir</button>`;
+    badge.classList.remove('usage-warning', 'usage-empty', 'usage-owner');
+    badge.classList.add('usage-ok');
+    $('usageLogout')?.addEventListener('click', logoutSession);
+  } else {
+    const remaining = Math.max(0, limit - count);
+    badge.innerHTML = `<span class="usage-icon">⬇️</span><span class="usage-label">${remaining} de ${limit} descargas gratuitas restantes hoy</span>`;
+    badge.classList.toggle('usage-warning', remaining === 1);
+    badge.classList.toggle('usage-empty',   remaining === 0);
+    badge.classList.remove('usage-ok', 'usage-owner');
+  }
+}
+
+function logoutSession() {
+  localStorage.removeItem(AUTH_TOKEN_KEY);
+  const usage = getLocalUsage();
+  updateUsageBadge({ authenticated: false, isOwner: false, count: usage.count, limit: DAILY_LIMIT });
+  showToast('Sesión cerrada', 'success');
+}
+
+async function fetchAndShowUsage() {
+  const token = getAuthToken();
+  if (token) {
+    try {
+      const res  = await fetch('/api/usage', { headers: { 'x-auth-token': token } });
+      const data = await res.json();
+      if (data.success && data.authenticated) { updateUsageBadge(data); return; }
+      localStorage.removeItem(AUTH_TOKEN_KEY); // token inválido
+    } catch { /* fallo silencioso */ }
+  }
+  const usage = getLocalUsage();
+  updateUsageBadge({ authenticated: false, count: usage.count, limit: DAILY_LIMIT });
+}
+
+/* Consume un uso — devuelve true si se permite la descarga */
+async function consumeUsage() {
+  const token = getAuthToken();
+
+  if (token) {
+    try {
+      const res  = await fetch('/api/generate', {
+        method:  'POST',
+        headers: { 'Content-Type': 'application/json', 'x-auth-token': token },
+      });
+      const data = await res.json();
+      if (data.success && data.authenticated) return true;
+      localStorage.removeItem(AUTH_TOKEN_KEY); // token inválido — caer al flujo anónimo
+    } catch { return true; } // si el backend falla, permitir (fail-open)
+  }
+
+  // Flujo anónimo: conteo en localStorage
+  const usage = getLocalUsage();
+  if (usage.count >= DAILY_LIMIT) return false;
+  const newCount = usage.count + 1;
+  setLocalUsage(newCount);
+  updateUsageBadge({ authenticated: false, count: newCount, limit: DAILY_LIMIT });
+  return true;
+}
+
+/* ============================================================
+   PANEL PROPIETARIO — 5 clics en el logo
+   ============================================================ */
+(function () {
+  const logo      = document.querySelector('.logo');
+  const panel     = $('ownerPanel');
+  const closeBtn  = $('ownerPanelClose');
+  const form      = $('ownerForm');
+  const pinInput  = $('ownerPin');
+  const submitBtn = $('ownerSubmit');
+  const success   = $('ownerSuccess');
+  if (!logo || !panel) return;
+
+  let clickCount = 0;
+  let resetTimer;
+
+  logo.addEventListener('click', e => {
+    e.preventDefault();
+    clearTimeout(resetTimer);
+    clickCount++;
+    if (clickCount >= 5) {
+      clickCount = 0;
+      panel.classList.remove('hidden');
+      pinInput.value = '';
+      success.classList.add('hidden');
+      form.classList.remove('hidden');
+      submitBtn.disabled = false;
+      submitBtn.textContent = 'Activar';
+      setTimeout(() => pinInput.focus(), 50);
+      return;
+    }
+    resetTimer = setTimeout(() => { clickCount = 0; }, 1800);
+  });
+
+  function closePanel() { panel.classList.add('hidden'); }
+  closeBtn.addEventListener('click', closePanel);
+  panel.addEventListener('click', e => { if (e.target === panel) closePanel(); });
+  document.addEventListener('keydown', e => { if (e.key === 'Escape') closePanel(); });
+
+  form.addEventListener('submit', async e => {
+    e.preventDefault();
+    const pin = pinInput.value.trim();
+    if (!pin) return;
+
+    submitBtn.disabled    = true;
+    submitBtn.textContent = 'Verificando...';
+
+    try {
+      const res  = await fetch('/api/auth/owner-unlock', {
+        method:  'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body:    JSON.stringify({ pin }),
+      });
+      const data = await res.json();
+
+      if (data.success && data.token) {
+        saveAuthToken(data.token);
+        form.classList.add('hidden');
+        success.classList.remove('hidden');
+        updateUsageBadge({ authenticated: true });
+        showToast('✅ Modo propietario activado', 'success');
+        setTimeout(closePanel, 1800);
+      } else {
+        pinInput.value        = '';
+        pinInput.focus();
+        submitBtn.disabled    = false;
+        submitBtn.textContent = 'Activar';
+        showToast('❌ PIN incorrecto', 'error');
+      }
+    } catch {
+      submitBtn.disabled    = false;
+      submitBtn.textContent = 'Activar';
+      showToast('❌ Error de conexión', 'error');
+    }
+  });
+})();
+
+/* ============================================================
+   MODAL DE REGISTRO
+   ============================================================ */
+function showRegisterModal() {
+  $('registerModal').classList.remove('hidden');
+  $('registerEmail').focus();
+}
+
+function hideRegisterModal() {
+  $('registerModal').classList.add('hidden');
+  $('registerSuccess').classList.add('hidden');
+  $('registerEmail').value = '';
+}
+
+$('modalClose').addEventListener('click', hideRegisterModal);
+$('registerModal').addEventListener('click', e => {
+  if (e.target === $('registerModal')) hideRegisterModal();
+});
+
+$('registerForm').addEventListener('submit', async e => {
+  e.preventDefault();
+  const email = $('registerEmail').value.trim();
+  if (!email) return;
+
+  const submitBtn = $('registerSubmit');
+  submitBtn.disabled   = true;
+  submitBtn.textContent = 'Registrando...';
+
+  try {
+    const res  = await fetch('/api/auth/register', {
+      method:  'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body:    JSON.stringify({ email }),
+    });
+    const data = await res.json();
+
+    if (data.success && data.token) {
+      saveAuthToken(data.token);
+      $('registerSuccess').classList.remove('hidden');
+      $('registerForm').classList.add('hidden');
+      updateUsageBadge({ authenticated: true });
+      setTimeout(hideRegisterModal, 2500);
+      showToast('✅ Registro exitoso — descargas ilimitadas activadas', 'success');
+    } else {
+      showToast('❌ ' + (data.error || 'Error al registrar'), 'error');
+    }
+  } catch {
+    showToast('❌ Error de conexión', 'error');
+  } finally {
+    submitBtn.disabled   = false;
+    submitBtn.textContent = 'Obtener acceso ilimitado — es gratis';
+  }
+});
+
+/* ============================================================
    INIT — auto-genera al cargar la página
    ============================================================ */
 function init() {
   updatePlatformFields();
   updateAvatarThumb();
   loadHistory();
-  generatePreview();  // preview automático al cargar
+  generatePreview();
+  fetchAndShowUsage();
 }
 
 document.addEventListener('DOMContentLoaded', init);

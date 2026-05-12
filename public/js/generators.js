@@ -15,8 +15,8 @@ function escHtml(str) {
 
 /* SVG verified badge — span inline-flex evita clipping en html2canvas */
 function verifiedSVG(bgColor, checkColor, size = 16) {
-  return `<span style="display:inline-flex;align-items:center;flex-shrink:0;margin-left:3px;">
-    <svg viewBox="0 0 20 20" width="${size}" height="${size}" style="display:block;">
+  return `<span style="display:inline-flex;align-items:center;flex-shrink:0;vertical-align:middle;line-height:1;">
+    <svg viewBox="0 0 20 20" width="${size}" height="${size}" style="display:block;vertical-align:middle;">
       <circle cx="10" cy="10" r="10" fill="${bgColor}"/>
       <polyline points="5.5,10.5 8.5,13.5 14.5,6.5"
         stroke="${checkColor}" stroke-width="2.2"

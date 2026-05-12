@@ -58,7 +58,7 @@
 <!-- ===== HERO ===== -->
 <section class="hero">
   <div class="container hero-inner">
-    <div class="hero-badge">✨ 100% Gratis · Sin registro</div>
+    <div class="hero-badge">✨ 8 descargas gratis · Sin contraseña</div>
     <h1 class="hero-title">Genera comentarios<br /><span class="gradient-text">de redes sociales</span></h1>
     <p class="hero-subtitle">Diseña comentarios realistas de <strong>TikTok, Twitter/X, YouTube, Reddit, LinkedIn</strong> y más. Descárgalos como imagen en segundos.</p>
     <div class="hero-platforms">
@@ -537,6 +537,11 @@
           </button>
         </div>
 
+        <div id="usageBadge" class="usage-badge">
+          <span class="usage-icon">⬇️</span>
+          <span class="usage-label">Cargando...</span>
+        </div>
+
         <p class="preview-tip">💡 La imagen se descarga con el fondo de la plataforma. La vista previa se actualiza en tiempo real.</p>
       </div>
     </div>
@@ -625,6 +630,52 @@
     </button>
   </div>
   <button class="pwa-banner-close" id="pwaBannerClose" aria-label="Cerrar">✕</button>
+</div>
+
+<!-- ===== PANEL PROPIETARIO (oculto) ===== -->
+<div id="ownerPanel" class="owner-panel hidden">
+  <button class="owner-panel-close" id="ownerPanelClose" aria-label="Cerrar">✕</button>
+  <div class="owner-panel-icon">🔑</div>
+  <p class="owner-panel-title">Modo Propietario</p>
+  <form id="ownerForm" class="owner-form" novalidate>
+    <input
+      type="password"
+      id="ownerPin"
+      class="form-input owner-pin-input"
+      placeholder="PIN"
+      autocomplete="off"
+      maxlength="40"
+    />
+    <button type="submit" class="btn btn-primary btn-full" id="ownerSubmit">Activar</button>
+  </form>
+  <div id="ownerSuccess" class="owner-success hidden">✅ Acceso ilimitado activado</div>
+</div>
+
+<!-- ===== MODAL REGISTRO ===== -->
+<div id="registerModal" class="modal-overlay hidden" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
+  <div class="modal-box">
+    <button class="modal-close" id="modalClose" aria-label="Cerrar">✕</button>
+    <div class="modal-icon">🚀</div>
+    <h2 class="modal-title" id="modalTitle">Límite diario alcanzado</h2>
+    <p class="modal-desc">Usaste tus <strong>8 descargas gratuitas</strong> de hoy.<br/>Regístrate gratis para descargas ilimitadas.</p>
+    <form id="registerForm" class="modal-form" novalidate>
+      <input
+        type="email"
+        id="registerEmail"
+        class="form-input"
+        placeholder="tu@email.com"
+        autocomplete="email"
+        required
+      />
+      <button type="submit" class="btn btn-primary btn-full" id="registerSubmit">
+        Obtener acceso ilimitado — es gratis
+      </button>
+    </form>
+    <p class="modal-fine">Sin contraseña · Sin tarjeta · Solo tu email</p>
+    <div id="registerSuccess" class="register-success hidden">
+      ✅ ¡Listo! Ya tienes descargas ilimitadas. Tu sesión quedó guardada.
+    </div>
+  </div>
 </div>
 
 <!-- ===== SCRIPTS ===== -->

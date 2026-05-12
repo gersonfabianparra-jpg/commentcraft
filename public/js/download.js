@@ -2,12 +2,23 @@
    CommentCraft — Download / Copy
    ============================================================ */
 
+const _PLATFORM_BG = {
+  tiktok:    '#121212',
+  facebook:  '#FFFFFF',
+  instagram: '#FFFFFF',
+  whatsapp:  '#E5DDD5',
+  youtube:   '#FFFFFF',
+  twitter:   '#000000',
+  threads:   '#FFFFFF',
+  linkedin:  '#F3F2EF',
+  reddit:    '#1A1A1B',
+};
+
 async function captureAsCanvas(el) {
-  /* Leer el background real del elemento para pasárselo explícitamente a html2canvas.
-     Si el elemento no tiene fondo propio (ej. burbuja TikTok) → null = transparente. */
-  const computedBg = window.getComputedStyle(el).backgroundColor;
-  const isTransparent = !computedBg || computedBg === 'transparent' || computedBg === 'rgba(0, 0, 0, 0)';
-  const backgroundColor = isTransparent ? null : computedBg;
+  /* Prioridad: 1) inline style (dark mode) 2) mapa por plataforma 3) transparente */
+  const inlineBg   = el.style.background || el.style.backgroundColor || '';
+  const platform   = el.dataset?.platform;
+  const backgroundColor = inlineBg || _PLATFORM_BG[platform] || '#121212';
 
   return html2canvas(el, {
     scale:           3,

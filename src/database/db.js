@@ -8,11 +8,8 @@ if (!fs.existsSync(DATA_DIR)) fs.mkdirSync(DATA_DIR, { recursive: true });
 if (!fs.existsSync(DB_FILE))  fs.writeFileSync(DB_FILE, JSON.stringify({ history: [], nextId: 1 }));
 
 function read() {
-  try {
-    return JSON.parse(fs.readFileSync(DB_FILE, 'utf8'));
-  } catch {
-    return { history: [], nextId: 1 };
-  }
+  try { return JSON.parse(fs.readFileSync(DB_FILE, 'utf8')); }
+  catch { return { history: [], nextId: 1 }; }
 }
 
 function write(data) {
@@ -26,7 +23,7 @@ const db = {
   },
 
   insertHistory(item) {
-    const data = read();
+    const data   = read();
     const record = {
       id:             data.nextId++,
       platform:       item.platform,
