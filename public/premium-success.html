@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>¡Bienvenido a Premium! — PostMockup</title>
+  <link rel="icon" type="image/svg+xml" href="assets/logo.svg" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --bg: #0D0D1A; --border: rgba(255,255,255,0.08);
+      --text-1: #F0F0F8; --text-2: rgba(255,255,255,0.55);
+      --primary: #7C3AED; --secondary: #06B6D4;
+    }
+    body { font-family: 'Inter', sans-serif; background: var(--bg); color: var(--text-1);
+           min-height: 100vh; display: flex; flex-direction: column; align-items: center;
+           justify-content: center; padding: 24px; text-align: center; }
+    .card {
+      background: #13131F; border: 1px solid var(--border);
+      border-radius: 20px; padding: 48px 40px; max-width: 480px; width: 100%;
+    }
+    .icon { font-size: 3.5rem; margin-bottom: 20px; }
+    h1 { font-size: 1.8rem; font-weight: 800; margin-bottom: 10px; }
+    .gradient { background: linear-gradient(135deg, var(--primary), var(--secondary));
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
+    .sub { color: var(--text-2); font-size: 0.95rem; margin-bottom: 32px; line-height: 1.6; }
+    .token-box {
+      background: rgba(124,58,237,0.1); border: 1px solid rgba(124,58,237,0.3);
+      border-radius: 12px; padding: 16px; margin-bottom: 24px;
+      font-size: 0.75rem; color: var(--text-2); word-break: break-all;
+      text-align: left;
+    }
+    .token-label { font-size: 0.7rem; color: var(--primary); font-weight: 600;
+      text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 8px; }
+    .btn {
+      display: inline-block; padding: 14px 32px; border-radius: 12px; font-weight: 700;
+      font-size: 1rem; text-decoration: none; cursor: pointer; border: none;
+      background: linear-gradient(135deg, var(--primary), var(--secondary));
+      color: #fff; width: 100%; font-family: inherit;
+    }
+    .btn:hover { opacity: 0.9; }
+    .loading { color: var(--text-2); font-size: 0.9rem; }
+    .error { color: #f87171; font-size: 0.9rem; }
+  </style>
+</head>
+<body>
+  <div class="card" id="card">
+    <div class="loading">Verificando pago...</div>
+  </div>
+
+  <script>
+    (async () => {
+      const params   = new URLSearchParams(location.search);
+      const orderId  = params.get('order_id');
+      const card     = document.getElementById('card');
+
+      if (!orderId) {
+        card.innerHTML = `
+          <div class="icon">✅</div>
+          <h1>¡Pago recibido!</h1>
+          <p class="sub">Tu pago fue procesado correctamente.<br/>Para activar tu cuenta ingresá el email con el que pagaste:</p>
+          <input type="email" id="recoverEmailInput" placeholder="tu@email.com"
+            style="width:100%;padding:12px;border-radius:10px;border:1px solid rgba(255,255,255,0.15);background:#0F0F22;color:#fff;font-size:0.95rem;text-align:center;margin-bottom:12px;" />
+          <button class="btn" onclick="activateByEmail()">Activar mi cuenta →</button>
+          <p style="color:rgba(255,255,255,0.4);font-size:0.78rem;margin-top:12px;">También podés usar el botón "¿Ya eres Premium?" en la página principal</p>
+        `;
+        return;
+      }
+
+      try {
+        const res  = await fetch(`/api/payments/session?order_id=${orderId}`);
+        const data = await res.json();
+
+        if (!data.success) throw new Error(data.error);
+
+        /* Guardar token premium en localStorage */
+        localStorage.setItem('cc_auth_token', data.token);
+
+        card.innerHTML = `
+          <div class="icon">🎉</div>
+          <h1>¡Eres <span class="gradient">Premium!</span></h1>
+          <p class="sub">Tu suscripción está activa. Ya tienes descargas ilimitadas en PostMockup.<br/>Tu acceso dura 30 días y se renueva automáticamente.</p>
+          <div class="token-box">
+            <div class="token-label">Tu token de acceso (guardado automáticamente)</div>
+            ${data.token.slice(0, 60)}...
+          </div>
+          <button class="btn" onclick="location.href='/'">Comenzar a usar PostMockup →</button>
+        `;
+      } catch (e) {
+        card.innerHTML = `<p class="error">Error: ${e.message}</p><br/><a href="/" style="color:#7C3AED;">Volver al inicio</a>`;
+      }
+    })();
+
+    async function activateByEmail() {
+      const email = document.getElementById('recoverEmailInput')?.value.trim();
+      if (!email) return;
+      const btn = document.querySelector('.btn');
+      btn.textContent = 'Verificando...';
+      btn.disabled = true;
+      try {
+        const res  = await fetch('/api/payments/activate', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ email }),
+        });
+        const data = await res.json();
+        if (data.success && data.sent) {
+          document.getElementById('card').innerHTML = `
+            <div class="icon">📧</div>
+            <h1>Revisá tu email</h1>
+            <p class="sub">Te enviamos un link a <strong>${email}</strong>.<br/>Hacé clic en el link para activar tu cuenta Premium.</p>
+            <button class="btn" onclick="location.href='/'">Volver a PostMockup</button>
+          `;
+        } else {
+          alert(data.error || 'No encontramos tu suscripción. Intentá de nuevo en unos minutos.');
+          btn.textContent = 'Activar mi cuenta →';
+          btn.disabled = false;
+        }
+      } catch {
+        alert('Error de conexión. Intentá de nuevo.');
+        btn.textContent = 'Activar mi cuenta →';
+        btn.disabled = false;
+      }
+    }
+  </script>
+</body>
+</html>

@@ -16,9 +16,10 @@ app.use(cors());
 app.use(morgan('dev'));
 app.use(express.json({ limit: '10mb' }));
 app.use(express.urlencoded({ extended: true }));
-app.use(express.static(path.join(__dirname, '../public')));
+app.use(express.static(path.join(__dirname, '../public'), { extensions: ['html'] }));
 
 app.use('/api', require('./routes/api'));
+app.use('/api/payments', require('./routes/payments'));
 
 app.get('*', (_req, res) => {
   res.sendFile(path.join(__dirname, '../public/index.html'));

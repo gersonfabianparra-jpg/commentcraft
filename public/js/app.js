@@ -722,25 +722,27 @@ function setLocalUsage(count) {
   }));
 }
 
-function updateUsageBadge({ authenticated, isOwner, count, limit }) {
+function updateUsageBadge({ authenticated, isOwner, isPremium, count, limit }) {
   const badge = $('usageBadge');
   if (!badge) return;
   if (isOwner) {
-    badge.innerHTML = `<span class="usage-icon">👑</span><span class="usage-label">Modo Propietario — acceso ilimitado</span><button class="usage-logout" id="usageLogout" title="Salir del modo propietario">Salir</button>`;
-    badge.classList.remove('usage-warning', 'usage-empty', 'usage-ok');
-    badge.classList.add('usage-owner');
+    badge.innerHTML = `<span class="usage-icon">👑</span><span class="usage-label">Modo Propietario — acceso ilimitado</span><button class="usage-logout" id="usageLogout">Salir</button>`;
+    badge.className = 'usage-badge usage-owner';
+    $('usageLogout')?.addEventListener('click', logoutSession);
+  } else if (isPremium) {
+    badge.innerHTML = `<span class="usage-icon">⭐</span><span class="usage-label">Premium — descargas ilimitadas</span><button class="usage-logout" id="usageLogout">Salir</button>`;
+    badge.className = 'usage-badge usage-premium';
     $('usageLogout')?.addEventListener('click', logoutSession);
   } else if (authenticated) {
-    badge.innerHTML = `<span class="usage-icon">✓</span><span class="usage-label">Cuenta activa — descargas ilimitadas</span><button class="usage-logout" id="usageLogout" title="Cerrar sesión">Salir</button>`;
-    badge.classList.remove('usage-warning', 'usage-empty', 'usage-owner');
-    badge.classList.add('usage-ok');
+    badge.innerHTML = `<span class="usage-icon">✓</span><span class="usage-label">Cuenta activa — descargas ilimitadas</span><button class="usage-logout" id="usageLogout">Salir</button>`;
+    badge.className = 'usage-badge usage-ok';
     $('usageLogout')?.addEventListener('click', logoutSession);
   } else {
     const remaining = Math.max(0, limit - count);
-    badge.innerHTML = `<span class="usage-icon">⬇️</span><span class="usage-label">${remaining} de ${limit} descargas gratuitas restantes hoy</span>`;
-    badge.classList.toggle('usage-warning', remaining === 1);
-    badge.classList.toggle('usage-empty',   remaining === 0);
-    badge.classList.remove('usage-ok', 'usage-owner');
+    const upgradeBtn = `<button class="usage-upgrade" id="usageUpgradeBtn">⭐ Premium $2.99/mes</button>`;
+    badge.innerHTML = `<span class="usage-icon">⬇️</span><span class="usage-label">${remaining} de ${limit} descargas gratuitas restantes hoy</span>${upgradeBtn}`;
+    badge.className = 'usage-badge' + (remaining === 0 ? ' usage-empty' : remaining === 1 ? ' usage-warning' : '');
+    $('usageUpgradeBtn')?.addEventListener('click', showUpgradeModal);
   }
 }
 
@@ -918,6 +920,118 @@ $('registerForm').addEventListener('submit', async e => {
   } finally {
     submitBtn.disabled   = false;
     submitBtn.textContent = 'Obtener acceso ilimitado — es gratis';
+  }
+});
+
+/* ============================================================
+   MODAL DE UPGRADE (PREMIUM)
+   ============================================================ */
+function showUpgradeModal() {
+  $('upgradeModal').classList.remove('hidden');
+  $('upgradeEmail').focus();
+}
+function hideUpgradeModal() {
+  $('upgradeModal').classList.add('hidden');
+  $('upgradeEmail').value = '';
+}
+
+$('upgradeModalClose').addEventListener('click', hideUpgradeModal);
+$('upgradeModal').addEventListener('click', e => {
+  if (e.target === $('upgradeModal')) hideUpgradeModal();
+});
+
+$('upgradeForm').addEventListener('submit', async e => {
+  e.preventDefault();
+  const email = $('upgradeEmail').value.trim();
+  if (!email) return;
+
+  const btn = $('upgradeSubmit');
+  btn.disabled   = true;
+  btn.textContent = 'Redirigiendo...';
+
+  try {
+    const res  = await fetch('/api/payments/checkout', {
+      method:  'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body:    JSON.stringify({ email }),
+    });
+    const data = await res.json();
+    if (data.success && data.url) {
+      window.location.href = data.url;
+    } else {
+      showToast('❌ ' + (data.error || 'Error al iniciar pago'), 'error');
+      btn.disabled   = false;
+      btn.textContent = 'Ir al pago seguro →';
+    }
+  } catch {
+    showToast('❌ Error de conexión', 'error');
+    btn.disabled   = false;
+    btn.textContent = 'Ir al pago seguro →';
+  }
+});
+
+/* ============================================================
+   MODAL RECUPERAR PREMIUM
+   ============================================================ */
+function showRecoverModal() {
+  hideUpgradeModal();
+  $('recoverModal').classList.remove('hidden');
+  setTimeout(() => $('recoverEmail').focus(), 50);
+}
+
+function hideRecoverModal() {
+  $('recoverModal').classList.add('hidden');
+  $('recoverEmail').value = '';
+  $('recoverSuccess').classList.add('hidden');
+  $('recoverError').classList.add('hidden');
+  $('recoverForm').classList.remove('hidden');
+}
+
+$('recoverModalClose').addEventListener('click', hideRecoverModal);
+$('recoverModal').addEventListener('click', e => {
+  if (e.target === $('recoverModal')) hideRecoverModal();
+});
+
+$('goRecoverLink')?.addEventListener('click', () => showRecoverModal());
+
+$('recoverForm').addEventListener('submit', async e => {
+  e.preventDefault();
+  const email = $('recoverEmail').value.trim();
+  if (!email) return;
+
+  const btn = $('recoverSubmit');
+  btn.disabled    = true;
+  btn.textContent = 'Verificando...';
+  $('recoverError').classList.add('hidden');
+
+  try {
+    const res  = await fetch('/api/payments/recover', {
+      method:  'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body:    JSON.stringify({ email }),
+    });
+    const data = await res.json();
+
+    if (data.success && data.sent) {
+      $('recoverForm').classList.add('hidden');
+      $('recoverSuccess').innerHTML =
+        `📧 Te enviamos un link a <strong>${email}</strong>.<br/>` +
+        `Revisá tu bandeja de entrada y hacé clic en el link para restaurar tu acceso.<br/>` +
+        `<span style="font-size:0.8em;opacity:0.7;">Expira en 15 minutos.</span>`;
+      $('recoverSuccess').classList.remove('hidden');
+    } else {
+      const errEl = $('recoverError');
+      errEl.textContent = data.error || 'No encontramos una suscripción activa con ese email.';
+      errEl.classList.remove('hidden');
+      btn.disabled    = false;
+      btn.textContent = 'Verificar y recuperar acceso →';
+    }
+  } catch {
+    const errEl = $('recoverError');
+    errEl.textContent = 'Error de conexión. Intenta de nuevo.';
+    errEl.classList.remove('hidden');
+    btn.disabled    = false;
+    btn.textContent = 'Verificar y recuperar acceso →';
   }
 });
 

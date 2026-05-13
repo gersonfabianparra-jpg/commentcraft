@@ -1,0 +1,277 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Admin — PostMockup</title>
+  <link rel="icon" type="image/svg+xml" href="assets/logo.svg" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --bg: #0D0D1A; --bg-card: #13131F; --border: rgba(255,255,255,0.08);
+      --text-1: #F0F0F8; --text-2: rgba(255,255,255,0.55); --text-3: rgba(255,255,255,0.28);
+      --primary: #7C3AED; --green: #22c55e; --red: #ef4444; --yellow: #f59e0b;
+    }
+    body { font-family: 'Inter', sans-serif; background: var(--bg); color: var(--text-1); min-height: 100vh; padding: 24px; }
+
+    /* LOGIN */
+    .login-wrap { min-height: 100vh; display: flex; align-items: center; justify-content: center; }
+    .login-card { background: var(--bg-card); border: 1px solid var(--border); border-radius: 20px; padding: 40px 36px; max-width: 380px; width: 100%; text-align: center; }
+    .login-icon { font-size: 2.5rem; margin-bottom: 16px; }
+    .login-title { font-size: 1.3rem; font-weight: 700; margin-bottom: 8px; }
+    .login-sub { color: var(--text-2); font-size: 0.88rem; margin-bottom: 24px; }
+    .pin-input { width: 100%; background: rgba(255,255,255,0.05); border: 1px solid var(--border); border-radius: 10px; padding: 12px 16px; color: var(--text-1); font-size: 1rem; font-family: inherit; outline: none; text-align: center; letter-spacing: 0.2em; margin-bottom: 12px; }
+    .pin-input:focus { border-color: var(--primary); }
+    .btn { width: 100%; padding: 13px; background: var(--primary); color: #fff; border: none; border-radius: 10px; font-size: 0.95rem; font-weight: 600; font-family: inherit; cursor: pointer; }
+    .btn:hover { opacity: 0.9; }
+    .login-error { color: var(--red); font-size: 0.85rem; margin-top: 10px; }
+
+    /* DASHBOARD */
+    .dashboard { max-width: 1100px; margin: 0 auto; }
+    .top-bar { display: flex; align-items: center; justify-content: space-between; margin-bottom: 32px; flex-wrap: gap; gap: 12px; }
+    .top-brand { display: flex; align-items: center; gap: 10px; font-size: 1.1rem; font-weight: 700; }
+    .top-brand img { width: 32px; height: 32px; }
+    .logout-btn { background: rgba(255,255,255,0.06); border: 1px solid var(--border); color: var(--text-2); padding: 8px 16px; border-radius: 8px; font-size: 0.85rem; cursor: pointer; font-family: inherit; }
+    .logout-btn:hover { background: rgba(255,255,255,0.1); }
+
+    /* STATS */
+    .stats-row { display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap: 14px; margin-bottom: 32px; }
+    .stat-card { background: var(--bg-card); border: 1px solid var(--border); border-radius: 14px; padding: 20px; }
+    .stat-num { font-size: 2rem; font-weight: 800; line-height: 1; margin-bottom: 6px; }
+    .stat-label { color: var(--text-2); font-size: 0.8rem; }
+    .stat-green { color: var(--green); }
+    .stat-red   { color: var(--red); }
+    .stat-purple { color: #a78bfa; }
+
+    /* TABLE */
+    .section-title { font-size: 1rem; font-weight: 700; margin-bottom: 14px; display: flex; align-items: center; gap: 8px; }
+    .badge { display: inline-block; padding: 3px 10px; border-radius: 20px; font-size: 0.75rem; font-weight: 600; }
+    .badge-active   { background: rgba(34,197,94,0.15);  color: var(--green); }
+    .badge-canceled { background: rgba(239,68,68,0.12);  color: var(--red); }
+
+    .table-wrap { background: var(--bg-card); border: 1px solid var(--border); border-radius: 14px; overflow: hidden; margin-bottom: 32px; overflow-x: auto; }
+    table { width: 100%; border-collapse: collapse; min-width: 600px; }
+    thead { background: rgba(255,255,255,0.03); }
+    th { padding: 12px 16px; text-align: left; font-size: 0.75rem; font-weight: 600; color: var(--text-2); text-transform: uppercase; letter-spacing: 0.05em; border-bottom: 1px solid var(--border); }
+    td { padding: 13px 16px; font-size: 0.875rem; border-bottom: 1px solid rgba(255,255,255,0.04); }
+    tr:last-child td { border-bottom: none; }
+    tr:hover td { background: rgba(255,255,255,0.02); }
+    .td-email { font-weight: 500; }
+    .td-muted { color: var(--text-2); font-size: 0.8rem; }
+
+    .empty-row td { text-align: center; color: var(--text-3); padding: 32px; }
+
+    /* LOADING */
+    .loading-wrap { text-align: center; padding: 60px; color: var(--text-2); }
+    .spinner { width: 36px; height: 36px; border: 3px solid rgba(124,58,237,0.2); border-top-color: var(--primary); border-radius: 50%; animation: spin 0.8s linear infinite; margin: 0 auto 16px; }
+    @keyframes spin { to { transform: rotate(360deg); } }
+
+    .refresh-btn { background: rgba(124,58,237,0.12); border: 1px solid rgba(124,58,237,0.3); color: #a78bfa; padding: 8px 16px; border-radius: 8px; font-size: 0.85rem; cursor: pointer; font-family: inherit; }
+    .refresh-btn:hover { background: rgba(124,58,237,0.2); }
+
+    .hidden { display: none !important; }
+  </style>
+</head>
+<body>
+
+<!-- LOGIN -->
+<div class="login-wrap" id="loginWrap">
+  <div class="login-card">
+    <div class="login-icon">🔐</div>
+    <h1 class="login-title">Panel de Administrador</h1>
+    <p class="login-sub">Ingresá tu PIN de propietario para continuar</p>
+    <form id="loginForm">
+      <input type="password" class="pin-input" id="pinInput" placeholder="••••••••" autocomplete="off" maxlength="40" />
+      <button type="submit" class="btn" id="loginBtn">Entrar</button>
+    </form>
+    <p class="login-error hidden" id="loginError">PIN incorrecto</p>
+  </div>
+</div>
+
+<!-- DASHBOARD -->
+<div class="dashboard hidden" id="dashboard">
+  <div class="top-bar">
+    <div class="top-brand">
+      <img src="assets/logo.svg" alt="PostMockup" />
+      PostMockup · Admin
+      <span style="background:rgba(255,198,0,0.12);border:1px solid rgba(255,198,0,0.3);color:#fbbf24;font-size:0.7rem;font-weight:600;padding:3px 10px;border-radius:20px;letter-spacing:0.04em;">🍋 Lemon Squeezy</span>
+    </div>
+    <div style="display:flex;gap:10px;">
+      <button class="refresh-btn" id="refreshBtn">↻ Actualizar</button>
+      <button class="logout-btn" id="logoutBtn">Cerrar sesión</button>
+    </div>
+  </div>
+
+  <div id="mainContent">
+    <div class="loading-wrap">
+      <div class="spinner"></div>
+      <p>Cargando datos...</p>
+    </div>
+  </div>
+</div>
+
+<script>
+  const $ = id => document.getElementById(id);
+  const AUTH_KEY = 'cc_auth_token';
+
+  /* ── LOGIN ── */
+  $('loginForm').addEventListener('submit', async e => {
+    e.preventDefault();
+    const pin = $('pinInput').value.trim();
+    if (!pin) return;
+    const btn = $('loginBtn');
+    btn.disabled = true;
+    btn.textContent = 'Verificando...';
+    $('loginError').classList.add('hidden');
+
+    try {
+      const res  = await fetch('/api/auth/owner-unlock', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ pin }),
+      });
+      const data = await res.json();
+      if (data.success && data.token) {
+        localStorage.setItem(AUTH_KEY, data.token);
+        showDashboard();
+      } else {
+        $('loginError').classList.remove('hidden');
+        $('pinInput').value = '';
+        $('pinInput').focus();
+      }
+    } catch {
+      $('loginError').textContent = 'Error de conexión';
+      $('loginError').classList.remove('hidden');
+    } finally {
+      btn.disabled = false;
+      btn.textContent = 'Entrar';
+    }
+  });
+
+  /* ── SESSION CHECK ── */
+  async function checkSession() {
+    const token = localStorage.getItem(AUTH_KEY);
+    if (!token) return;
+    const res  = await fetch('/api/usage', { headers: { 'x-auth-token': token } });
+    const data = await res.json();
+    if (data.success && data.isOwner) showDashboard();
+  }
+
+  function showDashboard() {
+    $('loginWrap').classList.add('hidden');
+    $('dashboard').classList.remove('hidden');
+    loadSubscribers();
+  }
+
+  /* ── LOGOUT ── */
+  $('logoutBtn').addEventListener('click', () => {
+    localStorage.removeItem(AUTH_KEY);
+    location.reload();
+  });
+
+  $('refreshBtn').addEventListener('click', loadSubscribers);
+
+  /* ── LOAD DATA ── */
+  async function loadSubscribers() {
+    const token = localStorage.getItem(AUTH_KEY);
+    $('mainContent').innerHTML = `<div class="loading-wrap"><div class="spinner"></div><p>Cargando datos...</p></div>`;
+
+    try {
+      const res  = await fetch('/api/admin/subscribers', { headers: { 'x-auth-token': token } });
+      const data = await res.json();
+      if (!data.success) throw new Error(data.error);
+      renderDashboard(data);
+    } catch (e) {
+      $('mainContent').innerHTML = `<div class="loading-wrap"><p style="color:#ef4444;">Error: ${e.message}</p></div>`;
+    }
+  }
+
+  /* ── RENDER ── */
+  function renderDashboard({ active, canceled }) {
+    const mrr = active.reduce((sum, s) => sum + parseFloat(s.amount || 0), 0);
+
+    $('mainContent').innerHTML = `
+      <div class="stats-row">
+        <div class="stat-card">
+          <div class="stat-num stat-green">${active.length}</div>
+          <div class="stat-label">Suscriptores activos</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-num stat-purple">$${mrr.toFixed(2)}</div>
+          <div class="stat-label">MRR mensual</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-num stat-red">${canceled.length}</div>
+          <div class="stat-label">Cancelados (últimos 50)</div>
+        </div>
+      </div>
+
+      <div class="section-title">
+        Suscriptores activos <span class="badge badge-active">${active.length}</span>
+      </div>
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th>Email</th>
+              <th>Nombre</th>
+              <th>Monto</th>
+              <th>Suscripto desde</th>
+              <th>Próximo cobro</th>
+            </tr>
+          </thead>
+          <tbody>
+            ${active.length ? active.map(s => `
+              <tr>
+                <td class="td-email">${esc(s.email)}</td>
+                <td class="td-muted">${esc(s.name)}</td>
+                <td>$${s.amount} ${s.currency}</td>
+                <td class="td-muted">${s.created}</td>
+                <td class="td-muted">${s.nextBilling}</td>
+              </tr>`).join('') :
+              `<tr class="empty-row"><td colspan="5">Sin suscriptores activos aún</td></tr>`
+            }
+          </tbody>
+        </table>
+      </div>
+
+      ${canceled.length ? `
+      <div class="section-title">
+        Cancelados <span class="badge badge-canceled">${canceled.length}</span>
+      </div>
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th>Email</th>
+              <th>Nombre</th>
+              <th>Monto</th>
+              <th>Suscripto desde</th>
+            </tr>
+          </thead>
+          <tbody>
+            ${canceled.map(s => `
+              <tr>
+                <td class="td-email">${esc(s.email)}</td>
+                <td class="td-muted">${esc(s.name)}</td>
+                <td>$${s.amount} ${s.currency}</td>
+                <td class="td-muted">${s.created}</td>
+              </tr>`).join('')}
+          </tbody>
+        </table>
+      </div>` : ''}
+    `;
+  }
+
+  function esc(str) {
+    return String(str || '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+  }
+
+  /* ── INIT ── */
+  checkSession();
+</script>
+</body>
+</html>

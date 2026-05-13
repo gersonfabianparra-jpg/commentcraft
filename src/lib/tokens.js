@@ -4,10 +4,16 @@ function secret() {
   return process.env.TOKEN_SECRET || 'dev-secret-change-in-production';
 }
 
-function createToken(email) {
-  const payload = Buffer.from(JSON.stringify({ email, v: 1 })).toString('base64url');
+function createToken(email, extra = {}) {
+  const payload = Buffer.from(JSON.stringify({ email, v: 1, ...extra })).toString('base64url');
   const sig     = crypto.createHmac('sha256', secret()).update(payload).digest('base64url');
   return `${payload}.${sig}`;
+}
+
+/* Crea token premium con vencimiento a 35 días (5 días de gracia sobre los 30) */
+function createPremiumToken(email, stripeCustomerId) {
+  const exp = Math.floor(Date.now() / 1000) + 60 * 60 * 24 * 35;
+  return createToken(email, { tier: 'premium', exp, stripeCustomerId });
 }
 
 function verifyToken(token) {
@@ -19,8 +25,17 @@ function verifyToken(token) {
   const expected = crypto.createHmac('sha256', secret()).update(payload).digest('base64url');
   if (sig !== expected) return null;
   try {
-    return JSON.parse(Buffer.from(payload, 'base64url').toString());
+    const data = JSON.parse(Buffer.from(payload, 'base64url').toString());
+    /* Tokens premium con exp: verificar que no haya vencido */
+    if (data.exp && Math.floor(Date.now() / 1000) > data.exp) return null;
+    return data;
   } catch { return null; }
 }
 
-module.exports = { createToken, verifyToken };
+/* Token de un solo uso para magic link de recuperación — expira en 15 min */
+function createRecoveryLinkToken(email) {
+  const exp = Math.floor(Date.now() / 1000) + 60 * 15;
+  return createToken(email, { purpose: 'recover', exp });
+}
+
+module.exports = { createToken, createPremiumToken, createRecoveryLinkToken, verifyToken };

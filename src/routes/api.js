@@ -18,10 +18,11 @@ router.get('/health', (_req, res) => res.json({ status: 'ok', app: 'CommentCraft
 router.get('/usage', (req, res) => {
   checkAuth(req);
   if (req.isAuthenticated) {
-    const isOwner = req.userEmail === (process.env.OWNER_EMAIL || '').toLowerCase();
-    return res.json({ success: true, authenticated: true, isOwner, email: req.userEmail, limit: null });
+    const isOwner   = req.userEmail === (process.env.OWNER_EMAIL || '').toLowerCase();
+    const isPremium = req.userTier === 'premium' || isOwner;
+    return res.json({ success: true, authenticated: true, isOwner, isPremium, email: req.userEmail, limit: null });
   }
-  res.json({ success: true, authenticated: false, isOwner: false, limit: DAILY_LIMIT });
+  res.json({ success: true, authenticated: false, isOwner: false, isPremium: false, limit: DAILY_LIMIT });
 });
 
 /* ---- Validar token (llamada de descarga) ---- */
@@ -31,19 +32,19 @@ router.post('/generate', (req, res) => {
 });
 
 /* ---- Registrar usuario con email ---- */
-router.post('/auth/register', (req, res) => {
+router.post('/auth/register', async (req, res) => {
   const { email } = req.body;
   if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email))
     return res.status(400).json({ success: false, error: 'Email inválido' });
   const clean = email.toLowerCase().trim();
   const token = createToken(clean);
   const ip    = req.headers['x-forwarded-for']?.split(',')[0]?.trim() || req.ip || '';
-  logToSheets(clean, 'registro', ip);
+  await logToSheets(clean, 'registro', ip);
   res.json({ success: true, token });
 });
 
 /* ---- Desbloqueo de propietario (PIN validado en servidor) ---- */
-router.post('/auth/owner-unlock', (req, res) => {
+router.post('/auth/owner-unlock', async (req, res) => {
   const { pin } = req.body;
   const ownerPin   = process.env.OWNER_PIN;
   const ownerEmail = process.env.OWNER_EMAIL;
@@ -54,8 +55,55 @@ router.post('/auth/owner-unlock', (req, res) => {
     return res.status(401).json({ success: false, error: 'PIN incorrecto' });
 
   const token = createToken(ownerEmail.toLowerCase().trim());
-  logToSheets(ownerEmail.toLowerCase().trim(), 'propietario', req.ip || '');
+  await logToSheets(ownerEmail.toLowerCase().trim(), 'propietario', req.ip || '');
   res.json({ success: true, token });
+});
+
+/* ---- Panel admin — lista de suscriptores Premium ---- */
+router.get('/admin/subscribers', async (req, res) => {
+  checkAuth(req);
+  const isOwner = req.isAuthenticated && req.userEmail === (process.env.OWNER_EMAIL || '').toLowerCase();
+  if (!isOwner) return res.status(403).json({ success: false, error: 'Acceso denegado' });
+
+  const LS_API = 'https://api.lemonsqueezy.com/v1';
+  const lsHeaders = {
+    'Authorization': `Bearer ${process.env.LEMONSQUEEZY_API_KEY}`,
+    'Accept': 'application/vnd.api+json',
+  };
+
+  try {
+    const pages = [];
+    let url = `${LS_API}/subscriptions?page[size]=100`;
+    while (url) {
+      const r    = await fetch(url, { headers: lsHeaders });
+      const data = await r.json();
+      if (!r.ok) throw new Error(data.errors?.[0]?.detail || 'Error al obtener suscripciones');
+      pages.push(...(data.data || []));
+      url = data.links?.next || null;
+    }
+
+    const fmt = (s) => {
+      const a = s.attributes;
+      const fmtDate = (iso) => iso ? new Date(iso).toLocaleDateString('es-ES') : '—';
+      return {
+        email:       a.user_email || '—',
+        name:        a.user_name  || '—',
+        status:      a.status,
+        amount:      '2.99',
+        currency:    'USD',
+        created:     fmtDate(a.created_at),
+        nextBilling: fmtDate(a.renews_at),
+      };
+    };
+
+    const active   = pages.filter(s => ['active', 'on_trial'].includes(s.attributes.status)).map(fmt);
+    const canceled = pages.filter(s => !['active', 'on_trial'].includes(s.attributes.status)).map(fmt);
+
+    res.json({ success: true, active, canceled });
+  } catch (e) {
+    console.error('Admin subscribers error:', e.message);
+    res.status(500).json({ success: false, error: e.message });
+  }
 });
 
 /* ---- History (localStorage — rutas mantenidas por compatibilidad) ---- */

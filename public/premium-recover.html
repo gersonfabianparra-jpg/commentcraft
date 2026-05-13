@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Recuperar acceso Premium — PostMockup</title>
+  <link rel="icon" type="image/svg+xml" href="assets/logo.svg" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --bg: #0D0D1A; --border: rgba(255,255,255,0.08);
+      --text-1: #F0F0F8; --text-2: rgba(255,255,255,0.55);
+      --primary: #7C3AED; --secondary: #06B6D4;
+    }
+    body {
+      font-family: 'Inter', sans-serif;
+      background: var(--bg); color: var(--text-1);
+      min-height: 100vh;
+      display: flex; flex-direction: column;
+      align-items: center; justify-content: center;
+      padding: 24px; text-align: center;
+    }
+    .card {
+      background: #13131F;
+      border: 1px solid var(--border);
+      border-radius: 20px;
+      padding: 48px 40px;
+      max-width: 460px;
+      width: 100%;
+    }
+    .icon { font-size: 3.5rem; margin-bottom: 20px; }
+    h1 { font-size: 1.7rem; font-weight: 800; margin-bottom: 10px; }
+    .gradient {
+      background: linear-gradient(135deg, var(--primary), var(--secondary));
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+    }
+    .sub {
+      color: var(--text-2); font-size: 0.93rem;
+      margin-bottom: 28px; line-height: 1.65;
+    }
+    .btn {
+      display: block; width: 100%; padding: 14px 32px;
+      border-radius: 12px; font-weight: 700; font-size: 1rem;
+      text-decoration: none; cursor: pointer; border: none;
+      background: linear-gradient(135deg, var(--primary), var(--secondary));
+      color: #fff; font-family: inherit; margin-top: 8px;
+    }
+    .btn:hover { opacity: 0.9; }
+    .spinner {
+      width: 40px; height: 40px;
+      border: 3px solid rgba(124,58,237,0.2);
+      border-top-color: #7C3AED;
+      border-radius: 50%;
+      animation: spin 0.8s linear infinite;
+      margin: 0 auto 20px;
+    }
+    @keyframes spin { to { transform: rotate(360deg); } }
+    .loading-text { color: var(--text-2); font-size: 0.9rem; }
+    .error-box {
+      background: rgba(239,68,68,0.1);
+      border: 1px solid rgba(239,68,68,0.3);
+      border-radius: 12px;
+      padding: 16px;
+      color: #f87171;
+      font-size: 0.88rem;
+      line-height: 1.6;
+      margin-bottom: 20px;
+    }
+    .back-link { color: var(--primary); font-size: 0.88rem; text-decoration: none; }
+    .back-link:hover { text-decoration: underline; }
+  </style>
+</head>
+<body>
+  <div class="card" id="card">
+    <div class="spinner"></div>
+    <p class="loading-text">Verificando tu acceso...</p>
+  </div>
+
+  <script>
+    (async () => {
+      const params = new URLSearchParams(location.search);
+      const token  = params.get('token');
+      const card   = document.getElementById('card');
+
+      function showError(msg) {
+        card.innerHTML = `
+          <div class="icon">❌</div>
+          <h1>Link inválido</h1>
+          <div class="error-box">${msg}</div>
+          <a href="/" class="back-link">← Volver a PostMockup</a>
+        `;
+      }
+
+      if (!token) {
+        showError('No se encontró el token de recuperación. El link puede haber expirado.');
+        return;
+      }
+
+      try {
+        const res  = await fetch(`/api/payments/recover-verify?token=${encodeURIComponent(token)}`);
+        const data = await res.json();
+
+        if (!data.success) {
+          showError(data.error || 'Link inválido o expirado. Solicitá uno nuevo desde PostMockup.');
+          return;
+        }
+
+        /* Guardar token premium */
+        localStorage.setItem('cc_auth_token', data.token);
+
+        card.innerHTML = `
+          <div class="icon">🎉</div>
+          <h1>Acceso <span class="gradient">restaurado</span></h1>
+          <p class="sub">Tu acceso Premium está activo nuevamente.<br/>Serás redirigido automáticamente en unos segundos.</p>
+          <button class="btn" onclick="location.href='/'">Ir a PostMockup →</button>
+        `;
+
+        setTimeout(() => { location.href = '/'; }, 2500);
+
+      } catch {
+        showError('Error de conexión. Por favor intentá de nuevo.');
+      }
+    })();
+  </script>
+</body>
+</html>
