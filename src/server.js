@@ -18,6 +18,20 @@ app.use(express.json({ limit: '10mb' }));
 app.use(express.urlencoded({ extended: true }));
 app.use(express.static(path.join(__dirname, '../public'), { extensions: ['html'] }));
 
+/* Archivos estáticos críticos para SEO y AdSense */
+app.get('/sitemap.xml', (_req, res) => {
+  res.setHeader('Content-Type', 'application/xml');
+  res.sendFile(path.join(__dirname, '../public/sitemap.xml'));
+});
+app.get('/robots.txt', (_req, res) => {
+  res.setHeader('Content-Type', 'text/plain');
+  res.sendFile(path.join(__dirname, '../public/robots.txt'));
+});
+app.get('/ads.txt', (_req, res) => {
+  res.setHeader('Content-Type', 'text/plain');
+  res.sendFile(path.join(__dirname, '../public/ads.txt'));
+});
+
 app.use('/api', require('./routes/api'));
 app.use('/api/payments', require('./routes/payments'));
 
