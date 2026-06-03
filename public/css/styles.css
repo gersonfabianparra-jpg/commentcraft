@@ -1305,6 +1305,73 @@ input, textarea, select { font-family: var(--font); }
 .history-dl:disabled { opacity: 0.4; cursor: not-allowed; }
 
 /* ============================================================
+   SEO CONTENT SECTION
+   ============================================================ */
+.seo-section {
+  padding: 60px 0 48px;
+  border-top: 1px solid var(--border);
+}
+.seo-intro {
+  max-width: 760px;
+  margin: 0 auto 48px;
+  text-align: center;
+}
+.seo-intro h2 {
+  font-size: 1.5rem;
+  font-weight: 800;
+  margin-bottom: 14px;
+  color: var(--text-1);
+}
+.seo-intro p {
+  color: var(--text-2);
+  font-size: 0.97rem;
+  line-height: 1.75;
+}
+.seo-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 24px;
+}
+.seo-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  padding: 28px 24px;
+}
+.seo-card h3 {
+  font-size: 1rem;
+  font-weight: 700;
+  margin-bottom: 16px;
+  color: var(--text-1);
+}
+.seo-card ol,
+.seo-card ul {
+  padding-left: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+.seo-card li {
+  color: var(--text-2);
+  font-size: 0.88rem;
+  line-height: 1.6;
+}
+.seo-card li strong { color: var(--text-1); }
+.seo-card dl { display: flex; flex-direction: column; gap: 14px; }
+.seo-card dt {
+  font-size: 0.88rem;
+  font-weight: 600;
+  color: var(--text-1);
+  margin-bottom: 3px;
+}
+.seo-card dd {
+  font-size: 0.85rem;
+  color: var(--text-2);
+  line-height: 1.65;
+  margin: 0;
+}
+
+/* ============================================================
    FOOTER
    ============================================================ */
 .footer {
